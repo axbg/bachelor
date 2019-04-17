@@ -20,6 +20,8 @@
     "koa": "^2.7.0",
     "koa-combine-routers": "^4.0.2",
     "koa-json": "^2.0.2",
-    "koa-router": "^7.4.0"
+    "koa-router": "^7.4.0",
+    "mysql2": "^1.6.5",
+    "sequelize": "^5.6.1"
   }
 }

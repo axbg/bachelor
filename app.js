@@ -3,8 +3,12 @@ const json = require('koa-json');
 
 const PORT = require("./config").PORT;
 const router = require("./routes");
+const database = require("./models").database;
 
 const app = new Koa();
+
+//this will be removed
+database.sync({force: true});
 
 app.use(json());
 app.use(router.routes());
