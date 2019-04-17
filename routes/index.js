@@ -13,7 +13,7 @@ router.get("/documents/:id", async (ctx) => {
     ctx.body = { message: "flow - student module - student get detailed document" };
 })
 
-router.post("/register", async (ctx) => {
+router.post("/student", async (ctx) => {
     ctx.body = { message: "flow - student module - student registration" };
     //will call the mailing module
 })
