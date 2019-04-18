@@ -9,8 +9,9 @@ const database = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
     collate: 'utf8_unicode_ci',
     logging: false,
     define: {
+        underscored: true,
         timestamps: false
-    }
+    },
 })
 
 module.exports = database;
