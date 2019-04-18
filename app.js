@@ -8,7 +8,7 @@ const database = require("./models").database;
 const app = new Koa();
 
 //this will be removed
-database.sync({force: true});
+database.sync();
 
 app.use(json());
 app.use(router.routes());

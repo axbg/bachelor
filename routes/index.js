@@ -1,19 +1,15 @@
 const Router = require('koa-router');
 const router = new Router();
+const studentController = require("../controllers/index");
 
 router.get("/", async (ctx) => {
     ctx.body = { message: "flow - student module" };
 })
 
-router.get("/documents", async (ctx) => {
-    ctx.body = { message: "flow - student module - student get documents" };
-})
+router.get("/documents", studentController.getDocument);
+router.get("/documents/:id", studentController.getDocument);
 
-router.get("/documents/:id", async (ctx) => {
-    ctx.body = { message: "flow - student module - student get detailed document" };
-})
-
-router.post("/student", async (ctx) => {
+router.post("/", async (ctx) => {
     ctx.body = { message: "flow - student module - student registration" };
     //will call the mailing module
 })

@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(100),
                 allowNull: false
             },
-            "PIN": {
+            "pin": {
                 type: DataTypes.STRING(13),
                 allowNull: false
             },
