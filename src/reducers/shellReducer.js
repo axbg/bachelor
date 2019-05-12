@@ -6,7 +6,7 @@ export const ACTIONS = {
 }
 
 export const ShellState = {
-    loaded: false
+    loaded: true
 }
 
 export default (state = {}, action) => {
