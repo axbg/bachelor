@@ -1,0 +1,15 @@
+.grid-container {
+    height: calc(100% - 64px);
+    display: grid;
+    text-align: center;
+    background-color:lightgray;
+}
+
+.app-container {
+    height: 100%;
+    margin: 0 auto;
+    width: 95%;
+    background-color: whitesmoke;
+    box-sizing: border-box;
+    padding-top: 50px;
+}

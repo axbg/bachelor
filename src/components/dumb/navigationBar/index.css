@@ -1,0 +1,7 @@
+.flex-grow {
+    flex-grow: 1
+}
+
+.nav-options {
+    display: flex;
+}
