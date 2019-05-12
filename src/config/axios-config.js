@@ -7,7 +7,7 @@ axios.defaults.timeout = TIMEOUT;
 
 const setupAxiosInterceptors = onUnauthenticated => {
   const onRequestSuccess = config => {
-    const token = Storage.local.get('auth-token') || Storage.session.get('auth-token');
+    const token = window.localStorage.getItem('auth-token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
