@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { simpleAction } from '../../../actions/simpleAction';
+import { simpleAction } from '../../../reducers/simpleReducer';
 
 class ReduxTester extends Component {
     render() {

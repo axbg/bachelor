@@ -3,7 +3,7 @@ import "./index.css";
 import NavigationBar from '../../dumb/navigationBar';
 import Container from '../../dumb/container';
 import { connect } from 'react-redux';
-import { simpleAction } from '../../../actions/simpleAction';
+import { getId } from '../../../reducers/shellReducer';
 
 //will be changed based on user role
 const navigationBarOptions = [
@@ -31,20 +31,11 @@ const navigationBarOptions = [
 
 class Shell extends Component {
 
-    constructor(props) {
-        super(props);
-
-        //will be part of props
-        this.state = {
-            loaded: true
-        };
-    }
-
     render() {
         return (
             <div className="max-height">
                 {
-                    this.state.loaded ?
+                    this.props.loaded ?
                         (<div className="max-height">
                             <NavigationBar position="static" options={navigationBarOptions} />
                             <Container />
@@ -54,20 +45,14 @@ class Shell extends Component {
                         <p>not loaded yet</p>
                 }
             </div>
-
-
         )
     }
 }
 
-export default Shell;
-
-/*
-const mapStateToProps = ({ simpleReducer }) => ({
-    ...simpleReducer
+const mapStateToProps = ({ shellReducer }) => ({
+    ...shellReducer
 });
 
-const mapDispatchToProps = { simpleAction };
+const mapDispatchToProps = { getId };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shell);
-*/

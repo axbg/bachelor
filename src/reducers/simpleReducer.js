@@ -1,7 +1,16 @@
-import { ACTIONS } from '../actions/simpleAction'
+export const ACTIONS = {
+    SIMPLE_ACTION: "SIMPLE_ACTION"
+}
 
 export const SimpleReducerState = {
     testLoaded: false
+}
+
+export const simpleAction = (payload) => dispatch => {
+    dispatch({
+        type: ACTIONS.SIMPLE_ACTION,
+        payload: payload
+    })
 }
 
 export default (state = {}, action) => {
@@ -15,3 +24,4 @@ export default (state = {}, action) => {
             return state
     }
 }
+
