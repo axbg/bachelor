@@ -5,6 +5,7 @@ import Container from '../../dumb/container';
 import { USER_ROLES, STUDENT_NAVIGATION_OPTIONS } from '../../../constants/index';
 import { connect } from 'react-redux';
 import { authenticate } from '../../../reducers/authReducer';
+import Spinner from '../../dumb/spinner/index';
 
 //will be changed based on user role
 //this will retrieve from back-end what navigation tabs should be displayed
@@ -41,7 +42,7 @@ class Shell extends Component {
                         </div>
                         )
                         :
-                        <p>not loaded yet</p>
+                        <Spinner/>
                 }
             </div>
         )
