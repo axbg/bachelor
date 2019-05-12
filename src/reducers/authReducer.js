@@ -2,32 +2,39 @@ import axios from 'axios';
 import { REQUEST, SUCCESS, FAILURE } from '../config/actions-async-types';
 
 export const ACTIONS = {
-    GET_ID: "GET_ID"
+    AUTHENTICATE: "AUTHENTICATE"
 }
 
-export const ShellState = {
-    testId: 0
+export const AuthState = {
+    id: null,
+    username: null,
+    role: null,
+    firstname: null,
+    lastname: null,
+    loaded: true
 }
 
 export default (state = {}, action) => {
     switch (action.type) {
-        case REQUEST(ACTIONS.GET_ID):
+        case REQUEST(ACTIONS.AUTHENTICATE):
             return {
                 ...state,
+                loaded: false
             }
-        case SUCCESS(ACTIONS.GET_ID):
+        case SUCCESS(ACTIONS.AUTHENTICATE):
             return {
                 ...state,
                 ...action.payload.data,
+                loaded: true
             }
         default:
             return state
     }
 }
 
-export const getId = () => dispatch => {
+export const authenticate = () => dispatch => {
     dispatch({
-        type: ACTIONS.GET_ID,
+        type: ACTIONS.AUTHENTICATE,
         payload: axios.get("https://api.myjson.com/bins/qfssu")
     })
 }

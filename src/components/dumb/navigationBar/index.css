@@ -5,3 +5,8 @@
 .nav-options {
     display: flex;
 }
+
+.nav-link {
+    text-decoration: none;
+    color: white;
+}
