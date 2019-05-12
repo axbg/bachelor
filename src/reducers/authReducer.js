@@ -2,7 +2,8 @@ import axios from 'axios';
 import { REQUEST, SUCCESS, FAILURE } from '../config/actions-async-types';
 
 export const ACTIONS = {
-    AUTHENTICATE: "AUTHENTICATE"
+    AUTHENTICATE: "AUTHENTICATE",
+    LOGOUT: "LOGOUT"
 }
 
 export const AuthState = {
@@ -28,6 +29,10 @@ export default (state = {}, action) => {
                 loaded: true,
                 role: "STUDENT"
             }
+        case ACTIONS.LOGOUT:
+            return {
+                ...AuthState
+            }
         default:
             return state
     }
@@ -37,5 +42,18 @@ export const authenticate = () => dispatch => {
     dispatch({
         type: ACTIONS.AUTHENTICATE,
         payload: axios.get("https://api.myjson.com/bins/qfssu")
+    })
+}
+
+export const clearAuthToken = () => {
+    if (window.localStorage.getItem("auth-token")) {
+        window.localStorage.removeItem("auth-token");
+    }
+}
+
+export const logout = () => dispatch => {
+    clearAuthToken();
+    dispatch({
+        type: ACTIONS.LOGOUT
     })
 }

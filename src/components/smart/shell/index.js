@@ -5,7 +5,11 @@ import Container from '../../dumb/container';
 import { USER_ROLES, STUDENT_NAVIGATION_OPTIONS } from '../../../constants/index';
 import { connect } from 'react-redux';
 import { authenticate } from '../../../reducers/authReducer';
+import { mobileLayout } from '../../../reducers/shellReducer';
 import Spinner from '../../dumb/spinner/index';
+import Footer from '../../dumb/footer';
+import BottomNavigationBar from '../../dumb/bottomNavigationBar';
+import ReactResizeDetector from 'react-resize-detector';
 
 //will be changed based on user role
 //this will retrieve from back-end what navigation tabs should be displayed
@@ -18,6 +22,16 @@ class Shell extends Component {
         this.props.authenticate();
     }
 
+    onResize = (width, height) => {
+        if (width < 620 && !this.props.mobileDevice) {
+            this.props.mobileLayout(true);
+        } else if (width >= 640 && this.props.mobileDevice) {
+            this.props.mobileLayout(false);
+        }
+    }
+
+
+    //add the rest of nav options for each role
     getNavigationOptions() {
         switch (this.props.role) {
             case USER_ROLES.STUDENT:
@@ -37,12 +51,24 @@ class Shell extends Component {
                 {
                     this.props.loaded ?
                         (<div className="max-height">
-                            <NavigationBar position="static" options={this.getNavigationOptions()} />
+                            <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} />
+                            {
+                                this.props.mobileDevice ? ""
+                                    : <NavigationBar position="static" options={this.getNavigationOptions()} />
+                            }
                             <Container role={this.props.role} />
+                            {
+                                !this.props.mobileDevice ? ""
+                                    : <BottomNavigationBar options={this.getNavigationOptions()} />
+                            }
+                            {
+                                this.props.mobileDevice ? ""
+                                    : <Footer />
+                            }
                         </div>
                         )
                         :
-                        <Spinner/>
+                        <Spinner />
                 }
             </div>
         )
@@ -50,11 +76,11 @@ class Shell extends Component {
 }
 
 const mapStateToProps = ({ shellReducer, authReducer }) => ({
-    shell: shellReducer,
     role: authReducer.role,
-    loaded: authReducer.loaded
+    loaded: authReducer.loaded,
+    mobileDevice: shellReducer.mobileDevice
 });
 
-const mapDispatchToProps = { authenticate };
+const mapDispatchToProps = { authenticate, mobileLayout };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shell);
