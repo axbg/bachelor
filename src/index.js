@@ -5,7 +5,9 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import configureStore from './store';
+import setupAxiosInterceptors from './config/axios-config';
 
+setupAxiosInterceptors(() => console.log("add here logout reducer"));
 
 ReactDOM.render(
     <Provider store={configureStore()}>
