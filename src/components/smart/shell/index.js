@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import "./index.css";
 import NavigationBar from '../../dumb/navigationBar';
 import Container from '../../dumb/container';
-import { USER_ROLES, NAVIGATION_OPTIONS } from '../../../constants/index';
+import { USER_ROLES, STUDENT_NAVIGATION_OPTIONS } from '../../../constants/index';
 import { connect } from 'react-redux';
-import { getId } from '../../../reducers/shellReducer';
+import { authenticate } from '../../../reducers/authReducer';
 
 //will be changed based on user role
 //this will retrieve from back-end what navigation tabs should be displayed
@@ -14,18 +14,19 @@ import { getId } from '../../../reducers/shellReducer';
 class Shell extends Component {
 
     componentDidMount() {
-        
+        this.props.authenticate();
     }
 
     getNavigationOptions() {
-        switch(this.props.role) {
+        switch (this.props.role) {
             case USER_ROLES.STUDENT:
+                return STUDENT_NAVIGATION_OPTIONS;
             case USER_ROLES.ADMIN:
             case USER_ROLES.VOLUNTEER:
             case USER_ROLES.CASHIER:
             case USER_ROLES.OPERATOR:
             default:
-                return NAVIGATION_OPTIONS;
+                return STUDENT_NAVIGATION_OPTIONS;
         }
     }
 
@@ -36,7 +37,7 @@ class Shell extends Component {
                     this.props.loaded ?
                         (<div className="max-height">
                             <NavigationBar position="static" options={this.getNavigationOptions()} />
-                            <Container />
+                            <Container role={this.props.role} />
                         </div>
                         )
                         :
@@ -53,6 +54,6 @@ const mapStateToProps = ({ shellReducer, authReducer }) => ({
     loaded: authReducer.loaded
 });
 
-const mapDispatchToProps = { getId };
+const mapDispatchToProps = { authenticate };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shell);

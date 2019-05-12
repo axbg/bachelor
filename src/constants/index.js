@@ -7,22 +7,22 @@ export const USER_ROLES = {
     OPERATOR: "OPERATOR"
 }
 
-export const NAVIGATION_OPTIONS = [
+export const STUDENT_NAVIGATION_OPTIONS = [
     {
         title: "Home",
-        link: "/home"
+        link: "/student/home"
     },
     {
         title: "Profile",
-        link: "/profile"
+        link: "/student/profile"
     },
     {
         title: "Registration Day",
-        link: "/registration-day"
+        link: "/student/registration-day"
     },
     {
         title: "Credits and Faculties",
-        link: "/credits"
+        link: "/student/credits"
     },
     {
         title: "Logout",

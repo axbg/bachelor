@@ -11,7 +11,7 @@ export const AuthState = {
     role: null,
     firstname: null,
     lastname: null,
-    loaded: true
+    loaded: false
 }
 
 export default (state = {}, action) => {
@@ -25,7 +25,8 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 ...action.payload.data,
-                loaded: true
+                loaded: true,
+                role: "STUDENT"
             }
         default:
             return state
