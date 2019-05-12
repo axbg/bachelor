@@ -8,10 +8,6 @@ const override = css`
     border-color: red;
 `;
 
-const container = css`
-    background-color: red;
-`;
-
 class Spinner extends React.Component {
     constructor(props) {
         super(props);

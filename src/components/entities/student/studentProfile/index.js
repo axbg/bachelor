@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import "./index.css";
 
-class StudentHome extends Component {
+class StudentProfile extends Component {
 
     render() {
         return (
             <div>
-                <h1>StudentHome</h1>
+                <h1>StudentProfile</h1>
             </div>
         )
     }
 }
 
-export default StudentHome;
+export default StudentProfile;
