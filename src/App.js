@@ -5,8 +5,8 @@ import Login from './components/smart/login';
 import { BrowserRouter } from 'react-router-dom';
 
 function shouldAutoLogin() {
-  //return window.localStorage.getItem("auth-token") ? true : false;
-  return window.localStorage.getItem("auth-token") ? false : true;
+  return window.localStorage.getItem("auth-token") ? true : false;
+  //return window.localStorage.getItem("auth-token") ? false : true;
 }
 
 function App() {
