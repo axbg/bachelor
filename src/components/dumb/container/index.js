@@ -10,10 +10,6 @@ import CashierRouter from '../../entities/cashier/cashierRouter';
 import { USER_ROLES } from '../../../constants/index';
 
 class Container extends Component {
-
-    componentDidMount() {
-    }
-
     redirectToHome() {
         switch (this.props.role) {
             case USER_ROLES.STUDENT:
@@ -31,25 +27,35 @@ class Container extends Component {
         }
     }
 
+    mountRoutes() {
+        switch (this.props.role) {
+            case USER_ROLES.STUDENT:
+                return <PrivateRoute path="/student" component={StudentRouter} authorityNeeded={USER_ROLES.STUDENT}
+                    userAuthority={this.props.role} />
+            case USER_ROLES.ADMIN:
+                return <PrivateRoute path="/admin" component={AdminRouter} authorityNeeded={USER_ROLES.ADMIN}
+                    userAuthority={this.props.role} />
+            case USER_ROLES.VOLUNTEER:
+                return <PrivateRoute path="/volunteer" component={VolunteerRouter}
+                    authorityNeeded={USER_ROLES.VOLUNTEER} userAuthority={this.props.role} />
+            case USER_ROLES.CASHIER:
+                return <PrivateRoute path="/cashier" component={CashierRouter} authorityNeeded={USER_ROLES.CASHIER}
+                    userAuthority={this.props.role} />
+            case USER_ROLES.OPERATOR:
+                return <PrivateRoute path="/operator" component={OperatorRouter} authorityNeeded={USER_ROLES.OPERATOR}
+                    userAuthority={this.props.role} />
+            default:
+                return "";
+        }
+    }
 
-    //make a "mountRoutes" method that returns the whole switch needed to avoid loading all the paths
-    //this way, the privateRoute becomes kinda useless, because only allowed paths will be loaded for each role
     render() {
         return (
             <div className="grid-container">
                 <div className="app-container">
                     <Switch>
                         <Redirect exact from="/" to={this.redirectToHome()} />
-                        <PrivateRoute path="/student" component={StudentRouter} authorityNeeded={USER_ROLES.STUDENT}
-                            userAuthority={this.props.role} />
-                        <PrivateRoute path="/volunteer" component={VolunteerRouter}
-                            authorityNeeded={USER_ROLES.VOLUNTEER} userAuthority={this.props.role} />
-                        <PrivateRoute path="/cashier" component={CashierRouter} authorityNeeded={USER_ROLES.CASHIER}
-                            userAuthority={this.props.role} />
-                        <PrivateRoute path="/operator" component={OperatorRouter} authorityNeeded={USER_ROLES.OPERATOR}
-                            userAuthority={this.props.role} />
-                        <PrivateRoute path="/admin" component={AdminRouter} authorityNeeded={USER_ROLES.ADMIN}
-                            userAuthority={this.props.role} />
+                        {this.mountRoutes()}
                         <Redirect to="/" />
                     </Switch>
                 </div>
