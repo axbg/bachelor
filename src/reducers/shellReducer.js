@@ -35,7 +35,7 @@ export default (state = {}, action) => {
 export const getId = () => dispatch => {
     dispatch({
         type: ACTIONS.GET_ID,
-        payload: axios.get("https://api.myjson.com/bins/qfssu")
+        payload: axios.get("http://www.mocky.io/v2/5cdd21633000001a46e23534")
     })
 }
 

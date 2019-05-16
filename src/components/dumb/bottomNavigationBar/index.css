@@ -1,3 +1,4 @@
 .MuiBottomNavigationAction-root-2 {
     padding: 6px 0px 8px !important;
+    overflow: hidden;
 }
