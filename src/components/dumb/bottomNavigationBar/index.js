@@ -3,7 +3,7 @@ import React from 'react';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import RestoreIcon from '@material-ui/icons/Restore';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import "./index.css";
 
 class BottomNavigationBar extends React.Component {
@@ -41,4 +41,4 @@ class BottomNavigationBar extends React.Component {
   }
 }
 
-export default BottomNavigationBar;
+export default withRouter(BottomNavigationBar);
