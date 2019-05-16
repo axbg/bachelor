@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Shell from './components/smart/shell';
 import Login from './components/smart/login';
+import UnprotectedRouter from './components/dumb/unprotectedRouter';
 import { BrowserRouter } from 'react-router-dom';
 
 function shouldAutoLogin() {
@@ -12,7 +13,7 @@ function shouldAutoLogin() {
 function App() {
   return (
     <BrowserRouter>
-      {shouldAutoLogin() ? <Shell /> : <Login />}
+      {shouldAutoLogin() ? <Shell /> : <UnprotectedRouter />}
     </BrowserRouter>
   );
 }
