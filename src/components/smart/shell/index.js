@@ -11,11 +11,10 @@ import Footer from '../../dumb/footer';
 import BottomNavigationBar from '../../dumb/bottomNavigationBar';
 import ReactResizeDetector from 'react-resize-detector';
 
+
 //will be changed based on user role
 //this will retrieve from back-end what navigation tabs should be displayed
 //this also will retrieve user data such as role
-
-
 class Shell extends Component {
 
     componentDidMount() {
@@ -54,16 +53,13 @@ class Shell extends Component {
                             <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} />
                             {
                                 this.props.mobileDevice ? ""
-                                    : <NavigationBar position="static" options={this.getNavigationOptions()} />
+                                    : <NavigationBar position="fixed" options={this.getNavigationOptions()} />
                             }
                             <Container role={this.props.role} />
                             {
                                 !this.props.mobileDevice ? ""
-                                    : <BottomNavigationBar options={this.getNavigationOptions()} />
-                            }
-                            {
-                                this.props.mobileDevice ? ""
-                                    : <Footer />
+                                    : 
+                                    <div className="fix-bottom"><BottomNavigationBar options={this.getNavigationOptions()} /> </div> 
                             }
                         </div>
                         )

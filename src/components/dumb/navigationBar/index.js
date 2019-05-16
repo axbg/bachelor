@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 class NavigationBar extends Component {
     render() {
         return (
-            <div >
+            <div className="sticky">
                 <AppBar color="primary" position="static">
                     <Toolbar>
                         <Typography variant="title" color="inherit">
