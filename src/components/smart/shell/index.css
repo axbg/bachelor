@@ -4,7 +4,7 @@
 }
 
 .fix-bottom { 
-    width: '100%';
+    box-sizing: border-box;
     position: 'fixed';
     bottom: 0;
 }
