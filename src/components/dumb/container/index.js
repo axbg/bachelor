@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { Switch, Redirect, Route } from "react-router-dom";
+import { Switch, Redirect } from "react-router-dom";
 import { PrivateRoute } from "../privateRoute/index";
 import StudentRouter from '../../entities/student/studentRouter';
 import VolunteerRouter from '../../entities/volunteer/volunteerRouter';

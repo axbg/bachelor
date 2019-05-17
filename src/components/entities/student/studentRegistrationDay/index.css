@@ -1,0 +1,21 @@
+.student-registration-steps {
+    width: 55%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+@media only screen and (max-width: 1200px) {
+
+    .student-registration-steps {
+        width: 80%;
+        margin-top: 50px;
+    }
+}
+
+@media only screen and (max-width: 621px) {
+
+    .student-registration-steps {
+        width: 95%;
+        margin-top: 50px;
+    }
+}

@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { authenticate } from '../../../reducers/authReducer';
 import { mobileLayout } from '../../../reducers/shellReducer';
 import Spinner from '../../dumb/spinner/index';
-import Footer from '../../dumb/footer';
 import BottomNavigationBar from '../../dumb/bottomNavigationBar';
 import ReactResizeDetector from 'react-resize-detector';
 

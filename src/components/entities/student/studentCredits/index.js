@@ -30,6 +30,48 @@ class StudentCredits extends Component {
         this.setState({ open: true });
     };
 
+    initializePaymentRequest = () => {
+        const networks = ['amex', 'jcb', 'visa'];
+
+        const supportedInstruments = [{
+            supportedMethods: 'basic-card',
+            data: {
+                supportedNetworks: networks,
+                supportedTypes: ['debit', 'credit', 'prepaid']
+            }
+        }, {
+            supportedMethods: 'https://apple.com/apple-pay',
+            data: {
+                version: 2,
+                supportedNetworks: networks,
+                countryCode: 'RO',
+                merchantIdentifier: 'whatwebcando.today.sample',
+                merchantCapabilities: ['supportsDebit', 'supportsCredit', 'supports3DS']
+            }
+        }];
+
+        const details = {
+            total: { label: 'Donation', amount: { currency: 'EUR', value: '10.00' } },
+            displayItems: [
+                {
+                    label: 'Original donation amount',
+                    amount: { currency: 'EUR', value: '15.00' }
+                },
+                {
+                    label: 'Friends and family discount',
+                    amount: { currency: 'EUR', value: '-5.00' }
+                }
+            ]
+        };
+
+        return new PaymentRequest(supportedInstruments, details);
+    }
+
+    showPaymentRequest = () => {
+        let paymentRequest = this.initializePaymentRequest();
+        paymentRequest.show();
+    }
+
     render() {
         return (
             <div className="student-info">
@@ -37,24 +79,26 @@ class StudentCredits extends Component {
                     <h1>Credits & Faculties</h1>
                     <h4>Your options</h4>
                     <h5>The first option should be your top preference</h5>
-                    <Paper >
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>#</TableCell>
-                                    <TableCell>Faculty</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell>1</TableCell>
-                                    <TableCell>CSIE Buget</TableCell>
-                                    <TableCell><Button>Remove</Button></TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </Paper>
+                    <div className="student-credits-table-container">
+                        <Paper>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>#</TableCell>
+                                        <TableCell>Faculty</TableCell>
+                                        <TableCell></TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>1</TableCell>
+                                        <TableCell>CSIE Buget</TableCell>
+                                        <TableCell><Button>Remove</Button></TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </Paper>
+                    </div>
                     <br />
                     <br />
                     <div className="options-select">
@@ -73,10 +117,12 @@ class StudentCredits extends Component {
                         <Button variant="contained" color="primary">Add Option</Button>
                     </div>
                 </div>
-                <h4>You currently have 0 credits.</h4>
-                <h4>Using the credits, you can add options to the faculties list down below</h4>
-                <h4>You can either buy them online and choose your preferences here, or buy them phisically on the registration day from our cashiers</h4>
-                <Button variant="contained" color="primary">buy credits</Button>
+                <div className="student-credits-container">
+                    <h4>You currently have 0 credits.</h4>
+                    <h4>Using the credits, you can add options to the faculties list down below</h4>
+                    <h4>You can either buy them online and choose your preferences here, or buy them phisically on the registration day from our cashiers</h4>
+                    <Button variant="contained" color="primary" onClick={this.showPaymentRequest}>Buy credits</Button>
+                </div>
             </div>
         )
     }

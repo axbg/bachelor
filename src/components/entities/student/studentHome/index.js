@@ -15,29 +15,35 @@ class StudentHome extends Component {
     }
 
     openModal() {
-        this.setState({modal: true})
+        this.setState({ modal: true })
     }
 
     handleClose() {
-        this.setState({modal: false})
+        this.setState({ modal: false })
     }
 
     render() {
         return (
             <div>
-                <h1>Welcome, Student</h1>
+                <Modal open={this.state.modal} onClose={this.handleClose}>
+                    <p>saluuut</p>
+                </Modal>
+                <h2>Welcome, Student</h2>
                 <div className="student-info">
-                    <h4>Your order number is 412</h4>
-                    <h5>Latest order number is 315</h5>
-                    <h5>Average waiting time for a person: 5:30 minutes</h5>
-                    <h5>The last group was formed by 30 students and entered at 13:32</h5>
-                    <p>Your enrollment is pending.</p>
-                    <p>Congrats! You've been addmitted at Facultatea de Cibernetica, Statistica si Informatica Economica, Buget</p>
-                    <p>Do you have any questions? Contact us!</p>
-                    <a onClick={this.openModal}>You can find more info about enrollment here</a>
-                    <Modal open={this.state.modal} onClose={this.handleClose}>
-                        <p>saluuut</p>
-                    </Modal>
+                    <br />
+                    <div className="student-registration-info">
+                        <h3>Your order number is 412</h3>
+                        <h4>Latest order number is 315</h4>
+                        <h5>Average waiting time for a person: 5:30 minutes</h5>
+                        <h5>The last group was formed by 30 students and entered at 13:32</h5>
+                    </div>
+                    <br />
+                    <h2>Your enrollment is pending.</h2>
+                    <br />
+                    <h4 onClick={this.openModal} className="student-profile-modal">
+                        You can find more info about enrollment here
+                    </h4>
+                    <p><a href="https://ase.ro" target="_blank">Still got a questions? Contact us!</a></p>
                 </div>
             </div>
         )
