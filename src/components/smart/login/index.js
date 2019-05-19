@@ -13,10 +13,11 @@ class Login extends Component {
         return (
             <div className="login-page">
                 <div className="form">
+                    <img src="/step1w.png" />
                     <div className="login-form">
-                        <input type="text" placeholder="username"/>
-                        <input type="password" placeholder="password"/>
-                        <button onClick={() => {this.fakeLogin()}}>login</button>
+                        <input type="text" placeholder="username" />
+                        <input type="password" placeholder="password" />
+                        <button onClick={() => { this.fakeLogin() }}>login</button>
                         <p className="message">Not registered? <a href="#">Create an account</a></p>
                     </div>
                 </div>
