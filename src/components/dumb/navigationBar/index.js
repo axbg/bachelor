@@ -9,27 +9,25 @@ import { Link } from 'react-router-dom';
 class NavigationBar extends Component {
     render() {
         return (
-            <div className="sticky">
-                <AppBar color="primary" position="static">
-                    <Toolbar>
-                        <Typography variant="title" color="inherit">
-                            <Link to="/home" className="nav-link">
-                                flow
+            <AppBar color="primary" position="static">
+                <Toolbar>
+                    <Typography variant="title" color="inherit">
+                        <Link to="/home" className="nav-link">
+                            flow
                                 </Link>
-                        </Typography>
-                        <div className="flex-grow" />
-                        <div className="nav-options">
-                            {this.props.options.map((option, key) =>
-                                <Link to={option.link} className="nav-link" key={key}>
-                                    <Button color="inherit" key={key}>
-                                        {option.title}
-                                    </Button>
-                                </Link>
-                            )}
-                        </div>
-                    </Toolbar>
-                </AppBar>
-            </div>
+                    </Typography>
+                    <div className="flex-grow" />
+                    <div className="nav-options">
+                        {this.props.options.map((option, key) =>
+                            <Link to={option.link} className="nav-link" key={key}>
+                                <Button color="inherit" key={key}>
+                                    {option.title}
+                                </Button>
+                            </Link>
+                        )}
+                    </div>
+                </Toolbar>
+            </AppBar>
         )
     }
 }

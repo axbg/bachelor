@@ -102,10 +102,221 @@ class StudentProfile extends Component {
                         <br />
                         <TextValidator
                             fullWidth
+                            type="password"
+                            label="Password"
+                            onChange={this.change}
+                            name="password"
+                            value={this.state.password}
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: this.state.readOnly,
+                            }}
+                        />
+                        <br />
+                        <br />
+                        <TextValidator
+                            fullWidth
                             label="Father's Initial"
                             onChange={this.change}
                             name="initial"
                             value={this.state.initial}
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: this.state.readOnly,
+                            }}
+                        />
+                        <br />
+                        <br />
+                        <TextValidator
+                            fullWidth
+                            label="Phone"
+                            onChange={this.change}
+                            name="phone"
+                            value={this.state.phone}
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: this.state.readOnly,
+                            }}
+                        />
+                        <br />
+                        <br />
+                        <TextValidator
+                            fullWidth
+                            label="PIN"
+                            onChange={this.change}
+                            name="cnp"
+                            value={this.state.cnp}
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: this.state.readOnly,
+                            }}
+                        />
+                        <br />
+                        <br />
+                        <TextValidator
+                            fullWidth
+                            label="ID Series"
+                            onChange={this.change}
+                            name="idSeries"
+                            value={this.state.idSeries}
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: this.state.readOnly,
+                            }}
+                        />
+                        <br />
+                        <br />
+                        <TextValidator
+                            fullWidth
+                            label="ID Number"
+                            onChange={this.change}
+                            name="idNumber"
+                            value={this.state.idNumber}
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: this.state.readOnly,
+                            }}
+                        />
+                        <br />
+                        <br />
+                        <TextValidator
+                            fullWidth
+                            label="ID published by"
+                            onChange={this.change}
+                            name="idEntity"
+                            value={this.state.idEntity}
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: this.state.readOnly,
+                            }}
+                        />
+                        <br />
+                        <br />
+                        <TextValidator
+                            fullWidth
+                            label="Address"
+                            onChange={this.change}
+                            name="address"
+                            value={this.state.address}
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: this.state.readOnly,
+                            }}
+                        />
+                        <br />
+                        <br />
+                        <TextValidator
+                            fullWidth
+                            label="City"
+                            onChange={this.change}
+                            name="city"
+                            value={this.state.city}
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: this.state.readOnly,
+                            }}
+                        />
+                        <br />
+                        <br />
+                        <TextValidator
+                            fullWidth
+                            label="Baccalaureate Average Grade"
+                            onChange={this.change}
+                            name="bacAverage"
+                            value={this.state.bacAverage}
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: this.state.readOnly,
+                            }}
+                        />
+                        <br />
+                        <br />
+                        <TextValidator
+                            fullWidth
+                            label="Baccalaureate - Romanian Exam Grade"
+                            onChange={this.change}
+                            name="bacRomanian"
+                            value={this.bacRomanian}
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: this.state.readOnly,
+                            }}
+                        />
+                        <br />
+                        <br />
+                        <TextValidator
+                            fullWidth
+                            label="9th Grade Average"
+                            onChange={this.change}
+                            name="average9"
+                            value={this.state.average9}
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: this.state.readOnly,
+                            }}
+                        />
+                        <br />
+                        <br />
+                        <TextValidator
+                            fullWidth
+                            label="10th Grade Average"
+                            onChange={this.change}
+                            name="average10"
+                            value={this.state.average10}
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: this.state.readOnly,
+                            }}
+                        />
+                        <br />
+                        <br />
+                        <TextValidator
+                            fullWidth
+                            label="11th Grade Average"
+                            onChange={this.change}
+                            name="average11"
+                            value={this.state.average11}
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: this.state.readOnly,
+                            }}
+                        />
+                        <br />
+                        <br />
+                        <TextValidator
+                            fullWidth
+                            label="12th Grade Average"
+                            onChange={this.change}
+                            name="average12"
+                            value={this.state.average12}
                             validators={['required']}
                             errorMessages={['This field is required']}
                             variant="outlined"
