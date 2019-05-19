@@ -19,6 +19,17 @@ class BottomNavigationBar extends React.Component {
     return <RestoreIcon />
   }
 
+  findCurrentLocation(location, options) {
+    return options.filter((option, index) => option.link === location.pathname);
+  }
+
+  componentDidMount() {
+    const value = this.findCurrentLocation(this.props.location, this.props.options)[0].index;
+    this.setState({
+      value: value
+    })
+  }
+
   render() {
     const { value } = this.state;
 
