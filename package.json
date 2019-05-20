@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,8 +18,11 @@
   },
   "homepage": "https://github.com/axbg/flow#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "koa": "^2.7.0",
+    "koa-body-parser": "^1.1.2",
     "koa-combine-routers": "^4.0.2",
+    "koa-cors": "0.0.16",
     "koa-json": "^2.0.2",
     "koa-router": "^7.4.0",
     "mysql2": "^1.6.5",
