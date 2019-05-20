@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(100),
                 allowNull: false
             },
+            "address": {
+                type: DataTypes.STRING(100),
+                allowNull: false
+            },
             "pin": {
                 type: DataTypes.STRING(13),
                 allowNull: false
@@ -37,10 +41,18 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(6),
                 allowNull: false
             },
+            "idEntity": {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
             "photo": {
                 type: DataTypes.STRING,
                 allowNull: true,
                 defaultValue: "#"
+            },
+            "notificationToken": {
+                type: DataTypes.STRING(100),
+                allowNull: true
             },
             "active": {
                 type: DataTypes.BOOLEAN,

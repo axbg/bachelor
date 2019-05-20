@@ -14,6 +14,8 @@ router.post("/", async (ctx) => {
     //will call the mailing module
 })
 
+router.post("/register", studentController.register);
+
 router.post("/login", async (ctx) => {
     //the actual login will be done inside the auth gateway
     //this endpoint will retrieve data such as Options, profile informations
