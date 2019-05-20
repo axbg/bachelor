@@ -10,5 +10,11 @@ app.use("/student", proxy({
     }
 }))
 
+app.use("/mail", proxy({
+    target: constants.BASE_URL + constants.MAILING_MODULE_PORT, pathRewrite: {
+        "/mail": ""
+    }
+}))
+
 app.listen(constants.GATEWAY_MODULE_PORT,
     () => console.log("Gateway module started on " + constants.BASE_URL + constants.GATEWAY_MODULE_PORT));
