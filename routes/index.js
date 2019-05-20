@@ -3,7 +3,7 @@ const router = new Router();
 const mailingController = require("../controllers/index");
 
 router.get("/", async (ctx) => {
-    ctx.body = { message: "flow - student module" };
+    ctx.body = { message: "flow - mailing module" };
 })
 
 router.post("/send", mailingController.sendEmail);
