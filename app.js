@@ -5,12 +5,8 @@ const cors = require('koa-cors');
 
 const PORT = require("./config").PORT;
 const router = require("./routes");
-const database = require("./models").database;
 
 const app = new Koa();
-
-//this will be removed
-database.sync();
 
 app.use(cors());
 app.use(json());

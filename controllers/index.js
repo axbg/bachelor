@@ -3,9 +3,6 @@ const MAILGUN_DOMAIN = require('../config/index').MAILGUN_DOMAIN;
 const mailgun = require('mailgun-js')({ apiKey: MAILGUN_API_KEY, domain: MAILGUN_DOMAIN });
 
 module.exports.sendEmail = async (ctx) => {
-
-    console.log("received");
-
     if (!ctx.request.body.message || !ctx.request.body.title || !ctx.request.body.destination) {
         ctx.body = { message: "The request is missing one of the mandatory fields: title, message, destination" };
         ctx.status = 400;
