@@ -6,13 +6,7 @@ router.get("/", async (ctx) => {
     ctx.body = { message: "flow - student module" };
 })
 
-router.get("/documents", studentController.getDocument);
 router.get("/documents/:id", studentController.getDocument);
-
-router.post("/", async (ctx) => {
-    ctx.body = { message: "flow - student module - student registration" };
-    //will call the mailing module
-})
 
 router.post("/register", studentController.register);
 
@@ -29,16 +23,19 @@ router.post("/credits", async (ctx) => {
 })
 
 router.post("/options", async (ctx) => {
-    ctx.body = { message: "flow - student module - student add or update options" };
+    ctx.body = { message: "flow - student module - get options" };
+})
+
+router.post("/options", async (ctx) => {
+    ctx.body = { message: "flow - student module - add option" };
+})
+
+router.delete("/options", async (ctx) => {
+    ctx.body = { message: "flow - student module - delete option" };
 })
 
 router.put("/password", async (ctx) => {
     ctx.body = { message: "flow - student module - student password change" };
 })
-
-router.put("/ticket", async (ctx) => {
-    ctx.body = { message: "flow - student module - update student entity with ticket value" };
-})
-
 
 module.exports = router;
