@@ -2,18 +2,20 @@ import React, { Component } from 'react';
 import "./index.css";
 import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { connect } from 'react-redux';
+import { register } from '../../../../reducers/studentRegistrationReducer';
 
 class StudentRegister extends Component {
   state = {
-    firstName: "",
-    lastName: "",
+    firstname: "",
+    lastname: "",
     initial: "",
     email: "",
     password: "",
     phone: "",
-    cnp: "",
-    idSeries: "",
-    idNumber: "",
+    pin: "",
+    series: "",
+    number: "",
     idEntity: "",
     address: "",
     city: "",
@@ -35,9 +37,33 @@ class StudentRegister extends Component {
     e.preventDefault();
     // this.props.onSubmit(this.state);
     console.log(this.state);
+    this.props.register(this.state);
   };
 
   render() {
+
+    //move the login inside the container and add some nice images
+    //add a spinner for loading
+    if (this.props.loading) {
+      return (
+        <div>
+          <h1>loading</h1>
+        </div>
+      )
+    } else if (this.props.registered) {
+      return (
+        <div>
+          <h1>Congrats {this.state.firstname}! You are registered! Check your email!</h1>
+        </div>
+      )
+    }
+    else if (this.props.error) {
+      return (
+        <div>
+          <h2>Something bad happened</h2>
+        </div>
+      )
+    }
     return (
       <div className="register-container">
         <ValidatorForm ref="form" onSubmit={this.onSubmit} onError={errors => console.log(errors)}>
@@ -47,8 +73,8 @@ class StudentRegister extends Component {
             fullWidth
             label="First Name"
             onChange={this.change}
-            name="firstName"
-            value={this.state.firstName}
+            name="firstname"
+            value={this.state.firstname}
             validators={['required']}
             errorMessages={['This field is required']}
           />
@@ -58,8 +84,8 @@ class StudentRegister extends Component {
             fullWidth
             label="Last Name"
             onChange={this.change}
-            name="lastName"
-            value={this.state.lastName}
+            name="lastname"
+            value={this.state.lastname}
             validators={['required']}
             errorMessages={['This field is required']}
           />
@@ -114,8 +140,8 @@ class StudentRegister extends Component {
             fullWidth
             label="PIN"
             onChange={this.change}
-            name="cnp"
-            value={this.state.cnp}
+            name="pin"
+            value={this.state.pin}
             validators={['required']}
             errorMessages={['This field is required']}
           />
@@ -125,8 +151,8 @@ class StudentRegister extends Component {
             fullWidth
             label="ID Series"
             onChange={this.change}
-            name="idSeries"
-            value={this.state.idSeries}
+            name="series"
+            value={this.state.series}
             validators={['required']}
             errorMessages={['This field is required']}
           />
@@ -136,8 +162,8 @@ class StudentRegister extends Component {
             fullWidth
             label="ID Number"
             onChange={this.change}
-            name="idNumber"
-            value={this.state.idNumber}
+            name="number"
+            value={this.state.number}
             validators={['required']}
             errorMessages={['This field is required']}
           />
@@ -192,7 +218,7 @@ class StudentRegister extends Component {
             label="Baccalaureate - Romanian Exam Grade"
             onChange={this.change}
             name="bacRomanian"
-            value={this.bacRomanian}
+            value={this.state.bacRomanian}
             validators={['required']}
             errorMessages={['This field is required']}
           />
@@ -249,5 +275,12 @@ class StudentRegister extends Component {
   }
 }
 
+const mapStateToProps = ({ studentRegistrationReducer }) => ({
+  loading: studentRegistrationReducer.loading,
+  registered: studentRegistrationReducer.registered,
+  error: studentRegistrationReducer.error
+});
 
-export default StudentRegister;
+const mapDispatchToProps = { register };
+
+export default connect(mapStateToProps, mapDispatchToProps)(StudentRegister);
