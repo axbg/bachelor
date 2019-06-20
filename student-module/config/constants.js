@@ -1,3 +1,4 @@
+const JWT_SECRET = "licenta";
 const PAYMENT_MODULE_IP_TAG = "payment_module_ip";
 const QUEUE_IP_TAG = "queue_ip_tag";
 const MAIL_MODULE_PATH = "http://localhost:8000/mail/send";
@@ -11,6 +12,7 @@ const CRITERIA_TYPES = {
 }
 
 module.exports = {
+    JWT_SECRET, 
     PAYMENT_MODULE_IP_TAG,
     QUEUE_IP_TAG,
     MAIL_MODULE_PATH,
