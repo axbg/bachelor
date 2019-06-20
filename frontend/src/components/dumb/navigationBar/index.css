@@ -1,0 +1,12 @@
+.flex-grow {
+    flex-grow: 1
+}
+
+.nav-options {
+    display: flex;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: white;
+}
