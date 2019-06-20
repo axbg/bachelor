@@ -1,0 +1,25 @@
+.grid-container {
+    height: 100%;
+    display: grid;
+    text-align: center;
+    background-color: lightgray;
+    overflow-y: scroll;
+}
+
+.app-container {
+    height: 100%;
+    margin: 0 auto;
+    width: 95%;
+    background-color: whitesmoke;
+    box-sizing: border-box;
+}
+
+@media only screen and (max-width: 621px) {
+    .grid-container {
+        height: calc(100% - 64px);
+        width: 100%;
+    }
+    .app-container {
+        padding-top: 5px;
+    }
+}
