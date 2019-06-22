@@ -20,14 +20,16 @@ class BottomNavigationBar extends React.Component {
   }
 
   findCurrentLocation(location, options) {
-    return options.filter((option, index) => option.link === location.pathname);
+    return options.filter((option) => option.link === location.pathname);
   }
 
   componentDidMount() {
-    const value = this.findCurrentLocation(this.props.location, this.props.options)[0].index;
-    this.setState({
-      value: value
-    })
+    setTimeout(() => {
+      const value = this.findCurrentLocation(this.props.location, this.props.options)[0].index;
+      this.setState({
+        value: value
+      })
+    }, 10);
   }
 
   render() {
