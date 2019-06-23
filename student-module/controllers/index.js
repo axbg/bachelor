@@ -1,8 +1,8 @@
 const axios = require('axios');
 const Student = require('../models/index').Student;
 const Criteria = require('../models/index').Criteria;
-const MAIL_MODULE_PATH = require('../config/constants').MAIL_MODULE_PATH;
-const CRITERIA_TYPES = require('../config/constants').CRITERIA_TYPES;
+const MAIL_MODULE_PATH = require('../config/index').MAIL_MODULE_PATH;
+const CRITERIA_TYPES = require('../config/index').CRITERIA_TYPES;
 const validateStudent = require('../services/student').validateStudent;
 
 module.exports.getDocuments = async (ctx) => {
