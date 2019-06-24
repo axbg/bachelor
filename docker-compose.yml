@@ -1,0 +1,88 @@
+version: "3.6"
+networks:
+ flow-network:
+services:
+ flow-gateway:
+  container_name: flow-gateway
+  image: axbg/flow-gateway
+  env_file:
+    - env_file
+  restart: always
+  ports:
+   - '8000:80'
+  networks:
+   flow-network:
+    aliases:
+     - flow-gateway
+ flow-student:
+  container_name: flow-student
+  image: axbg/flow-student
+  env_file:
+    - env_file
+  networks:
+   flow-network:
+    aliases:
+     - flow-student
+ flow-admin:
+  container_name: flow-admin
+  image: axbg/flow-admin
+  env_file:
+    - env_file
+  networks:
+   flow-network:
+    aliases:
+     - flow-admin
+ flow-enrollment:
+  container_name: flow-enrollment
+  image: axbg/flow-enrollment
+  env_file:
+    - env_file
+  networks:
+   flow-network:
+    aliases:
+     - flow-enrollment
+ flow-mailing:
+  container_name: flow-mailing
+  image: axbg/flow-mailing
+  env_file:
+    - env_file
+  networks:
+   flow-network:
+    aliases:
+     - flow-mailing
+ flow-payment:
+  container_name: flow-payment
+  image: axbg/flow-payment
+  env_file:
+    - env_file
+  networks:
+   flow-network:
+    aliases:
+     - flow-payment
+ flow-screening:
+  container_name: flow-screening
+  image: axbg/flow-screening
+  env_file:
+    - env_file
+  networks:
+   flow-network:
+    aliases:
+     - flow-screening
+ flow-sort:
+  container_name: flow-sort
+  image: axbg/flow-sort
+  env_file:
+    - env_file
+  networks:
+   flow-network:
+    aliases:
+     - flow-sort
+ flow-volunteer:
+  container_name: flow-volunteer
+  image: axbg/flow-volunteer
+  env_file:
+    - env_file
+  networks:
+   flow-network:
+    aliases:
+     - flow-volunteer
