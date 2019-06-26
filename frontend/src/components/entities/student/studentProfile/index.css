@@ -1,3 +1,7 @@
+.student-profile-container {
+    margin-top: 10px;
+}
+
 .big-avatar {
     width: 30%;
     max-width: 120px;
@@ -9,9 +13,42 @@
     margin-top: 30px;
 }
 
+.student-profile-data-paper {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.student-profile-data-paper button {
+    margin-bottom: 10px;
+}
+
+.student-navigation-left {
+    float: left;
+    font-size: 30px;
+    padding: 3px;
+}
+
+.student-navigation-right {
+    float: right;
+    font-size: 30px;
+    padding: 3px;
+}
+
+.student-data-header {
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
 
 @media only screen and (max-width: 450px) {
     .student-profile-info {
         width: 90%;
     }
-  }
+}
+
+@media only screen and (max-width: 621px) {
+    .student-profile-data-paper {
+        width: 100%;
+        margin: 0;
+    }
+}
