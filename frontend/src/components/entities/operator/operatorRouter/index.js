@@ -5,6 +5,7 @@ import OperatorEnrollment from "../operatorEnrollment/index";
 const OperatorRouter = () => (
     <Switch>
         <Route path="/operator/enrollment" component={OperatorEnrollment} />
+        <Route path="/operator/profile/:identification" component={OperatorEnrollment} />
     </Switch>
 );
 

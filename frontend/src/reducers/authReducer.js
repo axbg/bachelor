@@ -27,7 +27,7 @@ export default (state = {}, action) => {
                 ...state,
                 ...action.payload.data,
                 loaded: true,
-                role: "STUDENT"
+                role: "OPERATOR"
             }
         case ACTIONS.LOGOUT:
             return {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { Dialog, DialogTitle, DialogContent, DialogContentText } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, Button } from '@material-ui/core';
 import Slide from '@material-ui/core/Slide';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -17,7 +17,8 @@ class StudentHome extends Component {
         super();
         this.state = {
             modal: false,
-            confirmed: false,
+            withdraw: false,
+            confirmed: true,
         }
 
         this.openModal = this.openModal.bind(this);
@@ -97,6 +98,15 @@ class StudentHome extends Component {
                                 <h3>Felicitări! Ai finalizat cu succes procesul de înscriere</h3>
                                 <h4>Orice modificare a stării curente va fi semnalată atât aici,
                                     cât și prin trimiterea unui email</h4>
+                                {
+                                    !this.state.withdraw ?
+                                        <div>
+                                            <h5>Dacă vrei să îți retragi dosarul, poți apăsa pe butonul de mai jos pentru a fi
+                                                repartizat la o coadă specială în ziua retragerii</h5>
+                                            <Button type="submit" color="primary" variant="contained" label="Submit" >Retragere Dosar</Button>
+                                        </div>
+                                        : <h5>Prezintă-te la coada specială pentru retragerea dosarului</h5>
+                                }
                             </div>
                     }
 

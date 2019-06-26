@@ -91,8 +91,8 @@ class StudentProfile extends Component {
                             />
                             <label htmlFor="raised-button-file">
                                 <Button color="primary" variant="contained" component="span" >
-                                    Upload photo
-                                    </Button>
+                                    Încarcă Fotografie
+                                </Button>
                             </label>
                         </div>
                         : ""
@@ -119,7 +119,7 @@ class StudentProfile extends Component {
                                             name="firstName"
                                             value={this.state.firstName}
                                             validators={['required']}
-                                            errorMessages={['This field is required']}
+                                            errorMessages={['Câmp obligatoriu']}
                                             variant="outlined"
                                             InputProps={{
                                                 readOnly: this.state.readOnly,
@@ -134,7 +134,7 @@ class StudentProfile extends Component {
                                             name="lastName"
                                             value={this.state.lastName}
                                             validators={['required']}
-                                            errorMessages={['This field is required']}
+                                            errorMessages={['Câmp obligatoriu']}
                                             variant="outlined"
                                             InputProps={{
                                                 readOnly: this.state.readOnly,
@@ -150,7 +150,7 @@ class StudentProfile extends Component {
                                             name="initial"
                                             value={this.state.initial}
                                             validators={['required']}
-                                            errorMessages={['This field is required']}
+                                            errorMessages={['Câmp obligatoriu']}
                                             variant="outlined"
                                             InputProps={{
                                                 readOnly: this.state.readOnly,
@@ -169,7 +169,7 @@ class StudentProfile extends Component {
                                                 name="email"
                                                 value={this.state.email}
                                                 validators={['required', 'isEmail']}
-                                                errorMessages={['This field is required', 'not a valid email address']}
+                                                errorMessages={['Câmp obligatoriu', 'not a valid email address']}
                                                 variant="outlined"
                                                 InputProps={{
                                                     readOnly: this.state.readOnly,
@@ -184,7 +184,7 @@ class StudentProfile extends Component {
                                                 name="phone"
                                                 value={this.state.phone}
                                                 validators={['required']}
-                                                errorMessages={['This field is required']}
+                                                errorMessages={['Câmp obligatoriu']}
                                                 variant="outlined"
                                                 InputProps={{
                                                     readOnly: this.state.readOnly,
@@ -199,7 +199,7 @@ class StudentProfile extends Component {
                                                 name="address"
                                                 value={this.state.address}
                                                 validators={['required']}
-                                                errorMessages={['This field is required']}
+                                                errorMessages={['Câmp obligatoriu']}
                                                 variant="outlined"
                                                 InputProps={{
                                                     readOnly: this.state.readOnly,
@@ -214,7 +214,7 @@ class StudentProfile extends Component {
                                                 name="city"
                                                 value={this.state.city}
                                                 validators={['required']}
-                                                errorMessages={['This field is required']}
+                                                errorMessages={['Câmp obligatoriu']}
                                                 variant="outlined"
                                                 InputProps={{
                                                     readOnly: this.state.readOnly,
@@ -233,7 +233,7 @@ class StudentProfile extends Component {
                                                     name="cnp"
                                                     value={this.state.cnp}
                                                     validators={['required']}
-                                                    errorMessages={['This field is required']}
+                                                    errorMessages={['Câmp obligatoriu']}
                                                     variant="outlined"
                                                     InputProps={{
                                                         readOnly: this.state.readOnly,
@@ -248,7 +248,7 @@ class StudentProfile extends Component {
                                                     name="idSeries"
                                                     value={this.state.idSeries}
                                                     validators={['required']}
-                                                    errorMessages={['This field is required']}
+                                                    errorMessages={['Câmp obligatoriu']}
                                                     variant="outlined"
                                                     InputProps={{
                                                         readOnly: this.state.readOnly,
@@ -263,7 +263,7 @@ class StudentProfile extends Component {
                                                     name="idNumber"
                                                     value={this.state.idNumber}
                                                     validators={['required']}
-                                                    errorMessages={['This field is required']}
+                                                    errorMessages={['Câmp obligatoriu']}
                                                     variant="outlined"
                                                     InputProps={{
                                                         readOnly: this.state.readOnly,
@@ -278,7 +278,7 @@ class StudentProfile extends Component {
                                                     name="idEntity"
                                                     value={this.state.idEntity}
                                                     validators={['required']}
-                                                    errorMessages={['This field is required']}
+                                                    errorMessages={['Câmp obligatoriu']}
                                                     variant="outlined"
                                                     InputProps={{
                                                         readOnly: this.state.readOnly,
@@ -297,7 +297,7 @@ class StudentProfile extends Component {
                                                         name="bacAverage"
                                                         value={this.state.bacAverage}
                                                         validators={['required']}
-                                                        errorMessages={['This field is required']}
+                                                        errorMessages={['Câmp obligatoriu']}
                                                         variant="outlined"
                                                         InputProps={{
                                                             readOnly: this.state.readOnly,
@@ -312,7 +312,7 @@ class StudentProfile extends Component {
                                                         name="bacRomanian"
                                                         value={this.bacRomanian}
                                                         validators={['required']}
-                                                        errorMessages={['This field is required']}
+                                                        errorMessages={['Câmp obligatoriu']}
                                                         variant="outlined"
                                                         InputProps={{
                                                             readOnly: this.state.readOnly,
@@ -327,7 +327,7 @@ class StudentProfile extends Component {
                                                         name="average9"
                                                         value={this.state.average9}
                                                         validators={['required']}
-                                                        errorMessages={['This field is required']}
+                                                        errorMessages={['Câmp obligatoriu']}
                                                         variant="outlined"
                                                         InputProps={{
                                                             readOnly: this.state.readOnly,
@@ -342,7 +342,7 @@ class StudentProfile extends Component {
                                                         name="average10"
                                                         value={this.state.average10}
                                                         validators={['required']}
-                                                        errorMessages={['This field is required']}
+                                                        errorMessages={['Câmp obligatoriu']}
                                                         variant="outlined"
                                                         InputProps={{
                                                             readOnly: this.state.readOnly,
@@ -357,7 +357,7 @@ class StudentProfile extends Component {
                                                         name="average11"
                                                         value={this.state.average11}
                                                         validators={['required']}
-                                                        errorMessages={['This field is required']}
+                                                        errorMessages={['Câmp obligatoriu']}
                                                         variant="outlined"
                                                         InputProps={{
                                                             readOnly: this.state.readOnly,
@@ -372,7 +372,7 @@ class StudentProfile extends Component {
                                                         name="average12"
                                                         value={this.state.average12}
                                                         validators={['required']}
-                                                        errorMessages={['This field is required']}
+                                                        errorMessages={['Câmp obligatoriu']}
                                                         variant="outlined"
                                                         InputProps={{
                                                             readOnly: this.state.readOnly,

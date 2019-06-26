@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import "./index.css";
 import NavigationBar from '../../dumb/navigationBar';
 import Container from '../../dumb/container';
-import { USER_ROLES, STUDENT_NAVIGATION_OPTIONS } from '../../../constants/index';
+import { USER_ROLES, STUDENT_NAVIGATION_OPTIONS, VOLUNTEER_NAVIGATION_OPTIONS, ADMIN_NAVIGATION_OPTIONS, CASHIER_NAVIGATION_OPTIONS, OPERATOR_NAVIGATION_OPTIONS } from '../../../constants/index';
 import { connect } from 'react-redux';
 import { authenticate } from '../../../reducers/authReducer';
 import { mobileLayout } from '../../../reducers/shellReducer';
@@ -35,11 +35,15 @@ class Shell extends Component {
             case USER_ROLES.STUDENT:
                 return STUDENT_NAVIGATION_OPTIONS;
             case USER_ROLES.ADMIN:
+                return ADMIN_NAVIGATION_OPTIONS;
             case USER_ROLES.VOLUNTEER:
+                return VOLUNTEER_NAVIGATION_OPTIONS;
             case USER_ROLES.CASHIER:
+                return CASHIER_NAVIGATION_OPTIONS;
             case USER_ROLES.OPERATOR:
+                return OPERATOR_NAVIGATION_OPTIONS;
             default:
-                return STUDENT_NAVIGATION_OPTIONS;
+                return VOLUNTEER_NAVIGATION_OPTIONS;
         }
     }
 

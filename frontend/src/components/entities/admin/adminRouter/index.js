@@ -7,6 +7,8 @@ const OperatorRouter = () => (
     <Switch>
         <Route path="/admin/control" component={AdminControl} />
         <Route path="/admin/sorting" component={AdminSorting} />
+        <Route path="/admin/add-user" component={AdminSorting} />
+        <Route path="/admin/search" component={AdminSorting} />
     </Switch>
 );
 

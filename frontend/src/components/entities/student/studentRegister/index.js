@@ -25,6 +25,7 @@ class StudentRegister extends Component {
     average10: "",
     average11: "",
     average12: "",
+    currentPage: 0,
   };
 
   change = e => {
@@ -39,6 +40,18 @@ class StudentRegister extends Component {
     console.log(this.state);
     this.props.register(this.state);
   };
+
+  decreaseCurrentPage = () => {
+    this.setState({
+      currentPage: this.state.currentPage - 1
+    })
+  }
+
+  increaseCurrentPage = () => {
+    this.setState({
+      currentPage: this.state.currentPage + 1
+    })
+  }
 
   render() {
 
@@ -66,210 +79,291 @@ class StudentRegister extends Component {
     }
     return (
       <div className="register-container">
-        <ValidatorForm ref="form" onSubmit={this.onSubmit} onError={errors => console.log(errors)}>
-          <h1> Student Register Form </h1>
-          <h4> All fields are required </h4>
-          <TextValidator
-            fullWidth
-            label="First Name"
-            onChange={this.change}
-            name="firstname"
-            value={this.state.firstname}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="Last Name"
-            onChange={this.change}
-            name="lastname"
-            value={this.state.lastname}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="Email"
-            onChange={this.change}
-            name="email"
-            value={this.state.email}
-            validators={['required', 'isEmail']}
-            errorMessages={['This field is required', 'not a valid email address']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            type="password"
-            label="Password"
-            onChange={this.change}
-            name="password"
-            value={this.state.password}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="Father's Initial"
-            onChange={this.change}
-            name="initial"
-            value={this.state.initial}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="Phone"
-            onChange={this.change}
-            name="phone"
-            value={this.state.phone}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="PIN"
-            onChange={this.change}
-            name="pin"
-            value={this.state.pin}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="ID Series"
-            onChange={this.change}
-            name="series"
-            value={this.state.series}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="ID Number"
-            onChange={this.change}
-            name="number"
-            value={this.state.number}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="ID published by"
-            onChange={this.change}
-            name="idEntity"
-            value={this.state.idEntity}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="Address"
-            onChange={this.change}
-            name="address"
-            value={this.state.address}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="City"
-            onChange={this.change}
-            name="city"
-            value={this.state.city}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="Baccalaureate Average Grade"
-            onChange={this.change}
-            name="bacAverage"
-            value={this.state.bacAverage}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="Baccalaureate - Romanian Exam Grade"
-            onChange={this.change}
-            name="bacRomanian"
-            value={this.state.bacRomanian}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="9th Grade Average"
-            onChange={this.change}
-            name="average9"
-            value={this.state.average9}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="10th Grade Average"
-            onChange={this.change}
-            name="average10"
-            value={this.state.average10}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="11th Grade Average"
-            onChange={this.change}
-            name="average11"
-            value={this.state.average11}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <TextValidator
-            fullWidth
-            label="12th Grade Average"
-            onChange={this.change}
-            name="average12"
-            value={this.state.average12}
-            validators={['required']}
-            errorMessages={['This field is required']}
-          />
-          <br />
-          <br />
-          <Button type="submit" variant="contained" label="Submit" >Submit</Button>
-        </ValidatorForm>
+        <div className="register-container-fields">
+          <div className="student-profile-navigation-container">
+            {
+              this.state.currentPage > 0 ? <span className="student-navigation-left" onClick={this.decreaseCurrentPage}>⇠</span> : ""
+            }
+            {
+              this.state.currentPage < 3 ? <span className="student-navigation-right" onClick={this.increaseCurrentPage}>⇢</span> : ""
+            }
+          </div>
+          <ValidatorForm ref="form" onSubmit={this.onSubmit} onError={errors => console.log(errors)}>
+            <div className={ this.state.currentPage !== 0 ? 'hidden' : ''}>
+              <h4 className="student-data-header">Date Personale</h4>
+              <TextValidator
+                fullWidth
+                label="Prenume"
+                onChange={this.change}
+                name="firstName"
+                value={this.state.firstName || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+              <TextValidator
+                fullWidth
+                label="Nume"
+                onChange={this.change}
+                name="lastName"
+                value={this.state.lastName || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+
+              <TextValidator
+                fullWidth
+                label="Inițiala tatălui"
+                onChange={this.change}
+                name="initial"
+                value={this.state.initial || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+            </div>
+            <div className={ this.state.currentPage !== 1 ? 'hidden' : ''}>
+              <h4 className="student-data-header">Date Contact</h4>
+              <TextValidator
+                fullWidth
+                label="Email"
+                onChange={this.change}
+                name="email"
+                value={this.state.email || ''}
+                validators={['required', 'isEmail']}
+                errorMessages={['Câmp obligatoriu', 'not a valid email address']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+              <TextValidator
+                fullWidth
+                label="Telefon"
+                onChange={this.change}
+                name="phone"
+                value={this.state.phone || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+              <TextValidator
+                fullWidth
+                label="Addresă"
+                onChange={this.change}
+                name="address"
+                value={this.state.address || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+              <TextValidator
+                fullWidth
+                label="Oraș"
+                onChange={this.change}
+                name="city"
+                value={this.state.city || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+            </div>
+            <div className={ this.state.currentPage !== 2 ? 'hidden' : ''}>
+              <h4 className="student-data-header">Date Oficiale</h4>
+              <TextValidator
+                fullWidth
+                label="CNP"
+                onChange={this.change}
+                name="cnp"
+                value={this.state.cnp || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+              <TextValidator
+                fullWidth
+                label="Serie buletin"
+                onChange={this.change}
+                name="idSeries"
+                value={this.state.idSeries || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+              <TextValidator
+                fullWidth
+                label="Număr buletin"
+                onChange={this.change}
+                name="idNumber"
+                value={this.state.idNumber || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+              <TextValidator
+                fullWidth
+                label="Eliberator buletin"
+                onChange={this.change}
+                name="idEntity"
+                value={this.state.idEntity || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+            </div>
+            <div className={ this.state.currentPage !== 3 ? 'hidden' : ''}>
+              <h4 className="student-data-header">Date Concurs</h4>
+              <TextValidator
+                fullWidth
+                label="Medie Bacalaureat"
+                onChange={this.change}
+                name="bacAverage"
+                value={this.state.bacAverage || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+              <TextValidator
+                fullWidth
+                label="Notă Bacalaureat Română"
+                onChange={this.change}
+                name="bacRomanian"
+                value={this.bacRomanian || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+              <TextValidator
+                fullWidth
+                label="Medie clasa a IX-a"
+                onChange={this.change}
+                name="average9"
+                value={this.state.average9 || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+              <TextValidator
+                fullWidth
+                label="Medie clasa a X-a"
+                onChange={this.change}
+                name="average10"
+                value={this.state.average10 || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+              <TextValidator
+                fullWidth
+                label="Medie clasa a XI-a"
+                onChange={this.change}
+                name="average11"
+                value={this.state.average11 || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+              <TextValidator
+                fullWidth
+                label="Medie clasa a XII-a"
+                onChange={this.change}
+                name="average12"
+                value={this.state.average12 || ''}
+                validators={['required']}
+                errorMessages={['Câmp obligatoriu']}
+                variant="outlined"
+                InputProps={{
+                  readOnly: this.state.readOnly,
+                }}
+              />
+              <br />
+              <br />
+            </div>
+            {
+              !this.state.readOnly || this.state.operator ?
+                <Button type="submit" color="primary" variant="contained" label="Submit" >Înregistrare</Button>
+                : ""
+            }
+          </ValidatorForm>
+        </div>
       </div>
     );
   }

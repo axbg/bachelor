@@ -7,6 +7,7 @@ const OperatorRouter = () => (
     <Switch>
         <Route path="/volunteer/check" component={VolunteerCheck} />
         <Route path="/volunteer/generate-order" component={VolunteerGenerateOrderNumber} />
+        <Route path="/volunteer/position" component={VolunteerCheck} />
     </Switch>
 );
 
