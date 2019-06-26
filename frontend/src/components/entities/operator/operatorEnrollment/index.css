@@ -1,0 +1,16 @@
+.operator-enrollment-container {
+    text-align:center;
+    margin:0 auto;
+    width: 90%;
+}
+
+.inline-container {
+    width: 80%;
+    display: inline-block;
+}
+
+@media only screen and (max-width: 621px) {
+    .operator-enrollment-container {
+        width: 100%;
+    }
+}

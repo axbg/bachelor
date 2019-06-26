@@ -44,6 +44,12 @@
     padding-bottom: 20px;
 }
 
+.cashier-credits-input {
+    font-size: 20px;
+    padding: 4px;
+    margin: 10px;
+}
+
 @media only screen and (max-width: 450px) {
     .student-profile-info {
         width: 90%;

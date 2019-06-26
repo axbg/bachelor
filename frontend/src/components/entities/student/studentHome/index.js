@@ -113,7 +113,7 @@ class StudentHome extends Component {
                     <h4 onClick={this.openModal} className="student-profile-modal">
                         Poți găsi mai multe informații despre înscriere aici
                     </h4>
-                    <p><a href="https://ase.ro" target="_blank">Ai o nelămurire? Contactează-ne!</a></p>
+                    <p><a href="https://ase.ro" target="_blank" rel="noopener noreferrer">Ai o nelămurire? Contactează-ne!</a></p>
                 </div>
             </div>
         )
