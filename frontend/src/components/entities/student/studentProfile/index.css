@@ -26,12 +26,16 @@
     float: left;
     font-size: 30px;
     padding: 3px;
+    cursor: pointer;
+    user-select: none;
 }
 
 .student-navigation-right {
     float: right;
     font-size: 30px;
     padding: 3px;
+    cursor: pointer;
+    user-select: none;
 }
 
 .student-data-header {
