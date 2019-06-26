@@ -10,29 +10,29 @@ export const USER_ROLES = {
 export const STUDENT_NAVIGATION_OPTIONS = [
     {
         index: 0,
-        title: "Home",
-        shortTitle: "Home",
+        title: "Acasă",
+        shortTitle: "Acasă",
         icon: "icon",
         link: "/student/home"
     },
     {
         index: 1,
-        title: "Profile",
-        shortTitle: "Profile",
+        title: "Profil",
+        shortTitle: "Profil",
         icon: "icon",
         link: "/student/profile"
     },
     {
         index: 2,
-        title: "Registration Day",
-        shortTitle: "Registration",
+        title: "Înscriere",
+        shortTitle: "Înscriere",
         icon: "icon",
         link: "/student/registration-day"
     },
     {
         index: 3,
-        title: "Credits and Faculties",
-        shortTitle: "Credits",
+        title: "Opțiuni",
+        shortTitle: "Opțiuni",
         icon: "icon",
         link: "/student/credits"
     },

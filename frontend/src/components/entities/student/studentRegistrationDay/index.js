@@ -8,9 +8,8 @@ class StudentRegistrationDay extends Component {
         return (
             <div>
                 <div className="student-registration-steps-container">
-                    <h2>It's your big day!</h2>
-                    <h3>Your order number is 312</h3>
-                    <h4>Swipe through the steps down bellow to complete your enrollment!</h4>
+                    <h2>E ziua cea mare!</h2>
+                    <h4>Aruncă o privire în lista de mai jos pentru a vedea toți pașii pe care trebuie să îi urmezi</h4>
                     <div className="student-registration-steps">
                         <Swipper />
                     </div>
