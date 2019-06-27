@@ -47,7 +47,7 @@ class StudentHome extends Component {
                         </DialogContentText>
                     </DialogContent>
                 </Dialog>
-                <h2>Bună, Alex</h2>
+                <h2>Bună, Alexandru</h2>
                 <div className="student-info">
                     <h3>Starea curentă: Nerepartizat</h3>
                     {

@@ -46,13 +46,13 @@ class StudentCredits extends Component {
                                 </TableHead>
                                 <TableBody>
                                     <TableRow>
-                                        <TableCell className="no-padding-table-cell">21</TableCell>
-                                        <TableCell>CSIE - Informatică Economică Engleză - Buget</TableCell>
+                                        <TableCell className="no-padding-table-cell">1</TableCell>
+                                        <TableCell>CSIE - Informatică Economică - Buget</TableCell>
                                         {!this.state.confirmed ? <TableCell className="no-padding-table-cell"><Button>Șterge</Button></TableCell> : <td></td>}
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell className="no-padding-table-cell">21</TableCell>
-                                        <TableCell>CSIE - Informatică Economică Engleză - Buget</TableCell>
+                                        <TableCell className="no-padding-table-cell">2</TableCell>
+                                        <TableCell>CSIE - Informatică Economică - Taxă</TableCell>
                                         {!this.state.confirmed ? <TableCell className="no-padding-table-cell"><Button>Șterge</Button></TableCell> : <td></td>}
                                     </TableRow>
                                 </TableBody>
@@ -67,7 +67,7 @@ class StudentCredits extends Component {
                                 <div className="select">
                                     <select className="select-text" required>
                                         <option value="" disabled></option>
-                                        <option value="1">CSIE - Taxa</option>
+                                        <option value="1">CSIE - Cibernetică Economică - Taxa</option>
                                         <option value="2">FABBV - Buget</option>
                                         <option value="3">FABBV - Taxa</option>
                                     </select>

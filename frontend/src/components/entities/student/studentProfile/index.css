@@ -13,6 +13,10 @@
     margin-top: 30px;
 }
 
+.student-profile-icon-container img {
+    padding: 20px;
+}
+
 .student-profile-data-paper {
     width: 70%;
     margin: 0 auto;

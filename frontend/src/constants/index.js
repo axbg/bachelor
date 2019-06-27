@@ -12,28 +12,28 @@ export const STUDENT_NAVIGATION_OPTIONS = [
         index: 0,
         title: "Acasă",
         shortTitle: "Acasă",
-        icon: "icon",
+        icon: "home",
         link: "/student/home"
     },
     {
         index: 1,
         title: "Profil",
         shortTitle: "Profil",
-        icon: "icon",
+        icon: "profile",
         link: "/student/profile"
     },
     {
         index: 2,
         title: "Înscriere",
         shortTitle: "Înscriere",
-        icon: "icon",
+        icon: "location",
         link: "/student/registration-day"
     },
     {
         index: 3,
         title: "Opțiuni",
         shortTitle: "Opțiuni",
-        icon: "icon",
+        icon: "option",
         link: "/student/credits"
     },
 ]
@@ -43,7 +43,7 @@ export const VOLUNTEER_NAVIGATION_OPTIONS = [
         index: 0,
         title: "Flux",
         shortTitle: "Flux",
-        icon: "icon",
+        icon: "check",
         link: "/volunteer/check"
     },
     {
@@ -57,7 +57,7 @@ export const VOLUNTEER_NAVIGATION_OPTIONS = [
         index: 2,
         title: "Poziție",
         shortTitle: "Poziție",
-        icon: "icon",
+        icon: "position",
         link: "/volunteer/position"
     },
 ]

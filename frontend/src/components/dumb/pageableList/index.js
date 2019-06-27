@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 
 class PageableList extends Component {
-    changeLanguage = () => {
-        console.log("changing language");
-    }
 
+    constructor() {
+        super();
+        this.state = {
+            data: [
+                
+            ]
+        }
+    }
     render() {
         return (
             <p>nothing yet</p>

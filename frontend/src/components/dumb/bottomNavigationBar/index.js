@@ -2,7 +2,7 @@
 import React from 'react';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import RestoreIcon from '@material-ui/icons/Restore';
+import { Home, Restore, LocationOn, AccountCircle, Assignment, CheckCircle,  Place } from '@material-ui/icons';
 import { Link, withRouter } from 'react-router-dom';
 import "./index.css";
 
@@ -16,7 +16,22 @@ class BottomNavigationBar extends React.Component {
   };
 
   renderIcon = (icon) => {
-    return <RestoreIcon />
+    switch (icon) {
+      case "home":
+        return <Home />
+      case "location":
+        return <LocationOn />
+      case "profile":
+        return <AccountCircle />
+      case "option":
+        return <Assignment />
+      case "check":
+        return <CheckCircle />
+      case "position":
+        return <Place />  
+      default:
+        return <Restore />
+    }
   }
 
   findCurrentLocation(location, options) {
@@ -47,7 +62,7 @@ class BottomNavigationBar extends React.Component {
             component={Link}
             to={option.link}
             label={option.shortTitle}
-            icon={this.renderIcon(option.title)} />
+            icon={this.renderIcon(option.icon)} />
         })}
       </BottomNavigation>
     );

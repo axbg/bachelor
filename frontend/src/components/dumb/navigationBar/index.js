@@ -12,9 +12,9 @@ class NavigationBar extends Component {
             <AppBar color="primary" position="static">
                 <Toolbar>
                     <Typography variant="title" color="inherit">
-                        <Link to="/home" className="nav-link">
-                            flow
-                                </Link>
+                        <Link to="/" className="nav-link">
+                                <img src="/logo_transparent.png" className="nav-logo" alt="logo" />
+                        </Link>
                     </Typography>
                     <div className="flex-grow" />
                     <div className="nav-options">
