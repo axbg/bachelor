@@ -79,8 +79,8 @@ export const ADMIN_NAVIGATION_OPTIONS = [
     },
     {
         index: 2,
-        title: "Adăugare Utilizator",
-        shortTitle: "Adăugare",
+        title: "Gestiune Voluntari",
+        shortTitle: "Gestiune",
         icon: "icon",
         link: "/admin/add-user"
     },

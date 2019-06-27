@@ -12,24 +12,6 @@ class CashierCredits extends Component {
         }
     }
 
-    showWithdraw = () => {
-        this.setState({
-            showSearchResult: false
-        })
-    }
-
-    updateValue = (e) => {
-
-    }
-
-    searchStudent = () => {
-        this.setState({
-            showSearchResult: true
-        })
-
-        //call redux
-    }
-
     render() {
         return (
             <div className="operator-enrollment-container">

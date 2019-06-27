@@ -18,7 +18,7 @@ class StudentHome extends Component {
         this.state = {
             modal: false,
             withdraw: false,
-            confirmed: true,
+            confirmed: false,
         }
 
         this.openModal = this.openModal.bind(this);
