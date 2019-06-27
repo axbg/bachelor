@@ -5,6 +5,7 @@ import CashierCredits from "../cashierCredits/index";
 const OperatorRouter = () => (
     <Switch>
         <Route path="/cashier/credits" component={CashierCredits} />
+        <Route path="/cashier/profile/:identification" component={CashierCredits} />
     </Switch>
 );
 

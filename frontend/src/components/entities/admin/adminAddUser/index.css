@@ -1,0 +1,23 @@
+.admin-add-container {
+    margin-top: 5vh;
+    width: 30%;
+    margin: 0 auto;
+}
+
+.admin-control-position-container {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 10vh;
+}
+
+.align-cell {
+    width: 100%;
+}
+
+@media only screen and (max-width: 640px) {
+    .admin-add-container {
+        margin-top: 5vh;
+        width: 80%;
+        margin: 0 auto;
+    }
+}

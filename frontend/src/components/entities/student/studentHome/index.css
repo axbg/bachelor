@@ -7,3 +7,17 @@
 .student-profile-modal {
     cursor: pointer;
 }
+
+.student-home-cards-container {
+    max-width: 410px;
+    margin: 0 auto;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, 200px);
+    justify-content: center;
+}
+
+.student-home-card {
+    width: 200px;
+    height: 150px;
+}
