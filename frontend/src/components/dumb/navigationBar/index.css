@@ -10,3 +10,7 @@
     text-decoration: none;
     color: white;
 }
+
+.nav-logo {
+    max-width: 200px;
+}
