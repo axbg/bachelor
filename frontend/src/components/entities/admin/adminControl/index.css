@@ -1,0 +1,23 @@
+.admin-control-container {
+    margin: 0 auto;
+    padding: 3vh;
+    width: 60%;
+}
+
+.admin-control-graphic-container {
+   
+}
+
+.admin-control-request-container {
+    margin-top: 5vh;
+}
+
+.sticky {
+    top: 0;
+    position: sticky;
+    background-color: white;
+}
+
+.proeminent {
+    z-index: 2;
+}
