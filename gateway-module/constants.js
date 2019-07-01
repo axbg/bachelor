@@ -3,7 +3,7 @@ module.exports = {
     BASE_URL: "http://localhost",
     STUDENT_BASE_URL: "http://flow-student",
     MAILING_BASE_URL: "http://flow-mailing",
-    GATEWAY_MODULE_PORT: 8010,
+    GATEWAY_MODULE_PORT: 8000,
     STUDENT_MODULE_PORT: 8001,
     MAILING_MODULE_PORT: 8002
 }

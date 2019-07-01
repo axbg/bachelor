@@ -4,12 +4,14 @@ const Student = require('./models/index').Student;
 const User = require('./models/index').User;
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = require('constants')
+const findByCredentials = require('./services/login').findByCredentials;
+const extractFromJWT = require('./services/authentication').extractFromJWT;
 
 const app = express();
 
 const proxy_options = {
     onProxyReq(proxyReq, req, res) {
-        proxyReq.setHeader('test', 'da');
+        //add user_id, user_type, user_role extracted from jwt to custom headers
     }
 }
 
@@ -24,6 +26,7 @@ app.get("/", async (req, res) => {
     res.status(200).send({ message: "flow - gateway module" });
 });
 
+//example of header attachment
 app.get("/test1", (req, res) => {
     console.log(req.headers);
     res.status(200).send({ message: "good" });
@@ -31,13 +34,15 @@ app.get("/test1", (req, res) => {
 
 app.use("/test", proxy({
     target: "http://localhost:8010", pathRewrite: { "/test": "/test1" },
-    onProxyReq(proxyReq, req, res) {
-        proxyReq.setHeader('X-CUSTOM', "TESTING");
-    }
+    onProxyReq: extractFromJWT
 }))
 
+//public
+app.use('/login', (req, res) => {
+    return findByCredentials(req.body.email, req.body.password);
+})
 
-
+//private
 app.use("/student", proxy({
     target: constants.BASE_URL + ":" + constants.STUDENT_MODULE_PORT, pathRewrite: {
         "/student": ""
