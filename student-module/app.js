@@ -11,7 +11,7 @@ const errorHandlingMiddleware = require('./utils/errorHandlingMiddleware').error
 const app = new Koa();
 
 //this will be removed in prod
-database.sync();
+database.sync({force:true});
 
 app.use(cors());
 app.use(json());

@@ -8,7 +8,7 @@ router.get("/", async (ctx) => {
 
 router.get("/documents/:id", studentController.getDocument);
 
-router.post("/register", studentController.register);
+router.post("/create-student", studentController.createStudent);
 
 router.post("/login", async (ctx) => {
     //the actual login will be done inside the auth gateway

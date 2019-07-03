@@ -8,7 +8,9 @@ module.exports.errorHandlingMiddleware = async (ctx, next) => {
             ctx.status = err.code;
             ctx.body = { message: err.message }
         } else {
-            throw err;
+            console.log(err);
+            ctx.status = 500;
+            ctx.body = { message: "Unknown Error." }
         }
     }
 }
