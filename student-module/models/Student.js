@@ -1,3 +1,12 @@
+const bcrypt = require('bcrypt');
+
+const hashStudentPassword = (user, options) => {
+    if (user.changed('password')) {
+        const hashedPassword = bcrypt.hashSync(user.password, 10);
+        user.setDataValue('password', hashedPassword);
+    }
+}
+
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define("student",
         {
@@ -75,5 +84,12 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(100),
                 allowNull: true
             },
-        });
+        },
+        {
+            hooks: {
+                beforeCreate: hashStudentPassword,
+                beforeUpdate: hashStudentPassword
+            }
+        }
+    );
 }

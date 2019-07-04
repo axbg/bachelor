@@ -14,6 +14,11 @@ module.exports.getDocument = async (ctx) => {
 
 module.exports.createStudent = async (ctx) => {
     const student = await studentService.createStudent(ctx.request.body);
-    httpHelper.createHttpResponse(ctx, 201, "Registration successful!");
-    sendRegistrationMail(student, subject, message, destination);
+    httpHelper.createHttpResponse(ctx, 201, "Registration successful");
+    sendRegistrationMail(student);
+}
+
+module.exports.changePassword = async (ctx) => {
+    await studentService.changePassword(ctx.request.body);
+    httpHelper.createHttpResponse(ctx, 200, "Password changed");
 }

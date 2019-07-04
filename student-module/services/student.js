@@ -3,14 +3,30 @@ const Student = require('../models/index').Student;
 const Criteria = require('../models/index').Criteria;
 const CRITERIA_TYPES = require('../config/index').CRITERIA_TYPES;
 const sendMail = require('../utils/moduleAdapter').sendMail;
+const crypto = require('crypto');
 
-const generatePassword = () => {
-    //generate random password - 255 characters
-    return 'samplePassword';
+const generateRandomPassword = () => {
+    return crypto.randomBytes(20).toString('hex');
 }
 
-const validateStudent = (student) => {
+const isEmailUnique = async (email) => {
+    const student = await Student.findOne({
+        where: {
+            email: email
+        }
+    });
+
+    return !student ? true : false;
+}
+
+const validatePassword = async (password) => {
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    return regex.test(password);
+}
+
+const validateStudent = async (student) => {
     student.email || generateError("Data is not correct: email missing", 400);
+    await isEmailUnique(student.email) || generateError("Email is already registered", 400);
     student.firstname || generateError("Data is not correct: firstname missing", 400);
     student.lastname || generateError("Data is not correct: lastname missing", 400);
     student.parentInitial || generateError("Data is not correct: parentInitial missing", 400);
@@ -35,33 +51,50 @@ const createCriteria = async (studentData, studentId) => {
     const average10 = Criteria.create({ type: CRITERIA_TYPES.AVERAGE_10, value: studentData.average10, studentId: studentId });
     const average11 = Criteria.create({ type: CRITERIA_TYPES.AVERAGE_11, value: studentData.average11, studentId: studentId });
     const average12 = Criteria.create({ type: CRITERIA_TYPES.AVERAGE_12, value: studentData.average12, studentId: studentId });
-
-    await Promise.all([bacAverage, bacRomanian, average9, average10, average11, average12]).then(result => {
-        mailData.destination = student.email;
-        axios.post(MAIL_MODULE_PATH, { ...mailData }).then(result => { })
-            .catch(error => console.log(error));
-    });
 }
 
 const sendRegistrationMail = (student) => {
     //add mail template here
-    const message = "Welcome to flow " + student.firstname + "\nCredentials\nusername" + student.email + "\npassword: " + student.password + "\n";
+    const message = "Welcome to flow " + student.firstname + "\nCredentials\nusername: " + student.email + "\npassword: " + student.password + "\n";
     sendMail("Flow - Welcome", message, student.email);
 }
 
 const createStudent = async (student) => {
 
-    validateStudent(student);
+    await validateStudent(student);
 
-    student.password = generatePassword();
+    student.password = generateRandomPassword();
 
-    await Student.create(student);
+    const registeredStudent = await Student.create(student);
 
-    await createCriteria(student);
+    await createCriteria(student, registeredStudent.id);
+
+    return student;
+}
+
+const changePassword = async (student) => {
+    if (validatePassword(student.password)) {
+        await Student.update(
+            {
+                password: student.password
+            },
+            {
+                where: {
+                    //shold be replaced with student.id
+                    //student.id will be populated by an interceptor
+                    //that will get the id value from Header
+                    //which was set there by the gateway module
+                    id: 1
+                }, 
+                individualHooks: true
+            }
+        );
+    }
 }
 
 module.exports = {
     validateStudent,
     createStudent,
-    sendRegistrationMail
+    sendRegistrationMail,
+    changePassword
 }
