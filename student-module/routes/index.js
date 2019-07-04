@@ -10,6 +10,8 @@ router.get("/documents/:id", studentController.getDocument);
 
 router.post("/create-student", studentController.createStudent);
 
+router.post('/change-password', studentController.changePassword);
+
 router.post("/login", async (ctx) => {
     //the actual login will be done inside the auth gateway
     //this endpoint will retrieve data such as Options, profile informations

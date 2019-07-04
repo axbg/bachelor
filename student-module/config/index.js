@@ -8,7 +8,7 @@ const REDIS = process.env.REDIS;
 const JWT_SECRET = "licenta";
 const PAYMENT_MODULE_IP_TAG = "payment_module_ip";
 const QUEUE_IP_TAG = "queue_ip_tag";
-const GATEWAY_ADDRESS = "http://flow-gateway";
+const GATEWAY_ADDRESS = "http://localhost:8000";
 const MAIL_ADDRESS = GATEWAY_ADDRESS + "/mail/send";
 const CRITERIA_TYPES = {
     BAC_AVERAGE: "BAC_AVERAGE",
