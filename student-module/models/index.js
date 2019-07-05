@@ -6,10 +6,9 @@ const Document = database.import("./Document");
 const Criteria = database.import("./Criteria");
 const Configuration = database.import("./Configuration");
 
-Student.hasMany(StudentOption, { as: "Options" });
-Student.hasMany(Document, { as: "Documents" });
-Student.belongsTo(Faculty);
-Student.hasMany(Criteria, { as: "Criteria" });
+Student.hasMany(StudentOption, { as: "options" });
+Student.hasMany(Document, { as: "documents" });
+Student.hasMany(Criteria, { as: "criterias" });
 
 StudentOption.belongsTo(Faculty);
 
