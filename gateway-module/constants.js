@@ -1,5 +1,5 @@
 module.exports = {
-    JWT_SECRET: "licenta",
+    JWT_SECRET: "licenta2019",
     BASE_URL: "http://localhost",
     STUDENT_BASE_URL: "http://flow-student",
     MAILING_BASE_URL: "http://flow-mailing",

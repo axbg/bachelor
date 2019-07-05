@@ -1,0 +1,11 @@
+
+> gateway-module@1.0.0 start /home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module
+> node app.js
+
+[HPM] Proxy created: /  ->  http://localhost:8010
+[HPM] Proxy rewrite rule created: "/test" ~> "/test1"
+[HPM] Proxy created: /  ->  http://localhost:8001
+[HPM] Proxy rewrite rule created: "/student" ~> ""
+[HPM] Proxy created: /  ->  http://localhost:8002
+[HPM] Proxy rewrite rule created: "/mail" ~> ""
+Gateway module started on http://localhost:8000
