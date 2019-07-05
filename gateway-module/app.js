@@ -1,52 +1,36 @@
 const express = require("express");
 const constants = require('./constants');
-const Student = require('./models/index').Student;
-const User = require('./models/index').User;
-const jwt = require('jsonwebtoken');
-const JWT_SECRET = require('constants')
 const findByCredentials = require('./services/login').findByCredentials;
 const extractFromJWT = require('./services/authentication').extractFromJWT;
+const bodyParser = require('body-parser');
+const jwt = require('express-jwt');
+const JWT_SECRET = require('./constants').JWT_SECRET;
+const validateType = require('./services/authentication').validateType;
 
 const app = express();
-
-const proxy_options = {
-    onProxyReq(proxyReq, req, res) {
-        //add user_id, user_type, user_role extracted from jwt to custom headers
-    }
-}
-
 const proxy = require('http-proxy-middleware');
 
 app.get("/", async (req, res) => {
-    //search for a student based on email and password
-    //if the email contains "ase" consult the User Model
-    //else consult the Student model
-    //encrypt data resulted from the search in a jwt
-    //return the jwt
     res.status(200).send({ message: "flow - gateway module" });
 });
 
-//example of header attachment
-app.get("/test1", (req, res) => {
-    console.log(req.headers);
-    res.status(200).send({ message: "good" });
-})
-
-app.use("/test", proxy({
-    target: "http://localhost:8010", pathRewrite: { "/test": "/test1" },
-    onProxyReq: extractFromJWT
-}))
-
 //public
-app.use('/login', (req, res) => {
-    return findByCredentials(req.body.email, req.body.password);
+app.post('/login', bodyParser.json(), async (req, res) => {
+    const jwt = await findByCredentials(req.body.email, req.body.password);
+
+    if (jwt) { return res.status(200).send({ jwt: jwt }); }
+
+    return res.status(400).send({ message: "Credentials not matched." });
 })
 
 //private
+app.use(jwt({ secret: JWT_SECRET }));
+
 app.use("/student", proxy({
     target: constants.BASE_URL + ":" + constants.STUDENT_MODULE_PORT, pathRewrite: {
         "/student": ""
-    }
+    },
+    onProxyReq: extractFromJWT
 }))
 
 app.use("/mail", proxy({

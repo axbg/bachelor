@@ -1,59 +1,52 @@
 const Student = require('../models/index').Student;
 const User = require('../models/index').User;
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = require('../constants').JWT_SECRET;
 
 const findByCredentials = async (email, password) => {
 
-    if (password.includes("@")) {
+    if (email.includes("@")) {
         return findStudentByCredentials(email, password);
     }
 
     return findUserByCredentials(email, password);
 }
 
-//add student_option and associated name type from FacultyProfile, criteria, flow data
 const findStudentByCredentials = async (email, password) => {
     const student = await Student.findOne({
         where: {
-            email: email,
-            password: encryptPassword(password)
+            email: email
         },
-        attributes: {
-            exclude: ['password', 'notification_token']
-        },
+        attributes: ['id', 'email', 'password'],
+        raw: true
     });
 
-    if (student) {
-        //create jwt
-        //retrieve data
-        //send jwt and data
+    if (!student || !bcrypt.compareSync(password, student.password)) {
+        return;
     }
+
+    return generateJWT(student, "STUDENT");
 }
 
-//add roles, position, faculty
 const findUserByCredentials = async (email, password) => {
     const user = await User.findOne({
         where: {
-            email: email,
-            password: encryptPassword(email)
+            email: email
         },
-        attributes: {
-            exclude: ['password', 'notification_token']
-        }
+        attributes: ['id', 'email', 'password'],
+        raw: true
     });
 
-    if (user) {
-        //create jwt
-        //retrieve data
-        //send jwt and data
+    if (!user || !bcrypt.compareSync(password, user.password)) {
+        return;
     }
+
+    return generateJWT(user, "USER");
 }
 
-const encryptPassword = (password) => {
-    return password;
-}
-
-const generateJWT = (entity) => {
-    //treat differently for student and user
+const generateJWT = (entity, type) => {
+    return jwt.sign({ id: entity.id, email: entity.email, type: type }, JWT_SECRET);
 }
 
 module.exports = {
