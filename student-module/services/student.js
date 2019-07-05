@@ -1,9 +1,13 @@
 const generateError = require('../utils/FlowError').generateError;
 const Student = require('../models/index').Student;
+const StudentOption = require('../models/index').StudentOption;
+const Document = require('../models/index').Document;
 const Criteria = require('../models/index').Criteria;
+const Faculty = require('../models/index').Faculty;
 const CRITERIA_TYPES = require('../config/index').CRITERIA_TYPES;
 const sendMail = require('../utils/moduleAdapter').sendMail;
 const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 
 const generateRandomPassword = () => {
     return crypto.randomBytes(20).toString('hex');
@@ -19,7 +23,7 @@ const isEmailUnique = async (email) => {
     return !student ? true : false;
 }
 
-const validatePassword = async (password) => {
+const validatePassword = (password) => {
     const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     return regex.test(password);
 }
@@ -72,29 +76,42 @@ const createStudent = async (student) => {
     return student;
 }
 
-const changePassword = async (student) => {
-    if (validatePassword(student.password)) {
-        await Student.update(
+const changePassword = async (newPassword, studentId) => {
+    if (validatePassword(newPassword)) {
+        return await Student.update(
             {
-                password: student.password
+                password: newPassword
             },
             {
                 where: {
-                    //shold be replaced with student.id
-                    //student.id will be populated by an interceptor
-                    //that will get the id value from Header
-                    //which was set there by the gateway module
-                    id: 1
-                }, 
+                    id: studentId,
+                },
                 individualHooks: true
             }
         );
     }
 }
 
+const loadStudent = async (studentId) => {
+    return await Student.findOne({
+        where: {
+            id: studentId,
+        },
+        attributes: {
+            exclude: ['id', 'password']
+        },
+        include: [
+            { model: StudentOption, as: 'options', include: { model: Faculty } },
+            { model: Document, as: 'documents' },
+            { model: Criteria, as: 'criterias', attributes: ['type', 'value'] }
+        ]
+    });
+}
+
 module.exports = {
     validateStudent,
     createStudent,
     sendRegistrationMail,
-    changePassword
+    changePassword,
+    loadStudent
 }
