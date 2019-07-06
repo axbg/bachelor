@@ -13,6 +13,8 @@ router.use(withSecurityHeaders);
 
 router.post('/change-password', studentController.changePassword);
 
-router.get('/load-student', studentController.loadStudent);
+router.get('/load', studentController.loadStudent);
+
+router.patch('/update', studentController.updateStudent);
 
 module.exports = router;

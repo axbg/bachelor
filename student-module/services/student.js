@@ -7,7 +7,6 @@ const Faculty = require('../models/index').Faculty;
 const CRITERIA_TYPES = require('../config/index').CRITERIA_TYPES;
 const sendMail = require('../utils/moduleAdapter').sendMail;
 const crypto = require('crypto');
-const bcrypt = require('bcrypt');
 
 const generateRandomPassword = () => {
     return crypto.randomBytes(20).toString('hex');
@@ -49,12 +48,14 @@ const validateStudent = async (student) => {
 }
 
 const createCriteria = async (studentData, studentId) => {
-    const bacAverage = Criteria.create({ type: CRITERIA_TYPES.BAC_AVERAGE, value: studentData.bacAverage, studentId: studentId });
-    const bacRomanian = Criteria.create({ type: CRITERIA_TYPES.BAC_RO, value: studentData.bacRomanian, studentId: studentId });
-    const average9 = Criteria.create({ type: CRITERIA_TYPES.AVERAGE_9, value: studentData.average9, studentId: studentId });
-    const average10 = Criteria.create({ type: CRITERIA_TYPES.AVERAGE_10, value: studentData.average10, studentId: studentId });
-    const average11 = Criteria.create({ type: CRITERIA_TYPES.AVERAGE_11, value: studentData.average11, studentId: studentId });
-    const average12 = Criteria.create({ type: CRITERIA_TYPES.AVERAGE_12, value: studentData.average12, studentId: studentId });
+    Criteria.bulkCreate([
+        { type: CRITERIA_TYPES.BAC_AVERAGE, value: studentData.bacAverage, studentId: studentId },
+        { type: CRITERIA_TYPES.BAC_RO, value: studentData.bacRomanian, studentId: studentId },
+        { type: CRITERIA_TYPES.BAC_RO, value: studentData.bacRomanian, studentId: studentId },
+        { type: CRITERIA_TYPES.AVERAGE_10, value: studentData.average10, studentId: studentId },
+        { type: CRITERIA_TYPES.AVERAGE_11, value: studentData.average11, studentId: studentId },
+        { type: CRITERIA_TYPES.AVERAGE_12, value: studentData.average12, studentId: studentId }
+    ]);
 }
 
 const sendRegistrationMail = (student) => {
@@ -62,6 +63,56 @@ const sendRegistrationMail = (student) => {
     const message = "Welcome to flow " + student.firstname + "\nCredentials\nusername: " + student.email + "\npassword: " + student.password + "\n";
     sendMail("Flow - Welcome", message, student.email);
 }
+
+const removeSensitiveData = (student) => {
+    student.email && delete student.email;
+    student.password && delete student.password;
+    student.tax && delete student.tax;
+    student.withdrawPortoflio && delete student.withdrawPortoflio;
+    student.credits && delete student.credits;
+    student.orderNumber && delete student.orderNumber;
+    student.notificationToken && delete student.notificationToken;
+    return student;
+}
+
+const isEnrolled = async (studentId) => {
+    const student = await Student.findOne({
+        where: {
+            id: studentId,
+        },
+        attributes: ['enrolled']
+    });
+
+    return student.enrolled;
+}
+
+const updateCriteria = async (criteria, type, studentId) => {
+    Criteria.update(
+        {
+            value: criteria
+        },
+        {
+            where: {
+                type: type,
+                studentId: studentId
+            }
+        });
+}
+
+const updateCriterias = async (student, studentId) => {
+    const criterias = [];
+
+    student.bacAverage && criterias.push(updateCriteria(student.bacAverage, CRITERIA_TYPES.BAC_AVERAGE, studentId));
+    student.bacRomanian && criterias.push(updateCriteria(student.bacRomanian, CRITERIA_TYPES.BAC_RO, studentId));
+    student.average9 && criterias.push(updateCriteria(student.average9, CRITERIA_TYPES.AVERAGE_9, studentId));
+    student.average10 && criterias.push(updateCriteria(student.average10, CRITERIA_TYPES.AVERAGE_10, studentId));
+    student.average11 && criterias.push(updateCriteria(student.average11, CRITERIA_TYPES.AVERAGE_11, studentId));
+    student.average12 && criterias.push(updateCriteria(student.average12, CRITERIA_TYPES.AVERAGE_12, studentId));
+
+    await Promise.all(criterias);
+}
+
+
 
 const createStudent = async (student) => {
 
@@ -108,10 +159,20 @@ const loadStudent = async (studentId) => {
     });
 }
 
+const updateStudent = async (student, studentId) => {
+    if (await !isEnrolled(studentId)) {
+        student = removeSensitiveData(student);
+        await updateCriterias(student, studentId);
+        await Student.update({ ...student }, { where: { id: studentId } });
+        return await loadStudent(studentId);
+    }
+}
+
 module.exports = {
     validateStudent,
     createStudent,
     sendRegistrationMail,
     changePassword,
-    loadStudent
+    loadStudent,
+    updateStudent
 }

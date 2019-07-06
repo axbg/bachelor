@@ -10,7 +10,7 @@ const errorHandlingMiddleware = require('./utils/errorHandlingMiddleware').error
 
 const app = new Koa();
 
-//database.sync({force:true});
+//database.sync({force: true});
 
 app.use(cors());
 app.use(json());

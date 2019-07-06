@@ -18,3 +18,9 @@ module.exports.loadStudent = async (ctx) => {
     const studentData = await studentService.loadStudent(ctx.user.id);
     httpHelper.createHttpResponse(ctx, 200, { student: studentData });
 }
+
+module.exports.updateStudent = async (ctx) => {
+    const student = await studentService.updateStudent(ctx.request.body, ctx.user.id);
+    student ? httpHelper.createHttpResponse(ctx, 200, { student: student })
+        : httpHelper.createHttpResponse(ctx, 400, "Data cannot be modified after a student was enrolled");
+}
