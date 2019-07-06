@@ -17,4 +17,8 @@ router.get('/load', studentController.loadStudent);
 
 router.patch('/update', studentController.updateStudent);
 
+router.post('/generate-order-number', studentController.generateOrderNumber);
+
+router.get('/documents', async (ctx) => { ctx.status = 200 });
+
 module.exports = router;

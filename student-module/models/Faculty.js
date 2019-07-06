@@ -11,6 +11,14 @@ module.exports = (sequelize, DataTypes) => {
         "tax": {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        "coordinates": {
+            type: DataTypes.STRING(80),
+            allowNull: false
+        },
+        "currentOrderNumber": {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     })
 }
