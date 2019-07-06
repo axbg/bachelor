@@ -64,6 +64,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.BOOLEAN,
                 defaultValue: false
             },
+            "enrolled": {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            },
             "tax": {
                 type: DataTypes.BOOLEAN,
                 defaultValue: false
