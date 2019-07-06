@@ -7,6 +7,7 @@ const Faculty = require('../models/index').Faculty;
 const CRITERIA_TYPES = require('../config/index').CRITERIA_TYPES;
 const sendMail = require('../utils/moduleAdapter').sendMail;
 const crypto = require('crypto');
+const sequelize = require('sequelize');
 
 const generateRandomPassword = () => {
     return crypto.randomBytes(20).toString('hex');
@@ -112,7 +113,30 @@ const updateCriterias = async (student, studentId) => {
     await Promise.all(criterias);
 }
 
+const getFacultyCoordinates = async (facultyId) => {
+    const faculty = await Faculty.findOne({
+        where: {
+            id: facultyId
+        },
+        attributes: ['coordinates']
+    });
 
+    return faculty.coordinates;
+}
+
+const verifyLocation = async (location, facultyCoordinates) => {
+
+    //validate location 
+    return false;
+}
+
+const produceOrderNumber = async (studentId, facultyId) => {
+    const faculty = await Faculty.update({ currentOrderNumber: sequelize.literal('currentOrderNumber + 1') }, { where: { id: facultyId } });
+
+    Student.update({ orderNumber: faculty.currentOrderNumber }, { where: { id: studentId } });
+
+    return faculty.currentOrderNumber;
+}
 
 const createStudent = async (student) => {
 
@@ -153,7 +177,7 @@ const loadStudent = async (studentId) => {
         },
         include: [
             { model: StudentOption, as: 'options', include: { model: Faculty } },
-            { model: Document, as: 'documents' },
+            { model: Document, as: 'documents', attributes: ['title'] },
             { model: Criteria, as: 'criterias', attributes: ['type', 'value'] }
         ]
     });
@@ -168,11 +192,30 @@ const updateStudent = async (student, studentId) => {
     }
 }
 
+const generateOrderNumber = async (student, studentId) => {
+    const studentOptions = await StudentOption.findOne({
+        where: {
+            studentId: studentId
+        },
+        include: { model: Faculty }
+    });
+
+    const [facultyId, facultyCoordinates] = studentOptions.faculty.id ? [studentOptions.faculty.id, studentOptions.faculty.coordinates]
+        : [student.facultyId, await getFacultyCoordinates(facultyId)];
+
+    facultyId || generateError("Options or FacultyId is required", 400);
+
+    student.location || await verifyLocation(student.location, facultyCoordinates) || generateError("Location is not valid", 400);
+
+    return await produceOrderNumber(studentId, facultyId);
+}
+
 module.exports = {
     validateStudent,
     createStudent,
     sendRegistrationMail,
     changePassword,
     loadStudent,
-    updateStudent
+    updateStudent,
+    generateOrderNumber
 }

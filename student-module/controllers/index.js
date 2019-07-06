@@ -24,3 +24,8 @@ module.exports.updateStudent = async (ctx) => {
     student ? httpHelper.createHttpResponse(ctx, 200, { student: student })
         : httpHelper.createHttpResponse(ctx, 400, "Data cannot be modified after a student was enrolled");
 }
+
+module.exports.generateOrderNumber = async (ctx) => {
+    const orderNumber = await studentService.generateOrderNumber(ctx.request.body, ctx.user.id);
+    httpHelper.createHttpResponse(ctx, 200, { orderNumber: orderNumber });
+}
