@@ -22,6 +22,7 @@
     "axios": "^0.18.0",
     "bcrypt": "^3.0.6",
     "crypto": "^1.0.1",
+    "geolib": "^3.0.4",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-combine-routers": "^4.0.2",

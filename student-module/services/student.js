@@ -8,6 +8,7 @@ const CRITERIA_TYPES = require('../config/index').CRITERIA_TYPES;
 const sendMail = require('../utils/moduleAdapter').sendMail;
 const crypto = require('crypto');
 const sequelize = require('sequelize');
+const geolib = require('geolib');
 
 const generateRandomPassword = () => {
     return crypto.randomBytes(20).toString('hex');
@@ -124,14 +125,20 @@ const getFacultyCoordinates = async (facultyId) => {
     return faculty.coordinates;
 }
 
-const verifyLocation = async (location, facultyCoordinates) => {
+const verifyLocation = (location, facultyCoordinates) => {
+    const [studentLat, studentLong] = location.split("#");
+    const [facultyLat, facultyLong] = facultyCoordinates.split("#");
 
-    //validate location 
-    return false;
+    return geolib.getDistance(
+        { latitude: studentLat, longitude: studentLong }, {
+            latitude: facultyLat, longitude: facultyLong
+        }) < 500;
 }
 
 const produceOrderNumber = async (studentId, facultyId) => {
-    const faculty = await Faculty.update({ currentOrderNumber: sequelize.literal('currentOrderNumber + 1') }, { where: { id: facultyId } });
+    await Faculty.update({ currentOrderNumber: sequelize.literal('current_order_number + 1') }, { where: { id: facultyId } });
+
+    const faculty = await Faculty.findOne({ where: { id: facultyId } });
 
     Student.update({ orderNumber: faculty.currentOrderNumber }, { where: { id: studentId } });
 
@@ -205,7 +212,7 @@ const generateOrderNumber = async (student, studentId) => {
 
     facultyId || generateError("Options or FacultyId is required", 400);
 
-    student.location || await verifyLocation(student.location, facultyCoordinates) || generateError("Location is not valid", 400);
+    student.location && verifyLocation(student.location, facultyCoordinates) || generateError("Location is not valid", 400);
 
     return await produceOrderNumber(studentId, facultyId);
 }
