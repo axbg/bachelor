@@ -80,7 +80,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 defaultValue: 0
             },
-            "order_number": {
+            "orderNumber": {
                 type: DataTypes.INTEGER,
                 defaultValue: 0
             },
