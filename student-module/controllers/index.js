@@ -29,3 +29,17 @@ module.exports.generateOrderNumber = async (ctx) => {
     const orderNumber = await studentService.generateOrderNumber(ctx.request.body, ctx.user.id);
     httpHelper.createHttpResponse(ctx, 200, { orderNumber: orderNumber });
 }
+
+module.exports.getOptions = async (ctx) => {
+    const options = await studentService.getOptions(ctx.user.id);
+    httpHelper.createHttpResponse(ctx, 200, { options: options });
+}
+
+module.exports.createOption = async (ctx) => {
+    const options = await studentService.createOption(ctx.request.body, ctx.user.id);
+    httpHelper.createHttpResponse(ctx, 200, { options: options });
+}
+
+module.exports.deleteOption = async (ctx) => {
+    ctx.status = 200;
+}

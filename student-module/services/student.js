@@ -1,6 +1,7 @@
 const generateError = require('../utils/FlowError').generateError;
 const Student = require('../models/index').Student;
 const StudentOption = require('../models/index').StudentOption;
+const FacultyProfile = require('../models/index').FacultyProfile;
 const Document = require('../models/index').Document;
 const Criteria = require('../models/index').Criteria;
 const Faculty = require('../models/index').Faculty;
@@ -145,6 +146,15 @@ const produceOrderNumber = async (studentId, facultyId) => {
     return faculty.currentOrderNumber;
 }
 
+const validateOption = async (option, studentId) => {
+    option.facultyProfileId || generateError("Faculty Profile identifier is not present", 400);
+
+    const findOptions = await StudentOption.findAll({ where: { studentId: studentId, facultyProfileId: option.facultyProfileId } });
+
+    !findOptions.length || generateError("Faculty Profile already selected", 400);
+}
+
+
 const createStudent = async (student) => {
 
     await validateStudent(student);
@@ -183,7 +193,7 @@ const loadStudent = async (studentId) => {
             exclude: ['id', 'password']
         },
         include: [
-            { model: StudentOption, as: 'options', include: { model: Faculty } },
+            { model: StudentOption, as: 'options', include: { model: FacultyProfile } },
             { model: Document, as: 'documents', attributes: ['title'] },
             { model: Criteria, as: 'criterias', attributes: ['type', 'value'] }
         ]
@@ -217,6 +227,24 @@ const generateOrderNumber = async (student, studentId) => {
     return await produceOrderNumber(studentId, facultyId);
 }
 
+const getOptions = async (studentId) => {
+    const options = await FacultyProfile.findAll({ raw: true });
+    const selectedOptions = await StudentOption.findAll({ where: { studentId: studentId }, include: { model: FacultyProfile }, raw: true });
+
+    const selectedOptionsIds = selectedOptions.map(options => options.facultyProfileId);
+    const notSelectedOptions = options.filter(option => !selectedOptionsIds.includes(option.id));
+
+    return { selectedOptions, notSelectedOptions };
+}
+
+const createOption = async (option, studentId) => {
+    await validateOption(option, studentId);
+
+    await StudentOption.create({ admitted: false, facultyProfileId: option.facultyProfileId, studentId: studentId });
+
+    return await getOptions(studentId);
+}
+
 module.exports = {
     validateStudent,
     createStudent,
@@ -224,5 +252,7 @@ module.exports = {
     changePassword,
     loadStudent,
     updateStudent,
-    generateOrderNumber
+    generateOrderNumber,
+    getOptions,
+    createOption
 }
