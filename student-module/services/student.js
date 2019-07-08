@@ -239,10 +239,12 @@ const getOptions = async (studentId) => {
 
 const createOption = async (option, studentId) => {
     await validateOption(option, studentId);
-
     await StudentOption.create({ admitted: false, facultyProfileId: option.facultyProfileId, studentId: studentId });
+}
 
-    return await getOptions(studentId);
+const deleteOption = async (option) => {
+    option.id || generateError("Option identifier is not present");
+    await StudentOption.destroy({ where: { id: option.id } });
 }
 
 module.exports = {
@@ -254,5 +256,6 @@ module.exports = {
     updateStudent,
     generateOrderNumber,
     getOptions,
-    createOption
+    createOption,
+    deleteOption
 }

@@ -36,10 +36,11 @@ module.exports.getOptions = async (ctx) => {
 }
 
 module.exports.createOption = async (ctx) => {
-    const options = await studentService.createOption(ctx.request.body, ctx.user.id);
-    httpHelper.createHttpResponse(ctx, 200, { options: options });
+    await studentService.createOption(ctx.request.body, ctx.user.id);
+    httpHelper.createHttpResponse(ctx, 200, { options: await studentService.getOptions(ctx.user.id) });
 }
 
 module.exports.deleteOption = async (ctx) => {
-    ctx.status = 200;
+    await studentService.deleteOption(ctx.params, ctx.user.id);
+    httpHelper.createHttpResponse(ctx, 200, { options: await studentService.getOptions(ctx.user.id) });
 }

@@ -24,7 +24,7 @@ router.get('/options', studentController.getOptions);
 
 router.post('/create-option', studentController.createOption);
 
-router.delete('/delete-option', studentController.deleteOption);
+router.delete('/delete-option/:id', studentController.deleteOption);
 
 //will archive documents and return a downloadable link
 router.get('/download-documents', async (ctx) => { ctx.status = 200 });
