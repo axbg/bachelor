@@ -1,45 +1,49 @@
-const axios = require('axios');
-const Student = require('../models/index').Student;
-const Criteria = require('../models/index').Criteria;
-const MAIL_MODULE_PATH = require('../config/constants').MAIL_MODULE_PATH;
-const CRITERIA_TYPES = require('../config/constants').CRITERIA_TYPES;
-const validateStudent = require('../services/student').validateStudent;
+const studentService = require('../services/student');
+const httpHelper = require('../utils/httpHelper');
+const sendRegistrationMail = require('../services/student').sendRegistrationMail;
 
-module.exports.getDocuments = async (ctx) => {
-    console.log("getting documents");
-    ctx.body = { message: "flow - student module - student get documents" };
+module.exports.createStudent = async (ctx) => {
+    const student = await studentService.createStudent(ctx.request.body);
+    httpHelper.createHttpResponse(ctx, 201, "Registration successful");
+    //sendRegistrationMail(student);
 }
 
-module.exports.getDocument = async (ctx) => {
-    console.log("getting documents");
-    ctx.body = { message: "flow - student module - student get detailed document" };
+module.exports.changePassword = async (ctx) => {
+    await studentService.changePassword(ctx.request.body.password, ctx.user.id) ?
+        httpHelper.createHttpResponse(ctx, 200, "Password changed") :
+        httpHelper.createHttpResponse(ctx, 400, "Password too weak: minimum length 8, should contain at least one letter and one number");
 }
 
-module.exports.register = async (ctx) => {
-    const mailData = {
-        message: "This is a dummy message",
-        from: "bisagalexstefan@gmail.com",
-        title: "Welcome to Flow!",
-        destination: ""
-    };
+module.exports.loadStudent = async (ctx) => {
+    const studentData = await studentService.loadStudent(ctx.user.id);
+    httpHelper.createHttpResponse(ctx, 200, { student: studentData });
+}
 
-    validateStudent();
+module.exports.updateStudent = async (ctx) => {
+    const student = await studentService.updateStudent(ctx.request.body, ctx.user.id);
+    student ? httpHelper.createHttpResponse(ctx, 200, { student: student })
+        : httpHelper.createHttpResponse(ctx, 400, "Data cannot be modified after a student was enrolled");
+}
 
-    const student = await Student.create(ctx.request.body);
+module.exports.generateOrderNumber = async (ctx) => {
+    const orderNumber = await studentService.generateOrderNumber(ctx.request.body, ctx.user.id);
+    httpHelper.createHttpResponse(ctx, 200, { orderNumber: orderNumber });
+}
 
-    const bacAverage = Criteria.create({ type: CRITERIA_TYPES.BAC_AVERAGE, value: ctx.request.body.bacAverage, studentId: student.id });
-    const bacRomanian = Criteria.create({ type: CRITERIA_TYPES.BAC_RO, value: ctx.request.body.bacRomanian, studentId: student.id });
-    const average9 = Criteria.create({ type: CRITERIA_TYPES.AVERAGE_9, value: ctx.request.body.average9, studentId: student.id });
-    const average10 = Criteria.create({ type: CRITERIA_TYPES.AVERAGE_10, value: ctx.request.body.average10, studentId: student.id });
-    const average11 = Criteria.create({ type: CRITERIA_TYPES.AVERAGE_11, value: ctx.request.body.average11, studentId: student.id });
-    const average12 = Criteria.create({ type: CRITERIA_TYPES.AVERAGE_12, value: ctx.request.body.average12, studentId: student.id });
+module.exports.getOptions = async (ctx) => {
+    const studentId = ctx.user.type === "STUDENT" ? ctx.user.id : ctx.params.studentId;
+    const options = await studentService.getOptions(studentId);
+    httpHelper.createHttpResponse(ctx, 200, { options: options });
+}
 
-    ctx.body = "Registration successful!";
-    ctx.status = 201;
+module.exports.createOption = async (ctx) => {
+    const studentId = ctx.user.type === "STUDENT" ? ctx.user.id : ctx.params.studentId;
+    await studentService.createOption(ctx.request.body, studentId);
+    httpHelper.createHttpResponse(ctx, 200, { options: await studentService.getOptions(studentId) });
+}
 
-    Promise.all([bacAverage, bacRomanian, average9, average10, average11, average12]).then(result => {
-        mailData.destination = student.email;
-        axios.post(MAIL_MODULE_PATH, { ...mailData }).then(result => { })
-            .catch(error => console.log(error));
-    });
+module.exports.deleteOption = async (ctx) => {
+    const studentId = ctx.user.type === "STUDENT" ? ctx.user.id : ctx.params.studentId;
+    await studentService.deleteOption(ctx.params, studentId);
+    httpHelper.createHttpResponse(ctx, 200, { options: await studentService.getOptions(studentId) });
 }

@@ -1,41 +1,28 @@
 const Router = require('koa-router');
 const router = new Router();
 const studentController = require("../controllers/index");
+const withSecurityHeaders = require('../services/middleware').withSecurityHeaders;
 
 router.get("/", async (ctx) => {
     ctx.body = { message: "flow - student module" };
 })
 
-router.get("/documents/:id", studentController.getDocument);
+router.post("/create", studentController.createStudent);
 
-router.post("/register", studentController.register);
+router.use(withSecurityHeaders);
 
-router.post("/login", async (ctx) => {
-    //the actual login will be done inside the auth gateway
-    //this endpoint will retrieve data such as Options, profile informations
-    //credits, etc
-    //if the password should be changed, etc
-    ctx.body = { message: "flow - student module - student login data" };
-})
+router.post('/change-password', studentController.changePassword);
 
-router.post("/credits", async (ctx) => {
-    ctx.body = { message: "flow - student module - student credits purchase" };
-})
+router.get('/load', studentController.loadStudent);
 
-router.post("/options", async (ctx) => {
-    ctx.body = { message: "flow - student module - get options" };
-})
+router.patch('/update', studentController.updateStudent);
 
-router.post("/options", async (ctx) => {
-    ctx.body = { message: "flow - student module - add option" };
-})
+router.post('/generate-order-number', studentController.generateOrderNumber);
 
-router.delete("/options", async (ctx) => {
-    ctx.body = { message: "flow - student module - delete option" };
-})
+router.get('/options/:studentId?', studentController.getOptions);
 
-router.put("/password", async (ctx) => {
-    ctx.body = { message: "flow - student module - student password change" };
-})
+router.post('/create-option/:studentId?', studentController.createOption);
+
+router.delete('/delete-option/:id/:studentId?', studentController.deleteOption);
 
 module.exports = router;

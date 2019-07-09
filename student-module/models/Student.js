@@ -1,12 +1,24 @@
+const bcrypt = require('bcrypt');
+
+const hashStudentPassword = (user, options) => {
+    if (user.changed('password')) {
+        const hashedPassword = bcrypt.hashSync(user.password, 10);
+        user.setDataValue('password', hashedPassword);
+    }
+}
+
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define("student",
         {
             "email": {
                 type: DataTypes.STRING(50),
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    isEmail: true
+                }
             },
             "password": {
-                type: DataTypes.STRING(50),
+                type: DataTypes.STRING(255),
                 allowNull: false
             },
             "firstname": {
@@ -17,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(50),
                 allowNull: false
             },
+            "parentInitial": {
+                type: DataTypes.STRING(3),
+                allowNull: false
+            },
             "phone": {
                 type: DataTypes.STRING(15),
                 allowNull: false
@@ -25,11 +41,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(100),
                 allowNull: false
             },
-            "address": {
-                type: DataTypes.STRING(100),
-                allowNull: false
-            },
-            "pin": {
+            "cnp": {
                 type: DataTypes.STRING(13),
                 allowNull: false
             },
@@ -41,18 +53,12 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(6),
                 allowNull: false
             },
-            "idEntity": {
+            "idPublisher": {
                 type: DataTypes.STRING,
                 allowNull: false
             },
             "photo": {
-                type: DataTypes.STRING,
-                allowNull: true,
-                defaultValue: "#"
-            },
-            "notificationToken": {
-                type: DataTypes.STRING(100),
-                allowNull: true
+                type: DataTypes.BLOB
             },
             "active": {
                 type: DataTypes.BOOLEAN,
@@ -62,17 +68,32 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.BOOLEAN,
                 defaultValue: false
             },
+            "tax": {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            },
+            "withdrawPortfolio": {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            },
             "credits": {
                 type: DataTypes.INTEGER,
                 defaultValue: 0
             },
-            "order_number": {
+            "orderNumber": {
                 type: DataTypes.INTEGER,
                 defaultValue: 0
             },
-            "study_form": {
-                type: DataTypes.STRING,
-                defaultValue: "#"
+            "notificationToken": {
+                type: DataTypes.STRING(100),
+                allowNull: true
+            },
+        },
+        {
+            hooks: {
+                beforeCreate: hashStudentPassword,
+                beforeUpdate: hashStudentPassword
             }
-        });
+        }
+    );
 }

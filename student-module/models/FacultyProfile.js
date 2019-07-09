@@ -1,22 +1,18 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("faculty", {
+    return sequelize.define("faculty_profile", {
         "name": {
             type: DataTypes.STRING(30),
             allowNull: false
         },
-        "budget": {
+        "type": {
+            type: DataTypes.STRING(3),
+            allowNull: false
+        },
+        "availablePositions": {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        "tax": {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        "coordinates": {
-            type: DataTypes.STRING(80),
-            allowNull: false
-        },
-        "currentOrderNumber": {
+        "busyPositions": {
             type: DataTypes.INTEGER,
             allowNull: false
         }
