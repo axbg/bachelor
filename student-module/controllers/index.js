@@ -31,16 +31,19 @@ module.exports.generateOrderNumber = async (ctx) => {
 }
 
 module.exports.getOptions = async (ctx) => {
-    const options = await studentService.getOptions(ctx.user.id);
+    const studentId = ctx.user.type === "STUDENT" ? ctx.user.id : ctx.params.studentId;
+    const options = await studentService.getOptions(studentId);
     httpHelper.createHttpResponse(ctx, 200, { options: options });
 }
 
 module.exports.createOption = async (ctx) => {
-    await studentService.createOption(ctx.request.body, ctx.user.id);
-    httpHelper.createHttpResponse(ctx, 200, { options: await studentService.getOptions(ctx.user.id) });
+    const studentId = ctx.user.type === "STUDENT" ? ctx.user.id : ctx.params.studentId;
+    await studentService.createOption(ctx.request.body, studentId);
+    httpHelper.createHttpResponse(ctx, 200, { options: await studentService.getOptions(studentId) });
 }
 
 module.exports.deleteOption = async (ctx) => {
-    await studentService.deleteOption(ctx.params, ctx.user.id);
-    httpHelper.createHttpResponse(ctx, 200, { options: await studentService.getOptions(ctx.user.id) });
+    const studentId = ctx.user.type === "STUDENT" ? ctx.user.id : ctx.params.studentId;
+    await studentService.deleteOption(ctx.params, studentId);
+    httpHelper.createHttpResponse(ctx, 200, { options: await studentService.getOptions(studentId) });
 }
