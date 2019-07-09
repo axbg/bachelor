@@ -1,3 +1,12 @@
+const bcrypt = require('bcrypt');
+
+const hashStudentPassword = (user, options) => {
+    if (user.changed('password')) {
+        const hashedPassword = bcrypt.hashSync(user.password, 10);
+        user.setDataValue('password', hashedPassword);
+    }
+}
+
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define("student",
         {
@@ -21,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false
             },
             "parentInitial": {
-                type: DataTypes.STRING(2),
+                type: DataTypes.STRING(3),
                 allowNull: false
             },
             "phone": {
@@ -55,6 +64,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.BOOLEAN,
                 defaultValue: false
             },
+            "enrolled": {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            },
             "tax": {
                 type: DataTypes.BOOLEAN,
                 defaultValue: false
@@ -67,7 +80,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 defaultValue: 0
             },
-            "order_number": {
+            "orderNumber": {
                 type: DataTypes.INTEGER,
                 defaultValue: 0
             },
@@ -75,5 +88,12 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(100),
                 allowNull: true
             },
-        });
+        },
+        {
+            hooks: {
+                beforeCreate: hashStudentPassword,
+                beforeUpdate: hashStudentPassword
+            }
+        }
+    );
 }

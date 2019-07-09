@@ -32,9 +32,9 @@ const findStudentByCredentials = async (email, password) => {
 const findUserByCredentials = async (email, password) => {
     const user = await User.findOne({
         where: {
-            email: email
+            username: email
         },
-        attributes: ['id', 'email', 'password'],
+        attributes: ['id', 'username', 'password'],
         raw: true
     });
 
