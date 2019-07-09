@@ -1,0 +1,124 @@
+[33m[nodemon] 1.18.10[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching: *.*[39m
+[32m[nodemon] starting `node mailing-logger app.js`[39m
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: EBADF: bad file descriptor, read
+Emitted 'error' event at:
+    at lazyFs.read (internal/fs/streams.js:165:12)
+    at FSReqWrap.wrapper [as oncomplete] (fs.js:462:17)
+internal/modules/cjs/loader.js:584
+    throw err;
+    ^
+
+Error: Cannot find module '/home/axbg/Documents/dev/projects/flow/mailing-module/mailing-module/mailing-logger'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:582:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:508:25)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:754:12)
+    at startup (internal/bootstrap/node.js:283:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:622:3)
+[33m[nodemon] 1.18.10[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching: *.*[39m
+[32m[nodemon] starting `node mailing-logger app.js`[39m
+internal/modules/cjs/loader.js:584
+    throw err;
+    ^
+
+Error: Cannot find module '/home/axbg/Documents/dev/projects/flow/mailing-module/mailing-module/mailing-logger'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:582:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:508:25)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:754:12)
+    at startup (internal/bootstrap/node.js:283:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:622:3)
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+
+> flow@1.0.0 start /home/axbg/Documents/dev/projects/flow/mailing-module/mailing-module
+> node app.js "mailing-logger"
+
+flow - mailing module back-end started
+running on http://localhost:8002
+
+> flow@1.0.0 start /home/axbg/Documents/dev/projects/flow/mailing-module/mailing-module
+> node app.js
+
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::8002
+    at Server.setupListenHandle [as _listen2] (net.js:1270:14)
+    at listenInCluster (net.js:1318:12)
+    at Server.listen (net.js:1405:7)
+    at Application.listen (/home/axbg/Documents/dev/projects/flow/mailing-module/mailing-module/node_modules/koa/lib/application.js:65:19)
+    at Object.<anonymous> (/home/axbg/Documents/dev/projects/flow/mailing-module/mailing-module/app.js:18:5)
+    at Module._compile (internal/modules/cjs/loader.js:701:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:712:10)
+    at Module.load (internal/modules/cjs/loader.js:600:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:539:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:531:3)
+Emitted 'error' event at:
+    at emitErrorNT (net.js:1297:8)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:757:11)
+    at startup (internal/bootstrap/node.js:283:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:622:3)
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! flow@1.0.0 start: `node app.js`
+npm ERR! Exit status 1
+npm ERR! 
+npm ERR! Failed at the flow@1.0.0 start script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/axbg/.npm/_logs/2019-07-03T21_04_46_636Z-debug.log
+
+> flow@1.0.0 start /home/axbg/Documents/dev/projects/flow/mailing-module/mailing-module
+> node app.js
+
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::8002
+    at Server.setupListenHandle [as _listen2] (net.js:1270:14)
+    at listenInCluster (net.js:1318:12)
+    at Server.listen (net.js:1405:7)
+    at Application.listen (/home/axbg/Documents/dev/projects/flow/mailing-module/mailing-module/node_modules/koa/lib/application.js:65:19)
+    at Object.<anonymous> (/home/axbg/Documents/dev/projects/flow/mailing-module/mailing-module/app.js:18:5)
+    at Module._compile (internal/modules/cjs/loader.js:701:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:712:10)
+    at Module.load (internal/modules/cjs/loader.js:600:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:539:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:531:3)
+Emitted 'error' event at:
+    at emitErrorNT (net.js:1297:8)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:757:11)
+    at startup (internal/bootstrap/node.js:283:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:622:3)
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! flow@1.0.0 start: `node app.js`
+npm ERR! Exit status 1
+npm ERR! 
+npm ERR! Failed at the flow@1.0.0 start script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/axbg/.npm/_logs/2019-07-03T21_05_12_538Z-debug.log
+Terminated
+npm ERR! code ELIFECYCLE
+npm ERR! errno 143
+npm ERR! flow@1.0.0 start: `node app.js "mailing-logger"`
+npm ERR! Exit status 143
+npm ERR! 
+npm ERR! Failed at the flow@1.0.0 start script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/axbg/.npm/_logs/2019-07-03T21_09_55_498Z-debug.log
