@@ -155,6 +155,7 @@ const validateOption = async (option, studentId) => {
 }
 
 
+
 const createStudent = async (student) => {
 
     await validateStudent(student);
@@ -210,14 +211,15 @@ const updateStudent = async (student, studentId) => {
 }
 
 const generateOrderNumber = async (student, studentId) => {
-    const studentOptions = await StudentOption.findOne({
+    const studentOption = await StudentOption.findOne({
         where: {
             studentId: studentId
         },
-        include: { model: Faculty }
+        include: { model: FacultyProfile, include: { model: Faculty } }
     });
 
-    const [facultyId, facultyCoordinates] = studentOptions.faculty.id ? [studentOptions.faculty.id, studentOptions.faculty.coordinates]
+    const [facultyId, facultyCoordinates] = studentOption.faculty_profile.facultyId
+        ? [studentOption.faculty_profile.facultyId, studentOption.faculty_profile.faculty.coordinates]
         : [student.facultyId, await getFacultyCoordinates(facultyId)];
 
     facultyId || generateError("Options or FacultyId is required", 400);
@@ -228,6 +230,8 @@ const generateOrderNumber = async (student, studentId) => {
 }
 
 const getOptions = async (studentId) => {
+    studentId || generateError("Student identifier is not present", 400);
+
     const options = await FacultyProfile.findAll({ raw: true });
     const selectedOptions = await StudentOption.findAll({ where: { studentId: studentId }, include: { model: FacultyProfile }, raw: true });
 
@@ -238,13 +242,25 @@ const getOptions = async (studentId) => {
 }
 
 const createOption = async (option, studentId) => {
-    await validateOption(option, studentId);
-    await StudentOption.create({ admitted: false, facultyProfileId: option.facultyProfileId, studentId: studentId });
+    studentId || generateError("Student identifier is not present", 400);
+
+    if (!(await isEnrolled(studentId))) {
+        await validateOption(option, studentId);
+        await StudentOption.create({ admitted: false, facultyProfileId: option.facultyProfileId, studentId: studentId });
+    } else {
+        generateError("Student is already enrolled", 400);
+    }
 }
 
-const deleteOption = async (option) => {
-    option.id || generateError("Option identifier is not present");
-    await StudentOption.destroy({ where: { id: option.id } });
+const deleteOption = async (option, studentId) => {
+    studentId || generateError("Student identifier is not present", 400);
+
+    if (!(await isEnrolled(studentId))) {
+        option.id || generateError("Option identifier is not present");
+        await StudentOption.destroy({ where: { id: option.id } });
+    } else {
+        generateError("Student is already enrolled", 400);
+    }
 }
 
 module.exports = {

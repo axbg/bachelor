@@ -19,14 +19,10 @@ router.patch('/update', studentController.updateStudent);
 
 router.post('/generate-order-number', studentController.generateOrderNumber);
 
-//will return an object containing available options and added options in order of preference
-router.get('/options', studentController.getOptions);
+router.get('/options/:studentId?', studentController.getOptions);
 
-router.post('/create-option', studentController.createOption);
+router.post('/create-option/:studentId?', studentController.createOption);
 
-router.delete('/delete-option/:id', studentController.deleteOption);
-
-//will archive documents and return a downloadable link
-router.get('/download-documents', async (ctx) => { ctx.status = 200 });
+router.delete('/delete-option/:id/:studentId?', studentController.deleteOption);
 
 module.exports = router;
