@@ -1,0 +1,40 @@
+
+> gateway-module@1.0.0 start /home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module
+> node app.js
+
+[HPM] Proxy created: /  ->  http://localhost:8001
+[HPM] Proxy rewrite rule created: "/student/create" ~> "/create"
+[HPM] Proxy created: /  ->  http://localhost:8004
+[HPM] Proxy rewrite rule created: "/volunteer/create" ~> "/create"
+[HPM] Proxy created: /  ->  http://localhost:8001
+[HPM] Proxy rewrite rule created: "/student" ~> ""
+[HPM] Proxy created: /  ->  http://localhost:8002
+[HPM] Proxy rewrite rule created: "/mail" ~> ""
+[HPM] Proxy created: /  ->  http://localhost:8003
+[HPM] Proxy rewrite rule created: "/enrollment" ~> ""
+[HPM] Proxy created: /  ->  http://localhost:8004
+[HPM] Proxy rewrite rule created: "/volunteer" ~> ""
+events.js:174
+      throw er; // Unhandled 'erroUnauthorizedError: No authorization token was found
+    at middleware (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express-jwt/lib/index.js:76:21)
+    at Layer.handle [as handle_request] (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/index.js:317:13)
+    at /home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/index.js:275:10)
+    at expressInit (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/middleware/init.js:40:5)
+    at Layer.handle [as handle_request] (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/index.js:317:13)
+    at /home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/index.js:275:10)
+    at query (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/middleware/query.js:45:5)
+    at Layer.handle [as handle_request] (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/index.js:317:13)
+    at /home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/router/index.js:174:3)
+    at Function.handle (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/application.js:174:10)
+    at Server.app (/home/axbg/Documents/dev/projects/flow/gateway-module/gateway-module/node_modules/express/lib/express.js:39:9)
+    at Server.emit (events.js:189:13)
