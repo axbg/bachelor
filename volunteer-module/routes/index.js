@@ -17,6 +17,12 @@ router.get('/search-student/:search', userController.searchStudent);
 
 router.post('/generate-order-number', userController.generateOrderNumber);
 
+router.get('/positions', userController.getPositions);
+
+router.post('/position-request', userController.createPositionRequest);
+
+router.post('/flow', userController.createFlow);
+
 //TO DO
 router.get('/notify-students');
 
