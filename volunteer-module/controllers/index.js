@@ -22,3 +22,18 @@ module.exports.generateOrderNumber = async (ctx) => {
     const orderNumber = await studentService.generateOrderNumber(ctx.request.body);
     httpHelper.createHttpResponse(ctx, 200, { orderNumber: orderNumber });
 }
+
+module.exports.getPositions = async (ctx) => {
+    httpHelper.createHttpResponse(ctx, 200, await userService.getPositions());
+}
+
+module.exports.createPositionRequest = async (ctx) => {
+    httpHelper.createHttpResponse(ctx, 201,
+        { positionRequest: await userService.createPositionRequest(ctx.request.body, ctx.user.id) });
+}
+
+module.exports.createFlow = async (ctx) => {
+    await userService.createFlow(ctx.request.body, ctx.user.id);
+    userService.notifyRedis();
+    httpHelper.createHttpResponse(ctx, 200, "Created flow");
+}
