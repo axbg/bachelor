@@ -10,7 +10,6 @@ const REDIS_PORT = require('../config/index').REDIS_PORT;
 const REDIS_QUEUE = require('../config/index').REDIS_QUEUE;
 const redisClient = redis.createClient(REDIS_PORT, REDIS_ADDRESS);
 
-
 const validateUser = async (user) => {
     user.username || generateError("Username not present", 400);
     user.password || generateError("Password not present", 400);
@@ -18,6 +17,10 @@ const validateUser = async (user) => {
 
     const findUser = await User.findOne({ where: { username: user.username } });
     !findUser || generateError("Username already exists", 400);
+}
+
+const notifyRedis = (channel, message) => {
+    redisClient.publish("flow", "Flow added");
 }
 
 
@@ -49,6 +52,7 @@ const createPositionRequest = async (request, userId) => {
     request.positionId || generateError("Position identifier is not present", 400);
     request.userId = parseInt(userId);
     const requestEntity = await PositionRequest.create({ ...request }, { include: [{ model: Position }] });
+    notifyRedis("flow-position-request", "");
     return await PositionRequest.findOne({ where: { id: requestEntity.id }, include: [{ model: Position }] });
 }
 
@@ -56,12 +60,8 @@ const createFlow = async (flow, userId) => {
     flow.flow || generateError("Flow number is not present", 400);
     const currentUser = await User.findOne({ where: { id: userId } });
     await Flow.create({ flow: flow.flow, time: (new Date()).getTime(), facultyId: currentUser.facultyId });
+    notifyRedis("flow-flow", "");
 }
-
-const notifyRedis = async () => {
-    redisClient.publish("flow", "Flow added");
-}
-
 
 module.exports = {
     createUser,
@@ -69,5 +69,4 @@ module.exports = {
     createPositionRequest,
     getPositions,
     createFlow,
-    notifyRedis
 }
