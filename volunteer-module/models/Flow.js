@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
         "time": {
             type: DataTypes.STRING(100),
             allowNull: false
+        },
+        "date": {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
         }
     })
 }

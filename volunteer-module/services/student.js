@@ -6,6 +6,11 @@ const User = require('../models/index').User;
 const StudentOption = require('../models/index').StudentOption;
 const FacultyProfile = require('../models/index').FacultyProfile;
 const sequelize = require('sequelize');
+const webpush = require('web-push');
+const PUBLIC_VAPID_KEY = require('../config/index').PUBLIC_VAPID_KEY;
+const PRIVATE_VAPID_KEY = require('../config/index').PRIVATE_VAPID_KEY;
+
+webpush.setVapidDetails('mailto:bisagalexstefan@gmail.com', PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY);
 
 const findStudentByCnp = async (cnp) => {
     return await Student.findOne({
@@ -62,8 +67,6 @@ const produceOrderNumber = async (studentId, facultyId) => {
     return faculty.currentOrderNumber;
 }
 
-
-
 const findStudent = async (search, userId) => {
     search || generateError("Search field is not present", 400);
     userId || generateError("Faculty identifier is not present", 400);
@@ -87,19 +90,24 @@ const generateOrderNumber = async (student) => {
     return await produceOrderNumber(student.studentId, facultyId);
 }
 
-const getOptions = async (student) => {
-    student.studentId || generateError("Student identifier is not present", 400);
+const notifyStudent = async (studentId) => {
+    studentId || generateError("Student identifier not present", 400);
 
-    const options = await FacultyProfile.findAll({ raw: true });
-    const selectedOptions = await StudentOption.findAll({ where: { studentId: student.studentId }, include: { model: FacultyProfile }, raw: true });
+    const student = await Student.findOne({ id: studentId });
 
-    const selectedOptionsIds = selectedOptions.map(options => options.facultyProfileId);
-    const notSelectedOptions = options.filter(option => !selectedOptionsIds.includes(option.id));
+    if (student && student.notificationToken) {
+        const payload = { title: "You're next!", content: "Come at the faculty entrance asap" };
+        //endpoint, p256dh, auth
+        const subscriptionData = student.notificationToken.split("#");
+        const keys = { p256dh: subscriptionData[1], auth: subscriptionData[2] };
+        const subscription = { endpoint: subscriptionData[0], expirationTime: null, keys: keys };
 
-    return { selectedOptions, notSelectedOptions };
+        webpush.sendNotification(subscription, payload);
+    }
 }
 
 module.exports = {
     findStudent,
     generateOrderNumber,
+    notifyStudent
 }
