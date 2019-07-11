@@ -34,6 +34,5 @@ module.exports.createPositionRequest = async (ctx) => {
 
 module.exports.createFlow = async (ctx) => {
     await userService.createFlow(ctx.request.body, ctx.user.id);
-    userService.notifyRedis();
     httpHelper.createHttpResponse(ctx, 200, "Created flow");
 }
