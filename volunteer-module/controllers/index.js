@@ -7,6 +7,10 @@ module.exports.createUser = async (ctx) => {
     httpHelper.createHttpResponse(ctx, 201, { user: user });
 }
 
+module.exports.subscribe = async (ctx) => {
+    await userService.subscribe(ctx.request.body.notificationToken, ctx.user.id);
+}
+
 module.exports.loadUser = async (ctx) => {
     const user = await userService.loadUser(ctx.user.id);
     httpHelper.createHttpResponse(ctx, 200, { user: user });
@@ -35,4 +39,14 @@ module.exports.createPositionRequest = async (ctx) => {
 module.exports.createFlow = async (ctx) => {
     await userService.createFlow(ctx.request.body, ctx.user.id);
     httpHelper.createHttpResponse(ctx, 200, "Created flow");
+}
+
+module.exports.notifyStudent = async (ctx) => {
+    await studentService.notifyStudent(ctx.request.body.studentId);
+    httpHelper.createHttpResponse(ctx, 200, "Notification sent");
+}
+
+module.exports.notifyUser = async (ctx) => {
+    await userService.notifyUser(ctx.request.body.userId);
+    httpHelper.createHttpResponse(ctx, 200, "Notification sent");
 }

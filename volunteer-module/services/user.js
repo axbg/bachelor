@@ -5,10 +5,14 @@ const Position = require('../models/index').Position;
 const PositionRequest = require('../models/index').PositionRequest;
 const Flow = require('../models/index').Flow;
 const redis = require('redis');
+const webpush = require('web-push');
 const REDIS_ADDRESS = require('../config/index').REDIS_ADDRESS;
 const REDIS_PORT = require('../config/index').REDIS_PORT;
-const REDIS_QUEUE = require('../config/index').REDIS_QUEUE;
+const PUBLIC_VAPID_KEY = require('../config/index').PUBLIC_VAPID_KEY;
+const PRIVATE_VAPID_KEY = require('../config/index').PRIVATE_VAPID_KEY;
+
 const redisClient = redis.createClient(REDIS_PORT, REDIS_ADDRESS);
+webpush.setVapidDetails('mailto:bisagalexstefan@gmail.com', PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY);
 
 const validateUser = async (user) => {
     user.username || generateError("Username not present", 400);
@@ -20,15 +24,20 @@ const validateUser = async (user) => {
 }
 
 const notifyRedis = (channel, message) => {
-    redisClient.publish("flow", "Flow added");
+    redisClient.publish(channel, message);
 }
-
-
 
 const createUser = async (user) => {
     await validateUser(user);
     await User.create(user);
     return user;
+}
+
+const subscribe = async (notificationToken, userId) => {
+    notificationToken || generateError("Notification token not present", 400);
+    userId || generateError("User identifier not present", 400);
+
+    await User.update({ notificationToken: notificationToken }, { where: { id: userId } });
 }
 
 const loadUser = async (userId) => {
@@ -52,7 +61,8 @@ const createPositionRequest = async (request, userId) => {
     request.positionId || generateError("Position identifier is not present", 400);
     request.userId = parseInt(userId);
     const requestEntity = await PositionRequest.create({ ...request }, { include: [{ model: Position }] });
-    notifyRedis("flow-position-request", "");
+    const user = await User.findOne({ where: { id: userId } });
+    notifyRedis("flow-position-request", user.facultyId);
     return await PositionRequest.findOne({ where: { id: requestEntity.id }, include: [{ model: Position }] });
 }
 
@@ -60,13 +70,32 @@ const createFlow = async (flow, userId) => {
     flow.flow || generateError("Flow number is not present", 400);
     const currentUser = await User.findOne({ where: { id: userId } });
     await Flow.create({ flow: flow.flow, time: (new Date()).getTime(), facultyId: currentUser.facultyId });
-    notifyRedis("flow-flow", "");
+    notifyRedis("flow-flow", currentUser.facultyId);
 }
+
+const notifyUser = async (userId) => {
+    userId || generateError("User identifier not present", 400);
+
+    const user = await user.findOne({ id: userId });
+
+    if (user && user.notificationToken) {
+        const payload = { title: "Position updated", content: "Check Flow App" };
+        //endpoint, p256dh, auth
+        const subscriptionData = user.notificationToken.split("#");
+        const keys = { p256dh: subscriptionData[1], auth: subscriptionData[2] };
+        const subscription = { endpoint: subscriptionData[0], expirationTime: null, keys: keys };
+
+        webpush.sendNotification(subscription, payload);
+    }
+}
+
 
 module.exports = {
     createUser,
+    subscribe,
     loadUser,
     createPositionRequest,
     getPositions,
     createFlow,
+    notifyUser
 }

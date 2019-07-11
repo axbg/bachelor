@@ -11,6 +11,8 @@ router.post("/create", userController.createUser);
 
 router.use(withSecurityHeaders);
 
+router.post('/subscribe', userController.subscribe);
+
 router.get('/load', userController.loadUser);
 
 router.get('/search-student/:search', userController.searchStudent);
@@ -23,7 +25,8 @@ router.post('/position-request', userController.createPositionRequest);
 
 router.post('/flow', userController.createFlow);
 
-//TO DO
-router.get('/notify-students');
+router.post('/notify-student', userController.notifyStudent);
+
+router.post('/notify-volunteer', userController.notifyStudent);
 
 module.exports = router;
