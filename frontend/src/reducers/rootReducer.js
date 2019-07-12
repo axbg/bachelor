@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import {reducer as toastrReducer } from 'react-redux-toastr';
 import shellReducer, { ShellState } from './shellReducer';
 import authReducer, { AuthState } from './authReducer';
 import volunteerReducer, { VolunteerState } from './volunteerReducer';
@@ -14,6 +15,7 @@ export const initialState = {
 }
 
 export default combineReducers({
+    toastr: toastrReducer,
     shellReducer,
     authReducer,
     volunteerReducer,
