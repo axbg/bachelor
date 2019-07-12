@@ -8,8 +8,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-class MultistepData extends Component {
+class SmartMultistepData extends Component {
 
+    //will receive proops from parent component 
+    //also, will receive callbacks to call backend
     constructor(props) {
         super();
         this.state = {
@@ -401,4 +403,4 @@ class MultistepData extends Component {
     }
 }
 
-export default MultistepData;
+export default SmartMultistepData;

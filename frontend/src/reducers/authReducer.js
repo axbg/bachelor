@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { REQUEST, SUCCESS, FAILURE } from '../config/actions-async-types';
+import { BASE_URL } from '../constants/index';
 
 export const ACTIONS = {
     AUTHENTICATE: "AUTHENTICATE",
@@ -7,12 +8,8 @@ export const ACTIONS = {
 }
 
 export const AuthState = {
-    id: null,
-    username: null,
-    role: null,
-    firstname: null,
-    lastname: null,
-    loaded: false
+    loading: true,
+    jwt: null,
 }
 
 export default (state = {}, action) => {
@@ -20,14 +17,16 @@ export default (state = {}, action) => {
         case REQUEST(ACTIONS.AUTHENTICATE):
             return {
                 ...state,
-                loaded: false
             }
         case SUCCESS(ACTIONS.AUTHENTICATE):
             return {
                 ...state,
                 ...action.payload.data,
-                loaded: true,
-                role: "VOLUNTEER"
+                loading: true
+            }
+        case FAILURE(ACTIONS.AUTHENTICATE):
+            return {
+                ...state,
             }
         case ACTIONS.LOGOUT:
             return {
@@ -38,10 +37,10 @@ export default (state = {}, action) => {
     }
 }
 
-export const authenticate = () => dispatch => {
+export const authenticate = (payload) => dispatch => {
     dispatch({
         type: ACTIONS.AUTHENTICATE,
-        payload: axios.get("http://www.mocky.io/v2/5cdd21633000001a46e23534")
+        payload: axios.post(BASE_URL + "/login", { ...payload })
     })
 }
 

@@ -15,7 +15,6 @@ const theme = createMuiTheme({
 
 function shouldAutoLogin() {
   return window.localStorage.getItem("auth-token") ? true : false;
-  //return window.localStorage.getItem("auth-token") ? false : true;
 }
 
 function App() {
