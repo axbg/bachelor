@@ -13,7 +13,7 @@ const generateEnrollmentDocument = async (authToken, studentId, document) => {
         ]
     };
 
-    pdfMake.createPdf(documentDefintion).getBuffer(async (result) => {
+    pdfMake.createPdf(documentDefintion).getBase64(async (result) => {
         await Document.create({
             title: document.title,
             file: result,
