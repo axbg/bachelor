@@ -56,21 +56,7 @@ const sendMailToStudent = (details, email, profile, authorization) => {
 }
 
 const sendMaillWithDocuments = async (authorization, userId, email) => {
-    const faculties = await Faculty.findAll({});
-
-    const documents = await Document.findAll({
-        where: { userId: userId },
-        attributes: ['title', 'file'], order: [['id', 'DESC']], limit: faculties.length
-    })
-
-    let filenames = [];
-    let attachments = [];
-    documents.forEach(document => {
-        attachments.push(document.file);
-        filenames.push(document.title);
-    })
-
-    sendMultipleAttachmentsMail(authorization, "Admitere - Rezultate", "Rezultate admitere", email);
+    sendMultipleAttachmentsMail(authorization, "Admitere - Rezultate", "Rezultate admitere", email, userId);
 }
 
 const buildDocumentDefinition = (facultyName, isDry, results) => {

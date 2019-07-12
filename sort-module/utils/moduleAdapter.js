@@ -16,12 +16,13 @@ module.exports.sendMail = (authToken, subject, message, destination, attachment)
     axios.post(MAIL_ADDRESS, { ...mailData }, { headers: headers });
 }
 
-module.exports.sendMultipleAttachmentsMail = (authToken, subject, message, destination) => {
+module.exports.sendMultipleAttachmentsMail = (authToken, subject, message, destination, userId) => {
     const mailData = {
         message: message,
         title: subject,
         destination: destination,
-        multiple: true
+        multiple: true,
+        userId: userId
     };
 
     const headers = {
