@@ -34,6 +34,12 @@ app.use("/volunteer/create", proxy({
     }
 }));
 
+app.use("/socket.io", proxy({
+    target: constants.BASE_URL + ":" + constants.SCREENING_MODULE_PORT, pathRewrite: {
+        "/screening": ""
+    }, ws: true
+}));
+
 //private
 app.use(jwt({ secret: JWT_SECRET }));
 
@@ -53,13 +59,29 @@ app.use("/mail", proxy({
 app.use("/enrollment", proxy({
     target: constants.BASE_URL + ":" + constants.ENROLLMENT_MODULE_PORT, pathRewrite: {
         "/enrollment": ""
-    }
+    },
+    onProxyReq: extractFromJWT
 }));
 
 app.use("/volunteer", proxy({
     target: constants.BASE_URL + ":" + constants.VOLUNTEER_MODULE_PORT, pathRewrite: {
         "/volunteer": ""
-    }
+    },
+    onProxyReq: extractFromJWT
+}));
+
+app.use("/payment", proxy({
+    target: constants.BASE_URL + ":" + constants.PAYMENT_MODULE_PORT, pathRewrite: {
+        "/payment": ""
+    },
+    onProxyReq: extractFromJWT
+}));
+
+app.use("/admin", proxy({
+    target: constants.BASE_URL + ":" + constants.ADMIN_MODULE_PORT, pathRewrite: {
+        "/admin": ""
+    },
+    onProxyReq: extractFromJWT
 }));
 
 app.listen(constants.GATEWAY_MODULE_PORT,
