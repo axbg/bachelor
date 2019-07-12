@@ -133,7 +133,6 @@ class StudentProfile extends Component {
     }
 }
 
-//connect to redux
 const mapStateToProps = ({ authReducer }) => ({
     role: authReducer.role,
     student: authReducer.student,

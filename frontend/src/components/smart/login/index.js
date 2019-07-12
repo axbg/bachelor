@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import './index.css';
 import { authenticate } from '../../../reducers/authReducer';
 import { TextField } from '@material-ui/core';
-import Shell from '../shell/index';
+import { toastr } from 'react-redux-toastr'
 
 class Login extends Component {
 
@@ -12,6 +12,12 @@ class Login extends Component {
         this.state = {
             email: "",
             password: ""
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.failed) {
+            toastr.error("Credentials don't match");
         }
     }
 
@@ -37,41 +43,38 @@ class Login extends Component {
         this.handleJwt();
         return (
             <div style={{ height: "100%" }}>
-                {!this.props.jwt ?
-                    <div className="login-page">
-                        <div className="form">
-                            <img src="/logo_transparent.png" width="250" alt="logo" />
+                <div className="login-page">
+                    <div className="form">
+                        <img src="/logo_transparent.png" width="250" alt="logo" />
+                        <br />
+                        <br />
+                        <div className="login-form">
+                            <TextField
+                                fullWidth
+                                label="Email"
+                                onChange={this.change}
+                                name="email"
+                                value={this.state.email || ''}
+                                variant="outlined"
+                            />
                             <br />
                             <br />
-                            <div className="login-form">
-                                <TextField
-                                    fullWidth
-                                    label="Email"
-                                    onChange={this.change}
-                                    name="email"
-                                    value={this.state.email || ''}
-                                    variant="outlined"
-                                />
-                                <br />
-                                <br />
-                                <TextField
-                                    fullWidth
-                                    label="Password"
-                                    onChange={this.change}
-                                    name="password"
-                                    value={this.state.password || ''}
-                                    variant="outlined"
-                                    type="password"
-                                />
-                                <br />
-                                <br />
-                                <button onClick={() => { this.handleLogin() }}>Logare</button>
-                                <p className="message">Nu te-ai înscris încă? <a href="/register">Crează un cont!</a></p>
-                            </div>
+                            <TextField
+                                fullWidth
+                                label="Password"
+                                onChange={this.change}
+                                name="password"
+                                value={this.state.password || ''}
+                                variant="outlined"
+                                type="password"
+                            />
+                            <br />
+                            <br />
+                            <button onClick={() => { this.handleLogin() }}>Logare</button>
+                            <p className="message">Nu te-ai înscris încă? <a href="/register">Crează un cont!</a></p>
                         </div>
                     </div>
-                    :
-                    <Shell />
+                </div>
                 }
             </div>
         );
@@ -80,6 +83,7 @@ class Login extends Component {
 
 const mapStateToProps = ({ authReducer }) => ({
     jwt: authReducer.jwt,
+    failed: authReducer.failed
 });
 
 const mapDispatchToProps = { authenticate };

@@ -10,6 +10,7 @@ export const ACTIONS = {
 export const AuthState = {
     loading: true,
     jwt: null,
+    failed: false
 }
 
 export default (state = {}, action) => {
@@ -17,16 +18,19 @@ export default (state = {}, action) => {
         case REQUEST(ACTIONS.AUTHENTICATE):
             return {
                 ...state,
+                failed: false
             }
         case SUCCESS(ACTIONS.AUTHENTICATE):
             return {
                 ...state,
                 ...action.payload.data,
-                loading: true
+                loading: true,
+                failed: false
             }
         case FAILURE(ACTIONS.AUTHENTICATE):
             return {
                 ...state,
+                failed: true
             }
         case ACTIONS.LOGOUT:
             return {
@@ -41,7 +45,7 @@ export const authenticate = (payload) => dispatch => {
     dispatch({
         type: ACTIONS.AUTHENTICATE,
         payload: axios.post(BASE_URL + "/login", { ...payload })
-    })
+    });
 }
 
 export const clearAuthToken = () => {
