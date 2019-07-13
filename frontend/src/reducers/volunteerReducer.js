@@ -9,6 +9,7 @@ export const ACTIONS = {
 export const VolunteerState = {
     role: null,
     loading: true,
+    inAppLoading: false,
     volunteer: {}
 }
 

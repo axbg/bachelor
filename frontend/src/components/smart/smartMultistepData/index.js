@@ -7,36 +7,54 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { toastr } from 'react-redux-toastr';
 
 class SmartMultistepData extends Component {
 
     //will receive proops from parent component 
     //also, will receive callbacks to call backend
     constructor(props) {
-        super();
+        super(props);
         this.state = {
-            firstname: "",
-            lastname: "",
-            initial: "",
-            email: "",
-            password: "",
-            phone: "",
-            pin: "",
-            series: "",
-            number: "",
-            idEntity: "",
-            address: "",
-            city: "",
-            bacAverage: "",
-            bacRomanian: "",
-            average9: "",
-            average10: "",
-            average11: "",
-            average12: "",
+            firstname: this.props.student.firstname,
+            lastname: this.props.student.lastname,
+            parentInitial: this.props.student.parentInitial,
+            email: this.props.student.email,
+            phone: this.props.student.phone,
+            cnp: this.props.student.cnp,
+            series: this.props.student.series,
+            number: this.props.student.number,
+            idPublisher: this.props.student.idPublisher,
+            address: this.props.student.address,
+            city: this.props.student.city,
+            bacAverage: this.props.student.criterias[0].value,
+            bacRomanian: this.props.student.criterias[1].value,
+            average9: this.props.student.criterias[2].value,
+            average10: this.props.student.criterias[3].value,
+            average11: this.props.student.criterias[4].value,
+            average12: this.props.student.criterias[5].value,
             currentPage: 0,
-            //if role is not student or admin or 
-            maxPageNumber: 4
+            maxPageNumber: 3
         };
+    }
+
+    componentDidMount() {
+        this.setState({
+            maxPageNumber: this.props.role === "STUDENT" ? 3 : 4,
+            readOnly: this.isReadOnly()
+        })
+    }
+
+    isReadOnly() {
+        if (this.props.role === "ADMIN") {
+            return false;
+        } else if ((this.props.role === "OPERATOR" || this.props.role === "STUDENT") && !this.props.student.enrolled) {
+            console.log(this.props.enrolled);
+            console.log('asi');
+            return false;
+        } else {
+            return true;
+        }
     }
 
     change = e => {
@@ -45,11 +63,32 @@ class SmartMultistepData extends Component {
         });
     };
 
+    displayValidationErrors = e => {
+        const firstField = e[0].props.name;
+        let errorOnFields = "";
+
+        e.map(error => {
+            errorOnFields += " " + error.props.label + " "
+        });
+
+        toastr.warning("Campuri nevalide: " + errorOnFields);
+
+        if (["firstname", "lastname", "parentInitial"].includes(firstField)) {
+            this.setState({ currentPage: 0 });
+        } else if (["email", "phone", "address", "city"].includes(firstField)) {
+            this.setState({ currentPage: 1 });
+
+        } else if (["cnp", "series", "number", "idPublisher"].includes(firstField)) {
+            this.setState({ currentPage: 2 });
+
+        } else {
+            this.setState({ currentPage: 3 });
+        }
+    }
+
     onSubmit = e => {
         e.preventDefault();
-        // this.props.onSubmit(this.state);
-        console.log(this.state);
-        this.props.register(this.state);
+        this.props.updateData(this.state);
     };
 
     decreaseCurrentPage = () => {
@@ -75,15 +114,15 @@ class SmartMultistepData extends Component {
                         this.state.currentPage < this.state.maxPageNumber ? <span className="student-navigation-right" onClick={this.increaseCurrentPage}>⇢</span> : ""
                     }
                 </div>
-                <ValidatorForm ref="form" onSubmit={this.onSubmit} onError={errors => console.log(errors)}>
+                <ValidatorForm ref="form" onSubmit={this.onSubmit} onError={errors => this.displayValidationErrors(errors)}>
                     <div className={this.state.currentPage !== 0 ? 'hidden' : ''}>
                         <h4 className="student-data-header">Date Personale</h4>
                         <TextValidator
                             fullWidth
                             label="Prenume"
                             onChange={this.change}
-                            name="firstName"
-                            value={this.state.firstName || ''}
+                            name="firstname"
+                            value={this.state.firstname || ''}
                             validators={['required']}
                             errorMessages={['Câmp obligatoriu']}
                             variant="outlined"
@@ -97,8 +136,8 @@ class SmartMultistepData extends Component {
                             fullWidth
                             label="Nume"
                             onChange={this.change}
-                            name="lastName"
-                            value={this.state.lastName || ''}
+                            name="lastname"
+                            value={this.state.lastname || ''}
                             validators={['required']}
                             errorMessages={['Câmp obligatoriu']}
                             variant="outlined"
@@ -113,8 +152,8 @@ class SmartMultistepData extends Component {
                             fullWidth
                             label="Inițiala tatălui"
                             onChange={this.change}
-                            name="initial"
-                            value={this.state.initial || ''}
+                            name="parentInitial"
+                            value={this.state.parentInitial || ''}
                             validators={['required']}
                             errorMessages={['Câmp obligatoriu']}
                             variant="outlined"
@@ -209,8 +248,8 @@ class SmartMultistepData extends Component {
                             fullWidth
                             label="Serie buletin"
                             onChange={this.change}
-                            name="idSeries"
-                            value={this.state.idSeries || ''}
+                            name="series"
+                            value={this.state.series || ''}
                             validators={['required']}
                             errorMessages={['Câmp obligatoriu']}
                             variant="outlined"
@@ -224,8 +263,8 @@ class SmartMultistepData extends Component {
                             fullWidth
                             label="Număr buletin"
                             onChange={this.change}
-                            name="idNumber"
-                            value={this.state.idNumber || ''}
+                            name="number"
+                            value={this.state.number || ''}
                             validators={['required']}
                             errorMessages={['Câmp obligatoriu']}
                             variant="outlined"
@@ -239,8 +278,8 @@ class SmartMultistepData extends Component {
                             fullWidth
                             label="Eliberator buletin"
                             onChange={this.change}
-                            name="idEntity"
-                            value={this.state.idEntity || ''}
+                            name="idPublisher"
+                            value={this.state.idPublisher || ''}
                             validators={['required']}
                             errorMessages={['Câmp obligatoriu']}
                             variant="outlined"
@@ -393,7 +432,7 @@ class SmartMultistepData extends Component {
                         </div>
                     </div>
                     {
-                        this.state.currentPage !== 4 ?
+                        this.state.currentPage !== 4 && !this.state.readOnly ?
                             <Button type="submit" color="primary" variant="contained" label="Submit" >Înregistrare</Button>
                             : ""
                     }
