@@ -23,6 +23,7 @@
     "react-spinners": "^0.5.4",
     "react-stripe-elements": "^4.0.0",
     "react-swipeable-views": "^0.13.3",
+    "react-webcam": "^1.1.1",
     "redux": "^4.0.1",
     "redux-promise-middleware": "^6.1.0",
     "redux-thunk": "^2.3.0"
