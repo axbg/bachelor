@@ -11,7 +11,10 @@ import { STUDENT_DEFAULT_IMAGE } from '../../../../constants/index';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 import { changePassword, updateData } from '../../../../reducers/studentReducer';
-import { addCredits, changeTaxStatus, getFormattedOptions, addOption, deleteOption, updateStudentDataAsUser } from '../../../../reducers/volunteerReducer';
+import {
+    addCredits, changeTaxStatus, getFormattedOptions, addOption, deleteOption,
+    updateStudentDataAsUser, getFaculties, generateOrderNumber
+} from '../../../../reducers/volunteerReducer';
 import { logout } from '../../../../reducers/authReducer';
 import Webcam from 'react-webcam';
 
@@ -39,7 +42,8 @@ class StudentProfile extends Component {
             actualCredits: 0,
             credits: 0,
             tax: false,
-            isTakingPicture: false
+            isTakingPicture: false,
+            orderFacultyId: 0
         }
 
         this.openModal = this.openModal.bind(this);
@@ -58,6 +62,10 @@ class StudentProfile extends Component {
                 tax: this.props.userStudent.tax,
                 actualCredits: this.props.userStudent.credits
             })
+        }
+
+        if (this.props.userRole === "VOLUNTEER" && !this.props.faculties) {
+            this.props.getFaculties();
         }
 
         if ((this.props.studentData.admitted || this.props.userStudent.admitted) && this.props.userRole !== "ADMIN") {
@@ -94,9 +102,19 @@ class StudentProfile extends Component {
         }
     }
 
-    generateOrderNumber = () => {
-        if (window.confirm("are you sure?")) {
+    hasOptions = () => {
+        if (this.props.userStudent.options.length > 0) {
+            return this.props.userStudent.options[0].id
+        }
 
+        return false;
+    }
+
+    generateOrderNumber = () => {
+        if (window.confirm("Ești sigur?")) {
+            const facultyId = this.hasOptions() || this.state.orderFacultyId;
+            this.props.generateOrderNumber({ facultyId: facultyId, studentId: this.props.userStudent.id });
+            toastr.success("Bonul de ordine a fost generat!");
         }
     }
 
@@ -208,8 +226,21 @@ class StudentProfile extends Component {
                                     inputProps={{ 'aria-label': 'primary checkbox' }}
                                 />
                                 <span>Taxă</span>
-                            </div> : (this.state.role === "VOLUNTEER" ?
+                            </div> : (this.props.userRole === "VOLUNTEER" ?
                                 <div>
+                                    {
+                                        !this.hasOptions() && this.props.faculties ?
+                                            <div className="select">
+                                                <select className="select-text" name="orderFacultyId" onChange={(e) => this.onChange(e)} value={this.state.orderFacultyId} >
+                                                    {this.props.faculties.map((faculty, key) => <option key={key} value={faculty.id}>{faculty.name}</option>)}
+                                                </select>
+                                                <span className="select-highlight"></span>
+                                                <span className="select-bar"></span>
+                                                <label className="select-label">Facultate</label>
+                                                <br />
+                                            </div>
+                                            : ""
+                                    }
                                     <Button onClick={this.generateOrderNumber} color="primary" variant="contained" component="span" >
                                         Generează bon de ordine
                                     </Button>
@@ -236,12 +267,14 @@ const mapStateToProps = ({ studentReducer, volunteerReducer }) => ({
     studentData: studentReducer,
     userRole: volunteerReducer.role,
     userStudent: volunteerReducer.student,
-    formattedOptions: volunteerReducer.formattedOptions
+    formattedOptions: volunteerReducer.formattedOptions,
+    faculties: volunteerReducer.faculties
 });
 
 const mapDispatchToProps = {
     changePassword, updateData, logout, addCredits, changeTaxStatus,
-    getFormattedOptions, addOption, deleteOption, updateStudentDataAsUser
+    getFormattedOptions, addOption, deleteOption, updateStudentDataAsUser,
+    getFaculties, generateOrderNumber
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentProfile);

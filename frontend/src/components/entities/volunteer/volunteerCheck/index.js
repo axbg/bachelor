@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './index.css'
 import Button from "@material-ui/core/Button";
+import { connect } from 'react-redux';
+import { createFlow, sendStudentNotifications } from '../../../../reducers/volunteerReducer';
 
 class VolunteerCheck extends Component {
 
@@ -38,7 +40,8 @@ class VolunteerCheck extends Component {
                         <div className="circled" onClick={() => this.incrementFlux(-1)}>-</div>
                     </div>
                     <div className="volunteer-button">
-                        <Button style={{ width: '250px' }} type="submit" color="primary" variant="contained" label="Submit">
+                        <Button style={{ width: '250px' }} type="submit" color="primary" variant="contained"
+                            onClick={() => this.props.createFlow(this.state.flux)} label="Submit">
                             Adaugă Flux
                         </Button>
                     </div>
@@ -56,7 +59,8 @@ class VolunteerCheck extends Component {
                         <div className="circled" onClick={() => this.incrementNotify(-1)}>-</div>
                     </div>
                     <div className="volunteer-button">
-                        <Button style={{ width: '250px' }} type="submit" color="primary" variant="contained" label="Submit">
+                        <Button style={{ width: '250px' }} type="submit" color="primary" variant="contained"
+                            onClick={() => this.props.sendStudentNotifications(this.state.notify)} label="Submit">
                             Trimite Notificări
                         </Button>
                     </div>
@@ -66,4 +70,9 @@ class VolunteerCheck extends Component {
     }
 }
 
-export default VolunteerCheck;
+const mapStateToProps = ({ studentReducer }) => ({
+});
+
+const mapDispatchToProps = { createFlow, sendStudentNotifications };
+
+export default connect(mapStateToProps, mapDispatchToProps)(VolunteerCheck);
