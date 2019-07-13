@@ -5,6 +5,8 @@ import Slide from '@material-ui/core/Slide';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import { connect } from 'react-redux';
+import { toastr } from 'react-redux-toastr';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -25,7 +27,9 @@ class StudentHome extends Component {
     }
 
     componentDidMount() {
-        //if student is inactive, display a toast to remind him to change his password from profile
+        if (!this.props.student.active) {
+            toastr.info("Nu uita să îți actualizezi parola din fereastra Profil");
+        }
     }
 
     openModal() {
@@ -34,6 +38,11 @@ class StudentHome extends Component {
 
     handleClose() {
         this.setState({ modal: false })
+    }
+
+    isAdmitted() {
+        const option = this.props.student.options.find(option => option.admitted);
+        return option ? (option.faculty_profile.name + (option.faculty_profile.type === "B" ? " - BUGET" : " - TAXA")) : "";
     }
 
     render() {
@@ -45,21 +54,27 @@ class StudentHome extends Component {
                     <DialogTitle id="alert-dialog-slide-title">Informații utile</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
-                            Accesează link-urile următoare pentru a afla mai multe despre procesul de admitere
-                            aicea link-uri
+                            Accesează link-urile următoare pentru a afla mai multe despre procesul de admitere poți accesa:
+                        </DialogContentText>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            <a href="https://ase.ro">Academia de Studii Economice din București</a>
+                        </DialogContentText>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            <a href="http://sisc.ro">Sindicatul Studenților din cibernetică</a>
                         </DialogContentText>
                     </DialogContent>
                 </Dialog>
-                <h2>Bună, Alexandru</h2>
+                <h2>Bună, {this.props.student.firstname}</h2>
                 <div className="student-info">
-                    <h3>Starea curentă: Nerepartizat</h3>
+                    {this.isAdmitted() ? <h3>Ai fost repartizat la {this.isAdmitted()}</h3>
+                        : <h3>Starea curentă: Nerepartizat</h3>}
                     {
-                        !this.state.confirmed ?
+                        !this.props.student.admitted ?
                             <div className="student-home-cards-container">
                                 <Card className="student-home-card">
                                     <CardContent>
                                         <Typography variant="h2" component="h2">
-                                            312
+                                            {this.props.student.orderNumber}
                                         </Typography>
                                         <Typography variant="h6" component="h6">
                                             bonul tău de ordine
@@ -69,7 +84,7 @@ class StudentHome extends Component {
                                 <Card className="student-home-card">
                                     <CardContent>
                                         <Typography variant="h2" component="h2">
-                                            210
+                                            321
                                         </Typography>
                                         <Typography variant="h6" component="h6">
                                             bonul de ordine curent
@@ -102,7 +117,7 @@ class StudentHome extends Component {
                                 <h4>Orice modificare a stării curente va fi semnalată atât aici,
                                     cât și prin trimiterea unui email</h4>
                                 {
-                                    !this.state.withdraw ?
+                                    !this.state.withdrawPortfolio ?
                                         <div>
                                             <h5>Dacă vrei să îți retragi dosarul, poți apăsa pe butonul de mai jos pentru a fi
                                                 repartizat la o coadă specială în ziua retragerii</h5>
@@ -123,4 +138,11 @@ class StudentHome extends Component {
     }
 }
 
-export default StudentHome;
+const mapStateToProps = ({ studentReducer }) => ({
+    role: studentReducer.role,
+    student: studentReducer,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StudentHome);

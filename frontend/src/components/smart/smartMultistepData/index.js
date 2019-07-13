@@ -49,8 +49,6 @@ class SmartMultistepData extends Component {
         if (this.props.role === "ADMIN") {
             return false;
         } else if ((this.props.role === "OPERATOR" || this.props.role === "STUDENT") && !this.props.student.enrolled) {
-            console.log(this.props.enrolled);
-            console.log('asi');
             return false;
         } else {
             return true;
@@ -67,9 +65,7 @@ class SmartMultistepData extends Component {
         const firstField = e[0].props.name;
         let errorOnFields = "";
 
-        e.map(error => {
-            errorOnFields += " " + error.props.label + " "
-        });
+        e.map(error => errorOnFields += " " + error.props.label + " ");
 
         toastr.warning("Campuri nevalide: " + errorOnFields);
 

@@ -11,6 +11,7 @@ import { STUDENT_DEFAULT_IMAGE } from '../../../../constants/index';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 import { changePassword, updateData } from '../../../../reducers/studentReducer'
+import { logout } from '../../../../reducers/authReducer';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -100,9 +101,9 @@ class StudentProfile extends Component {
                         </DialogContentText>
                         <input type="password" name="newPassword" placeholder="Inserează noua parolă" value={this.state.newPassword} onChange={this.onChange} />
                         <input type="password" name="newPasswordCheck" placeholder="Repetă parola" value={this.state.newPasswordCheck} onChange={this.onChange} />
-                        <Button onClick={this.generateOrderNumber} color="primary" variant="contained" component="span" onClick={() => this.submitNewPassword()}>
+                        <Button onClick={() => this.submitNewPassword()} color="primary" variant="contained" component="span" >
                             Salvează
-                            </Button>
+                        </Button>
                     </DialogContent>
                 </Dialog>
                 <img className="big-avatar" alt=""
@@ -113,6 +114,15 @@ class StudentProfile extends Component {
                             <LanguageIcon language={this.state.language} />
                             <img width="30" height="30" src="/password.png" onClick={() => this.openModal()}
                                 alt="PASSWORD" />
+                        </div>
+                        : ""
+                }
+                {
+                    this.state.role === "STUDENT" ?
+                        <div className="student-profile-icon-container">
+                            <Button color="primary" variant="contained" component="span" onClick={() => this.props.logout()}>
+                                Logout
+                            </Button>
                         </div>
                         : ""
                 }
@@ -171,9 +181,9 @@ class StudentProfile extends Component {
 //then render role-specific things based on that
 const mapStateToProps = ({ studentReducer }) => ({
     role: studentReducer.role,
-    student: studentReducer.student,
+    student: studentReducer,
 });
 
-const mapDispatchToProps = { changePassword, updateData };
+const mapDispatchToProps = { changePassword, updateData, logout };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentProfile);
