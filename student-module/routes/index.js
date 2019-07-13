@@ -15,7 +15,7 @@ router.post('/change-password', studentController.changePassword);
 
 router.get('/load', studentController.loadStudent);
 
-router.patch('/update', studentController.updateStudent);
+router.patch('/update/:studentId?', studentController.updateStudent);
 
 router.post('/generate-order-number', studentController.generateOrderNumber);
 

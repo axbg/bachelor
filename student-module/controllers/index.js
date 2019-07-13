@@ -20,7 +20,8 @@ module.exports.loadStudent = async (ctx) => {
 }
 
 module.exports.updateStudent = async (ctx) => {
-    const student = await studentService.updateStudent(ctx.request.body, ctx.user.id);
+    const studentId = ctx.params.studentId ? ctx.params.studentId : ctx.user.id;
+    const student = await studentService.updateStudent(ctx.request.body, studentId);
     student ? httpHelper.createHttpResponse(ctx, 200, { student: student })
         : httpHelper.createHttpResponse(ctx, 400, "Data cannot be modified after a student was enrolled");
 }
@@ -40,6 +41,7 @@ module.exports.getOptions = async (ctx) => {
 module.exports.createOption = async (ctx) => {
     const studentId = ctx.user.type === "STUDENT" ? ctx.user.id : ctx.params.studentId;
     await studentService.createOption(ctx.request.body, studentId);
+    //refactor
     const options = await studentService.getOptions(studentId);
     const student = await studentService.loadStudentData(studentId);
     httpHelper.createHttpResponse(ctx, 200, { options: options, student: student });
@@ -48,6 +50,7 @@ module.exports.createOption = async (ctx) => {
 module.exports.deleteOption = async (ctx) => {
     const studentId = ctx.user.type === "STUDENT" ? ctx.user.id : ctx.params.studentId;
     await studentService.deleteOption(ctx.params, studentId);
+    //refactor
     const options = await studentService.getOptions(studentId);
     const student = await studentService.loadStudentData(studentId);
     httpHelper.createHttpResponse(ctx, 200, { options: options, student: student });
