@@ -11,14 +11,19 @@ import { STUDENT_DEFAULT_IMAGE } from '../../../../constants/index';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 import { changePassword, updateData } from '../../../../reducers/studentReducer';
-import { addCredits, changeTaxStatus } from '../../../../reducers/volunteerReducer';
+import { addCredits, changeTaxStatus, getFormattedOptions, addOption, deleteOption, updateStudentDataAsUser } from '../../../../reducers/volunteerReducer';
 import { logout } from '../../../../reducers/authReducer';
+import Webcam from 'react-webcam';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 class StudentProfile extends Component {
+
+    setRef = webcam => {
+        this.webcam = webcam;
+    };
 
     constructor() {
         super();
@@ -33,7 +38,8 @@ class StudentProfile extends Component {
             newPasswordCheck: "",
             actualCredits: 0,
             credits: 0,
-            tax: false
+            tax: false,
+            isTakingPicture: false
         }
 
         this.openModal = this.openModal.bind(this);
@@ -94,27 +100,63 @@ class StudentProfile extends Component {
         }
     }
 
+    openCameraModal = () => {
+        this.setState({
+            isTakingPicture: true,
+        });
+
+        this.openModal();
+    }
+
+    takePicture = () => {
+        const picture = this.webcam.getScreenshot();
+        this.props.updateStudentDataAsUser({ studentId: this.props.userStudent.id, data: { photo: picture } });
+        this.webcam.stream.getVideoTracks()[0].stop();
+        this.setState({
+            isTakingPicture: false
+        })
+        this.handleClose();
+    }
+
     render() {
         return (
             < div className="student-profile-container" >
                 <Dialog open={this.state.modal} onClose={this.handleClose} TransitionComponent={Transition}
                     keepMounted aria-labelledby="alert-dialog-slide-title"
                     aria-describedby="alert-dialog-slide-description">
-                    <DialogTitle id="alert-dialog-slide-title">Actualizare parolă</DialogTitle>
-                    <DialogContent className="password-modal-container">
-                        <DialogContentText id="alert-dialog-slide-description">
-                            Parola trebuie să aibă dimensiunea minimă de 8 caractere și
-                                să conțină minim o literă mare, o literă mică, o cifră și un simbol
-                        </DialogContentText>
-                        <input type="password" name="newPassword" placeholder="Inserează noua parolă" value={this.state.newPassword} onChange={this.onChange} />
-                        <input type="password" name="newPasswordCheck" placeholder="Repetă parola" value={this.state.newPasswordCheck} onChange={this.onChange} />
-                        <Button onClick={() => this.submitNewPassword()} color="primary" variant="contained" component="span" >
-                            Salvează
-                        </Button>
-                    </DialogContent>
+                    {!this.state.isTakingPicture ?
+                        <div>
+                            <DialogTitle id="alert-dialog-slide-title">Actualizare parolă</DialogTitle>
+                            <DialogContent className="password-modal-container">
+                                <DialogContentText id="alert-dialog-slide-description">
+                                    Parola trebuie să aibă dimensiunea minimă de 8 caractere și
+                                        să conțină minim o literă mare, o literă mică, o cifră și un simbol
+                                </DialogContentText>
+                                <input type="password" name="newPassword" placeholder="Inserează noua parolă" value={this.state.newPassword} onChange={this.onChange} />
+                                <input type="password" name="newPasswordCheck" placeholder="Repetă parola" value={this.state.newPasswordCheck} onChange={this.onChange} />
+                                <Button onClick={() => this.submitNewPassword()} color="primary" variant="contained" component="span" >
+                                    Salvează
+                                </Button>
+                            </DialogContent>
+                        </div>
+                        :
+                        <div>
+                            <DialogTitle id="alert-dialog-slide-title">Fotografie de profil</DialogTitle>
+                            <DialogContent className="password-modal-container">
+                                <Webcam audio={false}
+                                    height={350}
+                                    ref={this.setRef}
+                                    screenshotFormat="image/jpeg"
+                                    width={350} />
+                                <Button onClick={() => this.takePicture()} color="primary" variant="contained" component="span" >
+                                    Salvează
+                                </Button>
+                            </DialogContent>
+                        </div>
+                    }
                 </Dialog>
                 <img className="big-avatar" alt=""
-                    src={"data:image/png;base64," + (this.props.studentData.photo || this.props.userStudent.photo ? (this.props.studentData.photo ? this.props.studentData.photo : this.props.userStudent.photo) : STUDENT_DEFAULT_IMAGE)} />
+                    src={this.props.studentData.photo || this.props.userStudent.photo ? (this.props.studentData.photo ? this.props.studentData.photo : this.props.userStudent.photo) : STUDENT_DEFAULT_IMAGE} />
                 {
                     this.props.studentRole === "STUDENT" ?
                         <div className="student-profile-icon-container">
@@ -136,18 +178,9 @@ class StudentProfile extends Component {
                 {
                     this.props.userRole === "OPERATOR" ?
                         <div>
-                            <input
-                                accept="image/*"
-                                style={{ display: 'none' }}
-                                id="raised-button-file"
-                                multiple
-                                type="file"
-                            />
-                            <label htmlFor="raised-button-file">
-                                <Button color="primary" variant="contained" component="span" >
-                                    Încarcă Fotografie
+                            <Button color="primary" variant="contained" component="span" onClick={() => this.openCameraModal()} >
+                                Încarcă Fotografie
                                 </Button>
-                            </label>
                         </div> :
                         (this.props.userRole === "CASHIER" ?
                             <div>
@@ -188,7 +221,9 @@ class StudentProfile extends Component {
                     <Paper className="student-profile-data-paper">
                         <SmartMultistepData role={this.props.studentRole ? this.props.studentRole : this.props.userRole}
                             student={this.props.studentRole ? this.props.studentData : this.props.userStudent}
-                            updateData={this.props.updateData} />
+                            updateData={this.props.studentRole ? this.props.updateData : this.props.updateStudentDataAsUser} formattedOptions={this.props.formattedOptions}
+                            getFormattedOptions={this.props.getFormattedOptions}
+                            addOption={this.props.addOption} deleteOption={this.props.deleteOption} />
                     </Paper>
                 </div>
             </div >
@@ -201,8 +236,12 @@ const mapStateToProps = ({ studentReducer, volunteerReducer }) => ({
     studentData: studentReducer,
     userRole: volunteerReducer.role,
     userStudent: volunteerReducer.student,
+    formattedOptions: volunteerReducer.formattedOptions
 });
 
-const mapDispatchToProps = { changePassword, updateData, logout, addCredits, changeTaxStatus };
+const mapDispatchToProps = {
+    changePassword, updateData, logout, addCredits, changeTaxStatus,
+    getFormattedOptions, addOption, deleteOption, updateStudentDataAsUser
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentProfile);

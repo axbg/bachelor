@@ -2,48 +2,70 @@ import React, { Component } from 'react';
 import './index.css';
 import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import { toastr } from 'react-redux-toastr';
+import Credits from '../../dumb/credits';
 
 class SmartMultistepData extends Component {
 
-    //will receive proops from parent component 
-    //also, will receive callbacks to call backend
     constructor(props) {
         super(props);
-
-        this.state = {
-            firstname: this.props.student.firstname,
-            lastname: this.props.student.lastname,
-            parentInitial: this.props.student.parentInitial,
-            email: this.props.student.email,
-            phone: this.props.student.phone,
-            cnp: this.props.student.cnp,
-            series: this.props.student.series,
-            number: this.props.student.number,
-            idPublisher: this.props.student.idPublisher,
-            address: this.props.student.address,
-            city: this.props.student.city,
-            bacAverage: this.props.student.criterias[0].value,
-            bacRomanian: this.props.student.criterias[1].value,
-            average9: this.props.student.criterias[2].value,
-            average10: this.props.student.criterias[3].value,
-            average11: this.props.student.criterias[4].value,
-            average12: this.props.student.criterias[5].value,
-            currentPage: 0,
-            maxPageNumber: 3
-        };
+        if (this.props.student.criterias) {
+            this.state = {
+                firstname: this.props.student.firstname,
+                lastname: this.props.student.lastname,
+                parentInitial: this.props.student.parentInitial,
+                email: this.props.student.email,
+                phone: this.props.student.phone,
+                cnp: this.props.student.cnp,
+                series: this.props.student.series,
+                number: this.props.student.number,
+                idPublisher: this.props.student.idPublisher,
+                address: this.props.student.address,
+                city: this.props.student.city,
+                bacAverage: this.props.student.criterias[0].value,
+                bacRomanian: this.props.student.criterias[1].value,
+                average9: this.props.student.criterias[2].value,
+                average10: this.props.student.criterias[3].value,
+                average11: this.props.student.criterias[4].value,
+                average12: this.props.student.criterias[5].value,
+                currentPage: 0,
+                maxPageNumber: 3,
+            };
+        } else {
+            this.state = {
+                firstname: null,
+                lastname: null,
+                parentInitial: null,
+                email: null,
+                phone: null,
+                cnp: null,
+                series: null,
+                number: null,
+                idPublisher: null,
+                address: null,
+                city: null,
+                bacAverage: null,
+                bacRomanian: null,
+                average9: null,
+                average10: null,
+                average11: null,
+                average12: null,
+                currentPage: 0,
+                maxPageNumber: 3
+            }
+        }
     }
 
     componentDidMount() {
         this.setState({
-            maxPageNumber: this.props.role === "STUDENT" ? 3 : 4,
+            maxPageNumber: (this.props.role === "OPERATOR" || this.props.role === "ADMIN") ? 4 : 3,
             readOnly: this.isReadOnly()
         })
+
+        if (((this.props.role === "OPERATOR" && this.props.student.enrolled === false) || this.props.role === "ADMIN")
+            && !this.props.formattedOptions) {
+            this.props.getFormattedOptions(this.props.student.id);
+        }
     }
 
     isReadOnly() {
@@ -85,7 +107,13 @@ class SmartMultistepData extends Component {
 
     onSubmit = e => {
         e.preventDefault();
-        this.props.updateData(this.state);
+        if (this.props.role !== "STUDENT") {
+            this.props.updateData({ studentId: this.props.student.id, data: this.state });
+        } else {
+            this.props.updateData(this.state);
+        }
+
+        toastr.success("Datele au fost actualizate");
     };
 
     decreaseCurrentPage = () => {
@@ -381,52 +409,10 @@ class SmartMultistepData extends Component {
                         <br />
                     </div>
                     <div className={this.state.currentPage !== 4 ? 'hidden' : ''}>
-                        <div>
-                            <h4 className="student-data-header">Date Sistem</h4>
-                            <div>
-                                <div className="student-credits-table-container">
-                                    <h4>Număr credite: 0</h4>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell className="no-padding-table-cell">#</TableCell>
-                                                <TableCell>Facultate</TableCell>
-                                                <TableCell className="no-padding-table-cell"></TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            <TableRow>
-                                                <TableCell className="no-padding-table-cell">21</TableCell>
-                                                <TableCell>CSIE - Informatică Economică - Buget</TableCell>
-                                                <TableCell className="no-padding-table-cell"><Button>Șterge</Button></TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell className="no-padding-table-cell">21</TableCell>
-                                                <TableCell>CSIE - Informatică Economică - Taxă</TableCell>
-                                                <TableCell className="no-padding-table-cell"><Button>Șterge</Button></TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    </Table>
-                                </div>
-                                <br />
-                                <br />
-                                <div className="options-select">
-                                    <div className="select">
-                                        <select className="select-text" required>
-                                            <option value="" disabled></option>
-                                            <option value="1">CSIE - Cibernetică Economică - Taxă</option>
-                                            <option value="2">FABBV - Buget</option>
-                                            <option value="3">FABBV - Taxa</option>
-                                        </select>
-                                        <span className="select-highlight"></span>
-                                        <span className="select-bar"></span>
-                                        <label className="select-label">Opțiuni</label>
-                                    </div>
-                                    <br />
-                                    <Button variant="contained" color="primary">Adaugă Opțiune</Button>
-                                </div>
-                            </div>
-                        </div>
+                        {this.state.currentPage === 4 && this.props.formattedOptions ?
+                            <Credits role={this.props.role} student={this.props.student} options={this.props.formattedOptions}
+                                addOption={this.props.addOption} deleteOption={this.props.deleteOption} />
+                            : <div><h2>Perioada de înscriere a expirat</h2></div>}
                     </div>
                     {
                         this.state.currentPage !== 4 && !this.state.readOnly ?

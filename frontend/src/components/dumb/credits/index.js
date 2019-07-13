@@ -20,7 +20,7 @@ class Credits extends Component {
         super();
         this.state = {
             modal: false,
-            addOption: 0,
+            addOptionId: 0,
             addCredits: 1
         }
 
@@ -50,8 +50,20 @@ class Credits extends Component {
         this.setState({ modal: false })
     }
 
+    addOption(e) {
+        if (this.props.role !== "STUDENT") {
+            this.props.addOption({ studentId: this.props.student.id, optionId: this.state.addOptionId });
+        } else {
+            this.props.addOption(this.state.addCredits);
+        }
+    }
+
     deleteOption(e) {
-        this.props.deleteOption(e.target.parentNode.value);
+        if (this.props.role !== "STUDENT") {
+            this.props.deleteOption({ studentId: this.props.student.id, optionId: e.target.parentNode.value })
+        } else {
+            this.props.deleteOption(e.target.parentNode.value);
+        }
     }
 
     render() {
@@ -68,33 +80,41 @@ class Credits extends Component {
                 </Dialog>
                 {!this.props.student.enrolled ?
                     <div className="student-credits-container">
-                        <h4>Momentan ai {this.props.student.credits} credite.</h4>
-                        <h4>Folosind creditele poți insera opțiuni în lista de preferințe</h4>
-                        <h4>Creditele pot fi achiziționate online sau cu ajutorul unui casier, în ziua înscrierii.</h4>
-                        <br />
-                        <div className="select">
-                            <select className="select-text" onChange={(e) => this.onChange(e)} required value={this.state.addCredits} name="addCredits">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="3">4</option>
-                                <option value="3">5</option>
-                                <option value="3">6</option>
-                            </select>
-                            <span className="select-highlight"></span>
-                            <span className="select-bar"></span>
-                            <label className="select-label">Număr credite</label>
-                        </div>
                         {
                             this.props.role === "STUDENT" ?
-                                <Button variant="contained" color="primary" onClick={() => this.openModal()}>Cumpără credite</Button>
-                                : ""
+                                <div>
+                                    <h4>Momentan ai {this.props.student.credits} credite.</h4>
+                                    <h4>Folosind creditele poți insera opțiuni în lista de preferințe</h4>
+                                    <h4>Creditele pot fi achiziționate online sau cu ajutorul unui casier, în ziua înscrierii.</h4>
+                                    <br />
+                                    <div className="select">
+                                        <select className="select-text" onChange={(e) => this.onChange(e)} required value={this.state.addCredits} name="addCredits">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="3">4</option>
+                                            <option value="3">5</option>
+                                            <option value="3">6</option>
+                                        </select>
+                                        <span className="select-highlight"></span>
+                                        <span className="select-bar"></span>
+                                        <label className="select-label">Număr credite</label>
+                                    </div>
+
+                                    <Button variant="contained" color="primary" onClick={() => this.openModal()}>Cumpără credite</Button>
+                                </div>
+                                : <h4>Studentul are {this.props.student.credits} credite.</h4>
                         }
                     </div>
                     : ""
                 }
-                <h4>Opțiunile tale</h4>
-                <h5>Opțiunile trebuie înregistrate crescător în ordinea preferințelor</h5>
+                {
+                    this.props.role === "STUDENT" ?
+                        <div>
+                            <h4>Opțiunile tale</h4>
+                            <h5>Opțiunile trebuie înregistrate crescător în ordinea preferințelor</h5>
+                        </div> : ""
+                }
                 <div className="student-credits-table-container">
                     <Paper>
                         <Table>
@@ -140,7 +160,7 @@ class Credits extends Component {
                                 <label className="select-label">Opțiuni</label>
                             </div>
                             <br />
-                            <Button variant="contained" color="primary" onClick={() => this.props.addOption(this.state.addOptionId)}>Adaugă Opțiune</Button>
+                            <Button variant="contained" color="primary" onClick={() => this.addOption()}>Adaugă Opțiune</Button>
                         </div>
                         : ""
                 }
