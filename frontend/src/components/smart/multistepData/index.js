@@ -46,7 +46,6 @@ class MultistepData extends Component {
     onSubmit = e => {
         e.preventDefault();
         // this.props.onSubmit(this.state);
-        console.log(this.state);
         this.props.register(this.state);
     };
 

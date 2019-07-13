@@ -10,7 +10,8 @@ import SmartMultistepData from '../../../smart/smartMultistepData';
 import { STUDENT_DEFAULT_IMAGE } from '../../../../constants/index';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
-import { changePassword, updateData } from '../../../../reducers/studentReducer'
+import { changePassword, updateData } from '../../../../reducers/studentReducer';
+import { addCredits, changeTaxStatus } from '../../../../reducers/volunteerReducer';
 import { logout } from '../../../../reducers/authReducer';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -22,18 +23,17 @@ class StudentProfile extends Component {
     constructor() {
         super();
 
-        //will be received as props
         this.state = {
-            role: "STUDENT",
             language: "RO",
-            taxPayed: false,
-            //those will not be received as props
             readOnly: false,
             currentPage: 0,
             maxCurrentPage: 3,
             modal: false,
             newPassword: "",
-            newPasswordCheck: ""
+            newPasswordCheck: "",
+            actualCredits: 0,
+            credits: 0,
+            tax: false
         }
 
         this.openModal = this.openModal.bind(this);
@@ -41,13 +41,20 @@ class StudentProfile extends Component {
     }
 
     componentDidMount() {
-        if (this.state.role === "OPERATOR" || this.state.role === "ADMIN") {
+        if (this.props.userRole === "OPERATOR" || this.props.userRole === "ADMIN") {
             this.setState({
                 maxCurrentPage: 4,
             })
         }
 
-        if (this.state.confirmed && this.state.role !== "ADMIN") {
+        if (this.props.userRole === "CASHIER") {
+            this.setState({
+                tax: this.props.userStudent.tax,
+                actualCredits: this.props.userStudent.credits
+            })
+        }
+
+        if ((this.props.studentData.admitted || this.props.userStudent.admitted) && this.props.userRole !== "ADMIN") {
             this.setState({
                 readOnly: true
             })
@@ -89,7 +96,7 @@ class StudentProfile extends Component {
 
     render() {
         return (
-            <div className="student-profile-container">
+            < div className="student-profile-container" >
                 <Dialog open={this.state.modal} onClose={this.handleClose} TransitionComponent={Transition}
                     keepMounted aria-labelledby="alert-dialog-slide-title"
                     aria-describedby="alert-dialog-slide-description">
@@ -107,9 +114,9 @@ class StudentProfile extends Component {
                     </DialogContent>
                 </Dialog>
                 <img className="big-avatar" alt=""
-                    src={"data:image/png;base64," + (this.props.student.photo ? this.props.student.photo : STUDENT_DEFAULT_IMAGE)} />
+                    src={"data:image/png;base64," + (this.props.studentData.photo || this.props.userStudent.photo ? (this.props.studentData.photo ? this.props.studentData.photo : this.props.userStudent.photo) : STUDENT_DEFAULT_IMAGE)} />
                 {
-                    this.state.role === "STUDENT" ?
+                    this.props.studentRole === "STUDENT" ?
                         <div className="student-profile-icon-container">
                             <LanguageIcon language={this.state.language} />
                             <img width="30" height="30" src="/password.png" onClick={() => this.openModal()}
@@ -118,7 +125,7 @@ class StudentProfile extends Component {
                         : ""
                 }
                 {
-                    this.state.role === "STUDENT" ?
+                    this.props.studentRole === "STUDENT" ?
                         <div className="student-profile-icon-container">
                             <Button color="primary" variant="contained" component="span" onClick={() => this.props.logout()}>
                                 Logout
@@ -127,7 +134,7 @@ class StudentProfile extends Component {
                         : ""
                 }
                 {
-                    this.state.role === "OPERATOR" ?
+                    this.props.userRole === "OPERATOR" ?
                         <div>
                             <input
                                 accept="image/*"
@@ -141,18 +148,28 @@ class StudentProfile extends Component {
                                     Încarcă Fotografie
                                 </Button>
                             </label>
-                        </div> : (this.state.role === "CASHIER" ?
+                        </div> :
+                        (this.props.userRole === "CASHIER" ?
                             <div>
-                                <p>Număr curent de credite: 0</p>
-                                <input className="cashier-credits-input" type="number" min="-20" max="20" defaultValue="0"
-                                />
-                                <Button color="primary" variant="contained" component="span" >
+                                <p>Număr curent de credite: {this.state.actualCredits}</p>
+                                <input className="cashier-credits-input" type="number" min="-20" max="20"
+                                    value={this.state.credits} name="credits" onChange={(e) => this.onChange(e)} />
+                                <Button color="primary" variant="contained" component="span"
+                                    onClick={() => {
+                                        this.setState({ actualCredits: this.state.actualCredits + parseInt(this.state.credits) });
+                                        this.props.addCredits({ studentId: this.props.userStudent.id, credits: parseInt(this.state.credits) });
+                                        toastr.success("Credite actualizate");
+                                    }}>
                                     Adaugă credite
                                 </Button>
                                 <br />
                                 <Switch
-                                    checked={this.state.taxPayed}
-                                    onChange={() => this.setState({ taxPayed: !this.state.taxPayed })}
+                                    checked={this.state.tax}
+                                    onChange={() => {
+                                        this.setState({ tax: !this.state.tax });
+                                        this.props.changeTaxStatus(this.props.userStudent.id);
+                                        toastr.success("Taxa a fost actualizată");
+                                    }}
                                     value="true"
                                     color="primary"
                                     inputProps={{ 'aria-label': 'primary checkbox' }}
@@ -169,21 +186,23 @@ class StudentProfile extends Component {
                 }
                 <div className="student-profile-info">
                     <Paper className="student-profile-data-paper">
-                        <SmartMultistepData role={this.props.role} student={this.props.student} updateData={this.props.updateData} />
+                        <SmartMultistepData role={this.props.studentRole ? this.props.studentRole : this.props.userRole}
+                            student={this.props.studentRole ? this.props.studentData : this.props.userStudent}
+                            updateData={this.props.updateData} />
                     </Paper>
                 </div>
-            </div>
+            </div >
         )
     }
 }
 
-//when working on this screen for volunteers, you should connect the volunteer reducer
-//then render role-specific things based on that
-const mapStateToProps = ({ studentReducer }) => ({
-    role: studentReducer.role,
-    student: studentReducer,
+const mapStateToProps = ({ studentReducer, volunteerReducer }) => ({
+    studentRole: studentReducer.role,
+    studentData: studentReducer,
+    userRole: volunteerReducer.role,
+    userStudent: volunteerReducer.student,
 });
 
-const mapDispatchToProps = { changePassword, updateData, logout };
+const mapDispatchToProps = { changePassword, updateData, logout, addCredits, changeTaxStatus };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentProfile);

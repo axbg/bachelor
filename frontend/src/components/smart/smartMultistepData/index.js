@@ -15,6 +15,7 @@ class SmartMultistepData extends Component {
     //also, will receive callbacks to call backend
     constructor(props) {
         super(props);
+
         this.state = {
             firstname: this.props.student.firstname,
             lastname: this.props.student.lastname,
