@@ -51,6 +51,8 @@ export const authenticate = (payload) => dispatch => {
 export const clearAuthToken = () => {
     if (window.localStorage.getItem("auth-token")) {
         window.localStorage.removeItem("auth-token");
+        window.localStorage.removeItem("email");
+        window.location.reload();
     }
 }
 

@@ -21,6 +21,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.1",
     "react-spinners": "^0.5.4",
+    "react-stripe-elements": "^4.0.0",
     "react-swipeable-views": "^0.13.3",
     "redux": "^4.0.1",
     "redux-promise-middleware": "^6.1.0",

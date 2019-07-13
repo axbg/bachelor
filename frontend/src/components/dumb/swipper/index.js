@@ -10,7 +10,6 @@ class Swipper extends Component {
 
   itemChanged(e) {
     //save current position inside redux
-    console.log(e);
   }
 
   render() {
