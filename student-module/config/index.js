@@ -5,7 +5,7 @@ const DB_USERNAME = process.env.DB_USERNAME ? process.env.DB_USERNAME : "alex";
 const DB_PASSWORD = process.env.DB_PASSWORD ? process.env.DB_PASSWORD : "forever";
 const HOST_ADDRESS = process.env.HOST_ADDRESS ? process.env.HOST_ADDRESS : "localhost";
 const REDIS = process.env.REDIS;
-const JWT_SECRET = "licenta";
+const JWT_SECRET = "licenta2019";
 const PAYMENT_MODULE_IP_TAG = "payment_module_ip";
 const QUEUE_IP_TAG = "queue_ip_tag";
 const GATEWAY_ADDRESS = "http://localhost:8000";
@@ -30,5 +30,6 @@ module.exports = {
     PAYMENT_MODULE_IP_TAG,
     QUEUE_IP_TAG,
     MAIL_ADDRESS,
-    CRITERIA_TYPES
+    CRITERIA_TYPES,
+    JWT_SECRET
 }
