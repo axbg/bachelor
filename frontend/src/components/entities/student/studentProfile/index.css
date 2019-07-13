@@ -54,6 +54,18 @@
     margin: 10px;
 }
 
+.password-modal-container {
+    text-align: center;
+}
+
+.password-modal-container p {
+    font-size: 14px;
+}
+
+.password-modal-container input {
+    margin: 5px;
+}
+
 @media only screen and (max-width: 450px) {
     .student-profile-info {
         width: 90%;

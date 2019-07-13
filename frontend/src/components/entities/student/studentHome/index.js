@@ -6,7 +6,6 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
-
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -23,6 +22,10 @@ class StudentHome extends Component {
 
         this.openModal = this.openModal.bind(this);
         this.handleClose = this.handleClose.bind(this);
+    }
+
+    componentDidMount() {
+        //if student is inactive, display a toast to remind him to change his password from profile
     }
 
     openModal() {
