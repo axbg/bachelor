@@ -11,6 +11,12 @@ export const ACTIONS = {
     ADD_STUDENT_OPTION: "ADD_STUDENT_OPTION",
     DELETE_STUDENT_OPTION: "DELETE_STUDENT_OPTION",
     UPDATE_STUDENT_DATA_AS_USER: "UPDATE_STUDENT_DATA_AS_USER",
+    CREATE_FLOW: "CREATE_FLOW",
+    SEND_STUDENT_NOTIFICATIONS: "SEND_STUDENT_NOTIFICATIONS",
+    GET_FACULTIES: "GET_FACULTIES",
+    GENERATE_ORDER_NUMBER_AS_USER: "GENERATE_ORDER_NUMBER_AS_USER",
+    GET_POSITIONS: "GET_POSITIONS",
+    CREATE_POSITION_REQUEST: "CREATE_POSITION_REQUEST"
 }
 
 export const VolunteerState = {
@@ -22,6 +28,8 @@ export const VolunteerState = {
     searchLoading: false,
     notFound: false,
     formattedOptions: null,
+    faculties: null,
+    positions: null
 }
 
 export default (state = {}, action) => {
@@ -107,6 +115,32 @@ export default (state = {}, action) => {
                 ...state,
                 searchLoading: false
             }
+        case REQUEST(ACTIONS.GET_FACULTIES):
+            return {
+                ...state,
+            }
+        case SUCCESS(ACTIONS.GET_FACULTIES):
+            return {
+                ...state,
+                faculties: action.payload.data.message.faculties,
+            }
+        case FAILURE(ACTIONS.GET_FACULTIES):
+            return {
+                ...state,
+            }
+        case REQUEST(ACTIONS.GET_POSITIONS):
+            return {
+                ...state,
+            }
+        case SUCCESS(ACTIONS.GET_POSITIONS):
+            return {
+                ...state,
+                positions: action.payload.data.message,
+            }
+        case FAILURE(ACTIONS.GET_POSITIONS):
+            return {
+                ...state,
+            }
         default:
             return state
     }
@@ -163,7 +197,49 @@ export const deleteOption = (payload) => dispatch => {
 
 export const updateStudentDataAsUser = (payload) => dispatch => {
     dispatch({
-        type: ACTIONS. UPDATE_STUDENT_DATA_AS_USER,
+        type: ACTIONS.UPDATE_STUDENT_DATA_AS_USER,
         payload: axios.patch(BASE_URL + "/student/update/" + payload.studentId, { ...payload.data })
+    })
+}
+
+export const createFlow = (payload) => dispatch => {
+    dispatch({
+        type: ACTIONS.CREATE_FLOW,
+        payload: axios.post(BASE_URL + "/volunteer/flow", { flow: payload })
+    })
+}
+
+export const sendStudentNotifications = (payload) => dispatch => {
+    dispatch({
+        type: ACTIONS.SEND_STUDENT_NOTIFICATIONS,
+        payload: axios.post(BASE_URL + "/volunteer/notify-students", { numberOfStudents: payload })
+    })
+}
+
+export const getFaculties = () => dispatch => {
+    dispatch({
+        type: ACTIONS.GET_FACULTIES,
+        payload: axios.get(BASE_URL + "/volunteer/faculties")
+    })
+}
+
+export const getPositions = () => dispatch => {
+    dispatch({
+        type: ACTIONS.GET_POSITIONS,
+        payload: axios.get(BASE_URL + "/volunteer/positions")
+    })
+}
+
+export const generateOrderNumber = (payload) => dispatch => {
+    dispatch({
+        type: ACTIONS.GENERATE_ORDER_NUMBER_AS_USER,
+        payload: axios.post(BASE_URL + "/volunteer/generate-order-number", { ...payload })
+    })
+}
+
+export const createPositionRequest = (payload) => dispatch => {
+    dispatch({
+        type: ACTIONS.CREATE_POSITION_REQUEST,
+        payload: axios.post(BASE_URL + "/volunteer/position-request", { positionId: payload })
     })
 }
