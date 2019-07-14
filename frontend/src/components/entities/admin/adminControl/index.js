@@ -74,7 +74,6 @@ class AdminControl extends Component {
     }
 
     componentWillUnmount() {
-        console.log(this.state.socket);
         this.state.socket.disconnect();
     }
 

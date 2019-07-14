@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 import { logout } from '../../../../reducers/authReducer';
 import { getPositions, createPositionRequest } from '../../../../reducers/volunteerReducer';
 import { toastr } from 'react-redux-toastr';
+import axios from 'axios';
+import { PUBLIC_VAPID_KEY, BASE_URL } from '../../../../constants/index';
+
 
 class VolunteerPosition extends Component {
 
@@ -35,6 +38,32 @@ class VolunteerPosition extends Component {
         });
     }
 
+    urlBase64ToUint8Array(base64String) {
+        const padding = "=".repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+            .replace(/\-/g, "+")
+            .replace(/_/g, "/");
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    }
+
+    activateNotifications = async () => {
+        if (Notification.permission !== 'default') {
+            const sw = await navigator.serviceWorker.getRegistration("/");
+            const subscription = await sw.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: this.urlBase64ToUint8Array(PUBLIC_VAPID_KEY)
+            });
+            axios.post(BASE_URL + "/volunteer/subscribe", { subscription: subscription });
+        } else {
+            toastr.info("Notificările sunt active");
+        }
+    }
+
     render() {
         return (
             <div className="volunteer-position-container">
@@ -43,11 +72,15 @@ class VolunteerPosition extends Component {
                     <h2>{this.props.user.position.position}</h2>
                     : <h2>Nealocat</h2>
                 }
-                <Button color="primary" variant="contained" label="Submit" onClick={() => this.props.logout()}> 
-                        Logout
+                <Button color="primary" variant="contained" label="Submit" onClick={() => this.props.logout()}>
+                    Logout
                 </Button>
                 <div className="volunteer-position-request">
                     <h4>Dorești schimbarea poziției?</h4>
+                    <br/>
+                    <img width="50" height="50" src="/notifications.png" style={{ cursor: "pointer" }} onClick={() => this.activateNotifications()}
+                        alt="NOTIFICATIONS" />
+                    <br />
                     <br />
                     {
                         this.props.positions ?

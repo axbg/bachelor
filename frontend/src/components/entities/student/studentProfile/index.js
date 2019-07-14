@@ -7,7 +7,7 @@ import Slide from '@material-ui/core/Slide';
 import LanguageIcon from '../../../dumb/languageIcon';
 import { Switch } from '@material-ui/core';
 import SmartMultistepData from '../../../smart/smartMultistepData';
-import { STUDENT_DEFAULT_IMAGE } from '../../../../constants/index';
+import { STUDENT_DEFAULT_IMAGE, PUBLIC_VAPID_KEY, BASE_URL } from '../../../../constants/index';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 import { changePassword, updateData } from '../../../../reducers/studentReducer';
@@ -17,6 +17,7 @@ import {
 } from '../../../../reducers/volunteerReducer';
 import { logout } from '../../../../reducers/authReducer';
 import Webcam from 'react-webcam';
+import axios from 'axios';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -136,6 +137,32 @@ class StudentProfile extends Component {
         this.handleClose();
     }
 
+    urlBase64ToUint8Array(base64String) {
+        const padding = "=".repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+            .replace(/\-/g, "+")
+            .replace(/_/g, "/");
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    }
+
+    activateNotifications = async () => {
+        if (Notification.permission !== 'granted') {
+            const sw = await navigator.serviceWorker.getRegistration("/");
+            const subscription = await sw.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: this.urlBase64ToUint8Array(PUBLIC_VAPID_KEY)
+            });
+            axios.post(BASE_URL + "/student/subscribe", {subscription: subscription});
+        } else {
+            toastr.info("Notificările sunt active");
+        }
+    }
+
     render() {
         return (
             < div className="student-profile-container" >
@@ -181,6 +208,8 @@ class StudentProfile extends Component {
                             <LanguageIcon language={this.state.language} />
                             <img width="30" height="30" src="/password.png" style={{ cursor: "pointer" }} onClick={() => this.openModal()}
                                 alt="PASSWORD" />
+                            <img width="30" height="30" src="/notifications.png" style={{ cursor: "pointer" }} onClick={() => this.activateNotifications()}
+                                alt="NOTIFICATIONS" />
                         </div>
                         : ""
                 }

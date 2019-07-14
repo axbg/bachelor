@@ -129,7 +129,6 @@ class SmartMultistepData extends Component {
     }
 
     render() {
-        console.log(this.props.student);
         return (
             <div>
                 <div className="student-profile-navigation-container">
