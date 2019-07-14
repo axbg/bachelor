@@ -6,10 +6,6 @@ module.exports.createUser = async (ctx) => {
     httpHelper.createHttpResponse(ctx, 201, { volunteers: await userService.createUser(ctx.request.body) });
 }
 
-module.exports.subscribe = async (ctx) => {
-    await userService.subscribe(ctx.request.body.notificationToken, ctx.user.id);
-}
-
 module.exports.loadUser = async (ctx) => {
     const user = await userService.loadUser(ctx.user.id);
     httpHelper.createHttpResponse(ctx, 200, { user: user });
@@ -61,4 +57,9 @@ module.exports.getFaculties = async (ctx) => {
 
 module.exports.getRoles = async (ctx) => {
     httpHelper.createHttpResponse(ctx, 200, { roles: await userService.getRoles() });
+}
+
+module.exports.subscribeNotifications = async (ctx) => {
+    await userService.subscribeNotifications(ctx.request.body.subscription, ctx.user.id);
+    httpHelper.createHttpResponse(ctx, 200, "Notification Token saved");
 }
