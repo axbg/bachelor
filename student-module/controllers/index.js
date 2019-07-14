@@ -5,7 +5,7 @@ const sendRegistrationMail = require('../services/student').sendRegistrationMail
 module.exports.createStudent = async (ctx) => {
     const student = await studentService.createStudent(ctx.request.body);
     httpHelper.createHttpResponse(ctx, 201, "Registration successful");
-    //sendRegistrationMail(student);
+    sendRegistrationMail(student);
 }
 
 module.exports.changePassword = async (ctx) => {
