@@ -325,19 +325,17 @@ export const createVolunteer = (payload) => dispatch => {
 }
 
 export const drySort = (payload) => dispatch => {
-    console.log(payload);
-    // dispatch({
-    //     type: ACTIONS.DRY_SORT,
-    //     payload: axios.post(SORT_URL + "/dry-sort")
-    // })
+    dispatch({
+        type: ACTIONS.DRY_SORT,
+        payload: axios.post(SORT_URL + "/dry-sort", { ...payload })
+    })
 }
 
 export const sort = (payload) => dispatch => {
-    console.log(payload);
-    // dispatch({
-    //     type: ACTIONS.SORT,
-    //     payload: axios.post(SORT_URL + "/sort")
-    // })
+    dispatch({
+        type: ACTIONS.SORT,
+        payload: axios.post(SORT_URL + "/sort", { ...payload })
+    })
 }
 
 export const getIterations = () => dispatch => {

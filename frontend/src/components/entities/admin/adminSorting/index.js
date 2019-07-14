@@ -11,6 +11,8 @@ import Paper from '@material-ui/core/Paper';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 import { getIterations, sort, drySort } from '../../../../reducers/volunteerReducer';
+import { SORT_URL } from '../../../../constants/index';
+import Axios from 'axios';
 
 class AdminSorting extends Component {
 
@@ -20,6 +22,10 @@ class AdminSorting extends Component {
             iteration: "",
             email: ""
         }
+    }
+
+    componentDidMount() {
+        this.props.getIterations();
     }
 
     handleChange(e) {
@@ -36,10 +42,25 @@ class AdminSorting extends Component {
             || !this.state.email.includes("@") || !this.state.email.includes(".")) {
             toastr.error("Adresa de email este invalida");
         } else if (isDry) {
-            this.props.drySort({iteration: this.state.iteration, email: this.state.email});
+            this.props.drySort({ iteration: this.state.iteration, email: this.state.email });
         } else {
-            this.props.sort({iteration: this.state.iteration, email: this.state.email});
+            this.props.sort({ iteration: this.state.iteration, email: this.state.email });
         }
+    }
+
+    downloadFile(e) {
+        const iteration = e.target.parentNode.getAttribute("iteration");
+        const auth = window.localStorage.getItem("auth-token");
+
+        Axios.get(SORT_URL + "/documents/" + iteration, { headers: { Authorization: "Bearer " + auth }, responseType: 'blob' })
+            .then(response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', iteration + ".zip");
+                document.body.appendChild(link);
+                link.click();
+            });
     }
 
     render() {
@@ -73,29 +94,35 @@ class AdminSorting extends Component {
                 </div>
                 <div className="admin-sorting-iterations-container">
                     <h3>Iterațiile precedente</h3>
-                    <Paper>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell className="no-padding-table-cell">#</TableCell>
-                                    <TableCell>Iterație</TableCell>
-                                    <TableCell>Documente</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell className="no-padding-table-cell">1</TableCell>
-                                    <TableCell>TEST 1</TableCell>
-                                    <TableCell className="no-padding-table-cell"><Button>Descarcă</Button></TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell className="no-padding-table-cell">2</TableCell>
-                                    <TableCell>REPARTIZARE_1 INT</TableCell>
-                                    <TableCell className="no-padding-table-cell"><Button>Descarcă</Button></TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </Paper>
+                    {this.props.iterations ?
+                        <div className="admin-control-position-container">
+                            <Paper style={{ overflow: "auto", maxHeight: "400px" }}>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell className="no-padding-table-cell sticky">ID</TableCell>
+                                            <TableCell className="sticky">Iterație</TableCell>
+                                            <TableCell className="sticky proeminent">Documente</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {
+                                            this.props.iterations.map((iteration, key) => {
+                                                return (
+                                                    <TableRow key={key + 1}>
+                                                        <TableCell>{key}</TableCell>
+                                                        <TableCell>{iteration.iteration}</TableCell>
+                                                        <TableCell className="no-padding-table-cell">
+                                                            <Button iteration={iteration.iteration} onClick={(e) => this.downloadFile(e)}>Descarcă</Button>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                )
+                                            })
+                                        }
+                                    </TableBody>
+                                </Table>
+                            </Paper>
+                        </div> : ""}
                 </div>
             </div>
         )
