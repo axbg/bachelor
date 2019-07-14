@@ -3,8 +3,7 @@ const studentService = require('../services/student');
 const httpHelper = require('../utils/httpHelper');
 
 module.exports.createUser = async (ctx) => {
-    const user = await userService.createUser(ctx.request.body);
-    httpHelper.createHttpResponse(ctx, 201, { user: user });
+    httpHelper.createHttpResponse(ctx, 201, { volunteers: await userService.createUser(ctx.request.body) });
 }
 
 module.exports.subscribe = async (ctx) => {
@@ -28,7 +27,7 @@ module.exports.generateOrderNumber = async (ctx) => {
 }
 
 module.exports.getPositions = async (ctx) => {
-    httpHelper.createHttpResponse(ctx, 200, await userService.getPositions());
+    httpHelper.createHttpResponse(ctx, 200, await userService.getPositions(ctx.user.id));
 }
 
 module.exports.createPositionRequest = async (ctx) => {
@@ -46,7 +45,20 @@ module.exports.notifyStudent = async (ctx) => {
     httpHelper.createHttpResponse(ctx, 200, "Notification sent");
 }
 
+module.exports.notifyStudents = async (ctx) => {
+    await studentService.notifyStudents(ctx.request.body.numberOfStudents, ctx.user.id);
+    httpHelper.createHttpResponse(ctx, 200, "Notifications sent");
+}
+
 module.exports.notifyUser = async (ctx) => {
     await userService.notifyUser(ctx.request.body.userId);
     httpHelper.createHttpResponse(ctx, 200, "Notification sent");
+}
+
+module.exports.getFaculties = async (ctx) => {
+    httpHelper.createHttpResponse(ctx, 200, { faculties: await userService.getFaculties() })
+}
+
+module.exports.getRoles = async (ctx) => {
+    httpHelper.createHttpResponse(ctx, 200, { roles: await userService.getRoles() });
 }

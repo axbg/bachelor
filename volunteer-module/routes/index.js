@@ -27,6 +27,12 @@ router.post('/flow', userController.createFlow);
 
 router.post('/notify-student', userController.notifyStudent);
 
+router.post('/notify-students', userController.notifyStudents);
+
 router.post('/notify-volunteer', userController.notifyStudent);
+
+router.get('/faculties', userController.getFaculties);
+
+router.get('/roles', userController.getRoles);
 
 module.exports = router;

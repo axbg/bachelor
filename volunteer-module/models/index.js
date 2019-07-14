@@ -24,6 +24,8 @@ User.belongsTo(Faculty);
 User.belongsTo(Role);
 User.belongsTo(Position);
 
+Position.belongsTo(Faculty);
+
 PositionRequest.belongsTo(User);
 PositionRequest.belongsTo(Position);
 
