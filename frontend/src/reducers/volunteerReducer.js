@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { REQUEST, SUCCESS, FAILURE } from '../config/actions-async-types';
-import { BASE_URL } from '../constants/index';
+import { BASE_URL, SORT_URL } from '../constants/index';
 
 export const ACTIONS = {
     LOAD_VOLUNTEER_DATA: "LOAD_VOLUNTEER_DATA",
@@ -16,7 +16,14 @@ export const ACTIONS = {
     GET_FACULTIES: "GET_FACULTIES",
     GENERATE_ORDER_NUMBER_AS_USER: "GENERATE_ORDER_NUMBER_AS_USER",
     GET_POSITIONS: "GET_POSITIONS",
-    CREATE_POSITION_REQUEST: "CREATE_POSITION_REQUEST"
+    CREATE_POSITION_REQUEST: "CREATE_POSITION_REQUEST",
+    GET_ROLES: "GET_ROLES",
+    GET_VOLUNTEERS: "GET_VOLUNTEERS",
+    UPDATE_VOLUNTEER: "UPDATE_VOLUNTEER",
+    CREATE_VOLUNTEER: "CREATE_VOLUNTEER",
+    DRY_SORT: "DRY_SORT",
+    SORT: "SORT",
+    GET_ITERATIONS: "GET_ITERATIONS"
 }
 
 export const VolunteerState = {
@@ -29,7 +36,10 @@ export const VolunteerState = {
     notFound: false,
     formattedOptions: null,
     faculties: null,
-    positions: null
+    positions: null,
+    roles: null,
+    volunteers: null,
+    iterations: null
 }
 
 export default (state = {}, action) => {
@@ -141,6 +151,48 @@ export default (state = {}, action) => {
             return {
                 ...state,
             }
+        case REQUEST(ACTIONS.GET_ROLES):
+            return {
+                ...state,
+            }
+        case SUCCESS(ACTIONS.GET_ROLES):
+            return {
+                ...state,
+                roles: action.payload.data.message.roles,
+            }
+        case FAILURE(ACTIONS.GET_ROLES):
+            return {
+                ...state,
+            }
+        case REQUEST(ACTIONS.GET_VOLUNTEERS):
+        case REQUEST(ACTIONS.CREATE_VOLUNTEER):
+            return {
+                ...state,
+            }
+        case SUCCESS(ACTIONS.GET_VOLUNTEERS):
+        case SUCCESS(ACTIONS.CREATE_VOLUNTEER):
+            return {
+                ...state,
+                volunteers: action.payload.data.message.volunteers,
+            }
+        case FAILURE(ACTIONS.GET_VOLUNTEERS):
+        case FAILURE(ACTIONS.CREATE_VOLUNTEER):
+            return {
+                ...state,
+            }
+        case REQUEST(ACTIONS.GET_ITERATIONS):
+            return {
+                ...state,
+            }
+        case SUCCESS(ACTIONS.GET_ITERATIONS):
+            return {
+                ...state,
+                iterations: action.payload.data.message.iterations,
+            }
+        case FAILURE(ACTIONS.GET_ITERATIONS):
+            return {
+                ...state,
+            }
         default:
             return state
     }
@@ -230,6 +282,20 @@ export const getPositions = () => dispatch => {
     })
 }
 
+export const getRoles = () => dispatch => {
+    dispatch({
+        type: ACTIONS.GET_ROLES,
+        payload: axios.get(BASE_URL + "/volunteer/roles")
+    })
+}
+
+export const getVolunteers = () => dispatch => {
+    dispatch({
+        type: ACTIONS.GET_VOLUNTEERS,
+        payload: axios.get(BASE_URL + "/admin/volunteers")
+    })
+}
+
 export const generateOrderNumber = (payload) => dispatch => {
     dispatch({
         type: ACTIONS.GENERATE_ORDER_NUMBER_AS_USER,
@@ -241,5 +307,42 @@ export const createPositionRequest = (payload) => dispatch => {
     dispatch({
         type: ACTIONS.CREATE_POSITION_REQUEST,
         payload: axios.post(BASE_URL + "/volunteer/position-request", { positionId: payload })
+    })
+}
+
+export const updateVolunteer = (payload) => dispatch => {
+    dispatch({
+        type: ACTIONS.UPDATE_VOLUNTEER,
+        payload: axios.patch(BASE_URL + "/admin/volunteer", { ...payload })
+    })
+}
+
+export const createVolunteer = (payload) => dispatch => {
+    dispatch({
+        type: ACTIONS.CREATE_VOLUNTEER,
+        payload: axios.post(BASE_URL + "/volunteer/create", { ...payload })
+    })
+}
+
+export const drySort = (payload) => dispatch => {
+    console.log(payload);
+    // dispatch({
+    //     type: ACTIONS.DRY_SORT,
+    //     payload: axios.post(SORT_URL + "/dry-sort")
+    // })
+}
+
+export const sort = (payload) => dispatch => {
+    console.log(payload);
+    // dispatch({
+    //     type: ACTIONS.SORT,
+    //     payload: axios.post(SORT_URL + "/sort")
+    // })
+}
+
+export const getIterations = () => dispatch => {
+    dispatch({
+        type: ACTIONS.GET_ITERATIONS,
+        payload: axios.get(SORT_URL + "/iterations")
     })
 }
