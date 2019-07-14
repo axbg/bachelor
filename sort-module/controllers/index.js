@@ -1,5 +1,9 @@
 const adminService = require('../services/admin');
 const httpHelper = require('../utils/httpHelper');
+const generateError = require('../utils/FlowError').generateError;
+const Document = require('../models/index').Document;
+const archiver = require('archiver');
+const fs = require('fs');
 
 module.exports.drySort = async (ctx) => {
     await adminService.checkSortDetails(ctx.request.body.email, ctx.request.body.iteration);
@@ -20,5 +24,33 @@ module.exports.getIterations = async (ctx) => {
 }
 
 module.exports.downloadDocuments = async (ctx) => {
+    ctx.params.iteration || generateError("Iteration name is not present", 400);
+
+    const documents = await Document.findAll({ where: { iteration: ctx.params.iteration }, attributes: ['title', 'file'], raw: true });
     
+    const archive = archiver('zip');
+
+    archive.on('warning', function (err) {
+        if (err.code === 'ENOENT') {
+            // log warning
+        } else {
+            // throw error
+            throw err;
+        }
+    });
+
+    archive.on('error', function (err) {
+        throw err;
+    });
+
+    documents.map(document => {
+        archive.append(Buffer.from(document.file, 'base64'), { name: document.title });
+    });
+
+    archive.finalize();
+
+    ctx.status = 200;
+    ctx.type = 'application/zip';
+    ctx.response.attachment(ctx.params.iteration + ".zip");
+    ctx.body = archive;
 }

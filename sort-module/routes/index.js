@@ -15,6 +15,6 @@ router.post('/sort', adminController.sort);
 
 router.get('/iterations', adminController.getIterations);
 
-router.get('/documents/:iteration', adminController)
+router.get('/documents/:iteration', adminController.downloadDocuments)
 
 module.exports = router;
