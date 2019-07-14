@@ -67,10 +67,10 @@ const updateAdminGraph = async (socket, facultyId, payloadFacultyId, adminId) =>
 	}
 }
 
-const updatePositionRequests = async (facultyId, payloadFacultyId, adminId) => {
+const updatePositionRequests = async (socket, facultyId, payloadFacultyId, adminId) => {
 	if (adminId && facultyId === payloadFacultyId) {
 		const positionRequests = await PositionRequest.findAll({
-			where: { solved: false },
+			where: { read: false },
 			include: [{ model: User, attributes: ['username'], where: { facultyId: facultyId }, include: [{ model: Position }] },
 			{ model: Position }],
 			raw: true
@@ -86,6 +86,7 @@ io.on('connection', async (socket) => {
 	if (socket.handshake.query.adminId && socket.handshake.query.secret === SECRET_ADMIN_TOKEN) {
 		adminId = socket.handshake.query.adminId;
 		await updateAdminGraph(socket, facultyId, facultyId, adminId);
+		await updatePositionRequests(socket, facultyId, facultyId, adminId);
 	} else {
 		await updateScreening(socket, facultyId, facultyId);
 	}
@@ -97,10 +98,15 @@ io.on('connection', async (socket) => {
 
 	redisClientFlow.subscribe('flow-flow');
 
-	redisClientRequest.on('message', async (payloadFacultyId) => {
-		await updatePositionRequests(facultyId, payloadFacultyId, adminId);
+	redisClientRequest.on('message', async (queue, payloadFacultyId) => {
+		await updatePositionRequests(socket, facultyId, payloadFacultyId, adminId);
 	});
 	redisClientRequest.subscribe('flow-position-request');
+
+	socket.on('disconnect', () => {
+		redisClientFlow.removeAllListeners();
+		redisClientRequest.removeAllListeners();
+	})
 });
 
 server.listen(PORT, () => {
