@@ -10,7 +10,8 @@ export const ACTIONS = {
     GET_FORMATTED_OPTIONS: "GET_FORMATTED_OPTIONS",
     ADD_OPTION: "ADD_OPTION",
     DELETE_OPTION: "DELETE_OPTION",
-    BUY_CREDITS: "BUY_CREDITS"
+    BUY_CREDITS: "BUY_CREDITS",
+    WITHDRAW_PORTFOLIO: "WITHDRAW_PORTFOLIO"
 }
 
 export const StudentState = {
@@ -115,6 +116,11 @@ export default (state = {}, action) => {
                 ...state,
                 inAppLoading: false
             }
+        case SUCCESS(ACTIONS.WITHDRAW_PORTFOLIO):
+            return {
+                ...state,
+                withdrawPortfolio: true
+            }
         default:
             return state
     }
@@ -173,5 +179,12 @@ export const buyCredits = (payload) => dispatch => {
     dispatch({
         type: ACTIONS.BUY_CREDITS,
         payload: axios.post(BASE_URL + "/payment/update-credits", { ...payload })
+    })
+}
+
+export const withdrawPortfolio = () => dispatch => {
+    dispatch({
+        type: ACTIONS.WITHDRAW_PORTFOLIO,
+        payload: axios.patch(BASE_URL + "/student/withdraw")
     })
 }

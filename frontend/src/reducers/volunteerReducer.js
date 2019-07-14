@@ -25,7 +25,8 @@ export const ACTIONS = {
     SORT: "SORT",
     GET_ITERATIONS: "GET_ITERATIONS",
     SOLVE_POSITION_REQUEST: "SOLVE_POSITION_REQUEST",
-    ENROLL_STUDENT: "ENROLL_STUDENT"
+    ENROLL_STUDENT: "ENROLL_STUDENT",
+    GET_WITHDRAWALS: "GET_WITHDRAWALS"
 }
 
 export const VolunteerState = {
@@ -41,7 +42,8 @@ export const VolunteerState = {
     positions: null,
     roles: null,
     volunteers: null,
-    iterations: null
+    iterations: null,
+    withdrawals: null
 }
 
 export default (state = {}, action) => {
@@ -211,6 +213,22 @@ export default (state = {}, action) => {
                 ...state,
                 searchLoading: false
             }
+        case REQUEST(ACTIONS.GET_WITHDRAWALS):
+            return {
+                ...state,
+                searchLoading: true
+            }
+        case SUCCESS(ACTIONS.GET_WITHDRAWALS):
+            return {
+                ...state,
+                searchLoading: false,
+                withdrawals: action.payload.data.message.withdrawals
+            }
+        case FAILURE(ACTIONS.GET_WITHDRAWALS):
+            return {
+                ...state,
+                searchLoading: false
+            }
         default:
             return state
     }
@@ -374,5 +392,12 @@ export const enrollStudent = (payload) => dispatch => {
     dispatch({
         type: ACTIONS.ENROLL_STUDENT,
         payload: axios.post(BASE_URL + "/enrollment/enroll-student", { studentId: payload })
+    })
+}
+
+export const getWithdrawals = () => dispatch => {
+    dispatch({
+        type: ACTIONS.GET_WITHDRAWALS,
+        payload: axios.get(BASE_URL + "/enrollment/withdrawals")
     })
 }
