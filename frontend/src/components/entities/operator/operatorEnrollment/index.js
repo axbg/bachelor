@@ -4,8 +4,10 @@ import StudentProfile from '../../student/studentProfile';
 import SearchBar from 'material-ui-search-bar'
 import { connect } from 'react-redux';
 import { loadStudentData } from '../../../../reducers/volunteerReducer';
+import { logout } from '../../../../reducers/authReducer'
 import Spinner from '../../../dumb/spinner/index';
 import { toastr } from 'react-redux-toastr';
+import Button from '@material-ui/core/Button';
 
 class OperatorEnrollment extends Component {
 
@@ -41,31 +43,37 @@ class OperatorEnrollment extends Component {
     render() {
         return (
             <div className="operator-enrollment-container">
-                <div style={{ padding: '10px' }}>
-                    <SearchBar
-                        placeholder="Caută după număr de ordine sau CNP"
-                        value={this.state.searchText}
-                        onChange={(e) => this.updateSearchText(e)}
-                        onRequestSearch={() => this.searchStudent()}
-                        style={{
-                            margin: '0 auto',
-                            height: '80%'
-                        }}
-                    />
+                <div className="operator-search-container">
+                    <div style={{ padding: '10px' }}>
+                        <div className="inline-container">
+                            <SearchBar
+                                placeholder="Caută după număr de ordine sau CNP"
+                                value={this.state.searchText}
+                                onChange={(e) => this.updateSearchText(e)}
+                                onRequestSearch={() => this.searchStudent()}
+                                style={{
+                                    margin: '0 auto',
+                                    height: '80%'
+                                }}
+                            />
+                        </div>
+                        <Button color="primary" variant="contained" label="Submit" onClick={() => this.props.logout()}>Logout</Button>
+                    </div>
                 </div>
                 <br />
-                {this.props.searchLoading ?
-                    <Spinner />
-                    : (Object.keys(this.props.student).length !== 0 ?
-                        < StudentProfile />
-                        : <div>
-                            <h1>Bună, {this.props.user.username}</h1>
-                            <h3>Poți căuta un candidat folosind CNP-ul sau numărul de ordine al acestuia, urmat de tasta Enter.</h3>
-                            <h2>Să începem!</h2>
-                        </div>
-                    )
+                {
+                    this.props.searchLoading ?
+                        <Spinner />
+                        : (Object.keys(this.props.student).length !== 0 ?
+                            < StudentProfile />
+                            : <div>
+                                <h1>Bună, {this.props.user.username}</h1>
+                                <h3>Poți căuta un candidat folosind CNP-ul sau numărul de ordine al acestuia, urmat de tasta Enter.</h3>
+                                <h2>Să începem!</h2>
+                            </div>
+                        )
                 }
-            </div>
+            </div >
         )
     }
 }
@@ -77,6 +85,6 @@ const mapStateToProps = ({ volunteerReducer }) => ({
     notFound: volunteerReducer.notFound
 });
 
-const mapDispatchToProps = { loadStudentData };
+const mapDispatchToProps = { loadStudentData, logout };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OperatorEnrollment);

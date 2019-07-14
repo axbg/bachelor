@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './index.css'
 import Button from "@material-ui/core/Button";
 import { connect } from 'react-redux';
+import { logout } from '../../../../reducers/authReducer';
 import { getPositions, createPositionRequest } from '../../../../reducers/volunteerReducer';
 import { toastr } from 'react-redux-toastr';
 
@@ -42,6 +43,9 @@ class VolunteerPosition extends Component {
                     <h2>{this.props.user.position.position}</h2>
                     : <h2>Nealocat</h2>
                 }
+                <Button color="primary" variant="contained" label="Submit" onClick={() => this.props.logout()}> 
+                        Logout
+                </Button>
                 <div className="volunteer-position-request">
                     <h4>Dorești schimbarea poziției?</h4>
                     <br />
@@ -65,6 +69,8 @@ class VolunteerPosition extends Component {
                             toastr.success("Cererea a fost înregistrată");
                         }}>Trimite
                     </Button>
+                    <br />
+                    <br />
                 </div>
             </div >
         )
@@ -76,6 +82,6 @@ const mapStateToProps = ({ volunteerReducer }) => ({
     positions: volunteerReducer.positions
 });
 
-const mapDispatchToProps = { getPositions, createPositionRequest };
+const mapDispatchToProps = { getPositions, createPositionRequest, logout };
 
 export default connect(mapStateToProps, mapDispatchToProps)(VolunteerPosition);
