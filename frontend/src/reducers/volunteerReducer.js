@@ -208,7 +208,7 @@ export default (state = {}, action) => {
                 searchLoading: false,
                 student: {}
             }
-        case FAILURE(ACTIONS.GET_ITERATIONS):
+        case FAILURE(ACTIONS.ENROLL_STUDENT):
             return {
                 ...state,
                 searchLoading: false

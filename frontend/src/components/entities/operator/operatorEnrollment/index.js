@@ -55,6 +55,8 @@ class OperatorEnrollment extends Component {
                         item.cnp.toLowerCase().includes(searchable)) {
                         return true;
                     }
+                    
+                    return false;
                 });
 
                 this.setState({

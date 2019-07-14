@@ -179,7 +179,7 @@ class StudentProfile extends Component {
                     this.props.studentRole === "STUDENT" ?
                         <div className="student-profile-icon-container">
                             <LanguageIcon language={this.state.language} />
-                            <img width="30" height="30" src="/password.png" onClick={() => this.openModal()}
+                            <img width="30" height="30" src="/password.png" style={{ cursor: "pointer" }} onClick={() => this.openModal()}
                                 alt="PASSWORD" />
                         </div>
                         : ""
