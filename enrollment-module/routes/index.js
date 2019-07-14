@@ -7,4 +7,6 @@ router.use(withSecurityHeaders);
 
 router.post("/enroll-student", enrollmentController.enrollStudent);
 
+router.get('/withdrawals', enrollmentController.getWithdrawals);
+
 module.exports = router;
