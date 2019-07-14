@@ -7,6 +7,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
+import socketIO from 'socket.io-client';
+import { BASE_URL } from '../../../../constants/index';
+import moment from 'moment';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -20,6 +23,8 @@ class StudentHome extends Component {
             modal: false,
             withdraw: false,
             confirmed: false,
+            currentOrderNumber: 0,
+            averageTimePerStudent: "",
         }
 
         this.openModal = this.openModal.bind(this);
@@ -29,6 +34,35 @@ class StudentHome extends Component {
     componentDidMount() {
         if (!this.props.student.active) {
             toastr.info("Nu uita să îți actualizezi parola din fereastra Profil");
+        }
+
+        const facultyId = this.getFacultyId();
+
+        const socket = socketIO(BASE_URL, { query: 'facultyId=' + facultyId });
+
+        socket.on(facultyId, (message) => {
+            this.setState({
+                currentOrderNumber: message.currentOrderNumber,
+                averageTimePerStudent: message.averageTimePerStudent,
+            });
+        })
+    }
+
+    getFacultyId() {
+        return this.props.student.options ? this.props.student.options[0].faculty_profile.facultyId
+            : this.props.student.temporaryFacultyId
+    }
+
+    calculateEntryTime() {
+        const [minutes, seconds] = this.state.averageTimePerStudent.split(":");
+
+        if (this.props.student.orderNumber > this.state.currentOrderNumber) {
+            let travel = moment().format("HH:MM");
+
+            travel = moment().add(minutes * (this.props.student.orderNumber - this.state.currentOrderNumber), "minutes").format("HH:MM");
+            travel = moment().add(seconds * (this.props.student.orderNumber - this.state.currentOrderNumber), "seconds").format("HH:MM");
+
+            return travel;
         }
     }
 
@@ -69,7 +103,7 @@ class StudentHome extends Component {
                     {this.isAdmitted() ? <h3>Ai fost repartizat la {this.isAdmitted()}</h3>
                         : <h3>Starea curentă: Nerepartizat</h3>}
                     {
-                        !this.props.student.admitted ?
+                        !this.props.student.enrolled ?
                             <div className="student-home-cards-container">
                                 <Card className="student-home-card">
                                     <CardContent>
@@ -84,7 +118,7 @@ class StudentHome extends Component {
                                 <Card className="student-home-card">
                                     <CardContent>
                                         <Typography variant="h2" component="h2">
-                                            321
+                                            {this.state.currentOrderNumber}
                                         </Typography>
                                         <Typography variant="h6" component="h6">
                                             bonul de ordine curent
@@ -94,28 +128,35 @@ class StudentHome extends Component {
                                 <Card className="student-home-card">
                                     <CardContent>
                                         <Typography variant="h2" component="h2">
-                                            5:30
+                                            {this.state.averageTimePerStudent}
                                         </Typography>
                                         <Typography variant="h6" component="h6">
                                             timpul mediu de așteptare/student
                                         </Typography>
                                     </CardContent>
                                 </Card>
-                                <Card className="student-home-card">
-                                    <CardContent>
-                                        <Typography variant="h2" component="h2">
-                                            13:21
+                                {this.props.student.orderNumber > this.state.currentOrderNumber ?
+                                    <Card className="student-home-card">
+                                        <CardContent>
+                                            <Typography variant="h2" component="h2">
+                                                {this.calculateEntryTime()}
+                                            </Typography>
+                                            <Typography variant="h6" component="h6">
+                                                ora estimată de intrare
                                         </Typography>
-                                        <Typography variant="h6" component="h6">
-                                            ora estimată de intrare
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
+                                        </CardContent>
+                                    </Card> : ""
+                                }
                             </div>
                             : <div>
-                                <h3>Felicitări! Ai finalizat cu succes procesul de înscriere</h3>
-                                <h4>Orice modificare a stării curente va fi semnalată atât aici,
-                                    cât și prin trimiterea unui email</h4>
+                                {!this.isAdmitted() ?
+                                    <div>
+                                        <h3>Felicitări! Ai finalizat cu succes procesul de înscriere</h3>
+                                        <h4>Orice modificare a stării curente va fi semnalată atât aici,
+                                            cât și prin trimiterea unui email</h4>
+                                    </div>
+                                    : ""
+                                }
                                 {
                                     !this.state.withdrawPortfolio ?
                                         <div>
