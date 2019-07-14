@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import Spinner from '../../../dumb/spinner/index';
 import { toastr } from 'react-redux-toastr';
 import { loadStudentData } from '../../../../reducers/volunteerReducer';
+import { logout } from '../../../../reducers/authReducer'
+import Button from '@material-ui/core/Button';
 
 class AdminSearch extends Component {
 
@@ -34,12 +36,12 @@ class AdminSearch extends Component {
 
     render() {
         return (
-            <div >
-                <div>
+            <div className="operator-enrollment-container">
+                <div className="operator-search-container">
                     <div style={{ padding: '10px' }}>
                         <div className="inline-container">
                             <SearchBar
-                                placeholder="Număr de ordine/CNP"
+                                placeholder="Caută după număr de ordine sau CNP"
                                 value={this.state.searchText}
                                 onChange={(e) => this.updateSearchText(e)}
                                 onRequestSearch={() => this.searchStudent()}
@@ -49,20 +51,21 @@ class AdminSearch extends Component {
                                 }}
                             />
                         </div>
+                        <Button color="primary" variant="contained" label="Submit" onClick={() => this.props.logout()}>Logout</Button>
                     </div>
-                    <br />
-                    {this.props.searchLoading ?
-                        <Spinner />
-                        : (Object.keys(this.props.student).length !== 0 ?
-                            < StudentProfile />
-                            : <div>
-                                <h1>Bună, {this.props.user.username}</h1>
-                                <h3>Poți căuta un candidat folosind CNP-ul sau numărul de ordine al acestuia, urmat de tasta Enter.</h3>
-                                <h2>Să începem!</h2>
-                            </div>
-                        )
-                    }
                 </div>
+                <br />
+                {this.props.searchLoading ?
+                    <Spinner />
+                    : (Object.keys(this.props.student).length !== 0 ?
+                        < StudentProfile />
+                        : <div>
+                            <h1>Bună, {this.props.user.username}</h1>
+                            <h3>Poți căuta un candidat folosind CNP-ul sau numărul de ordine al acestuia, urmat de tasta Enter.</h3>
+                            <h2>Să începem!</h2>
+                        </div>
+                    )
+                }
             </div>
         )
     }
@@ -75,6 +78,6 @@ const mapStateToProps = ({ volunteerReducer }) => ({
     notFound: volunteerReducer.notFound
 });
 
-const mapDispatchToProps = { loadStudentData };
+const mapDispatchToProps = { loadStudentData, logout };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminSearch);

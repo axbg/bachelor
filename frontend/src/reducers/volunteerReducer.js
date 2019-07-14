@@ -23,7 +23,9 @@ export const ACTIONS = {
     CREATE_VOLUNTEER: "CREATE_VOLUNTEER",
     DRY_SORT: "DRY_SORT",
     SORT: "SORT",
-    GET_ITERATIONS: "GET_ITERATIONS"
+    GET_ITERATIONS: "GET_ITERATIONS",
+    SOLVE_POSITION_REQUEST: "SOLVE_POSITION_REQUEST",
+    ENROLL_STUDENT: "ENROLL_STUDENT"
 }
 
 export const VolunteerState = {
@@ -193,6 +195,22 @@ export default (state = {}, action) => {
             return {
                 ...state,
             }
+        case REQUEST(ACTIONS.ENROLL_STUDENT):
+            return {
+                ...state,
+                searchLoading: true
+            }
+        case SUCCESS(ACTIONS.ENROLL_STUDENT):
+            return {
+                ...state,
+                searchLoading: false,
+                student: {}
+            }
+        case FAILURE(ACTIONS.GET_ITERATIONS):
+            return {
+                ...state,
+                searchLoading: false
+            }
         default:
             return state
     }
@@ -342,5 +360,19 @@ export const getIterations = () => dispatch => {
     dispatch({
         type: ACTIONS.GET_ITERATIONS,
         payload: axios.get(SORT_URL + "/iterations")
+    })
+}
+
+export const solvePositionRequest = (payload) => dispatch => {
+    dispatch({
+        type: ACTIONS.SOLVE_POSITION_REQUEST,
+        payload: axios.patch(BASE_URL + "/admin/solve-position-request", { ...payload })
+    })
+}
+
+export const enrollStudent = (payload) => dispatch => {
+    dispatch({
+        type: ACTIONS.ENROLL_STUDENT,
+        payload: axios.post(BASE_URL + "/enrollment/enroll-student", { studentId: payload })
     })
 }

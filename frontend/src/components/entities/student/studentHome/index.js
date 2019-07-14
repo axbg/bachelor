@@ -36,6 +36,7 @@ class StudentHome extends Component {
             toastr.info("Nu uita să îți actualizezi parola din fereastra Profil");
         }
 
+        //extract to a method
         const facultyId = this.getFacultyId();
 
         const socket = socketIO(BASE_URL, { query: 'facultyId=' + facultyId });

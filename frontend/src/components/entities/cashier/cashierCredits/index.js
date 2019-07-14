@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { loadStudentData } from '../../../../reducers/volunteerReducer';
 import Spinner from '../../../dumb/spinner/index';
 import { toastr } from 'react-redux-toastr';
+import Button from '@material-ui/core/Button';
+import { logout } from '../../../../reducers/authReducer'
 
 class CashierCredits extends Component {
 
@@ -35,17 +37,22 @@ class CashierCredits extends Component {
     render() {
         return (
             <div className="operator-enrollment-container">
-                <div style={{ padding: '10px' }}>
-                    <SearchBar
-                        placeholder="Caută după număr de ordine sau CNP"
-                        value={this.state.searchText}
-                        onChange={(e) => this.updateSearchText(e)}
-                        onRequestSearch={() => this.searchStudent()}
-                        style={{
-                            margin: '0 auto',
-                            height: '80%'
-                        }}
-                    />
+                <div className="operator-search-container">
+                    <div style={{ padding: '10px' }}>
+                        <div className="inline-container">
+                            <SearchBar
+                                placeholder="Caută după număr de ordine sau CNP"
+                                value={this.state.searchText}
+                                onChange={(e) => this.updateSearchText(e)}
+                                onRequestSearch={() => this.searchStudent()}
+                                style={{
+                                    margin: '0 auto',
+                                    height: '80%'
+                                }}
+                            />
+                        </div>
+                        <Button color="primary" variant="contained" label="Submit" onClick={() => this.props.logout()}>Logout</Button>
+                    </div>
                 </div>
                 <br />
                 {Object.keys(this.props.student).length !== 0 ?
@@ -70,6 +77,6 @@ const mapStateToProps = ({ volunteerReducer }) => ({
     notFound: volunteerReducer.notFound
 });
 
-const mapDispatchToProps = { loadStudentData };
+const mapDispatchToProps = { loadStudentData, logout };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CashierCredits);

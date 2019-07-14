@@ -13,7 +13,7 @@ import { toastr } from 'react-redux-toastr';
 import { changePassword, updateData } from '../../../../reducers/studentReducer';
 import {
     addCredits, changeTaxStatus, getFormattedOptions, addOption, deleteOption,
-    updateStudentDataAsUser, getFaculties, generateOrderNumber
+    updateStudentDataAsUser, getFaculties, generateOrderNumber, enrollStudent
 } from '../../../../reducers/volunteerReducer';
 import { logout } from '../../../../reducers/authReducer';
 import Webcam from 'react-webcam';
@@ -257,6 +257,17 @@ class StudentProfile extends Component {
                             addOption={this.props.addOption} deleteOption={this.props.deleteOption} />
                     </Paper>
                 </div>
+                {
+                    this.props.userRole === "OPERATOR" ?
+                        <div>
+                            <Button color="primary" variant="contained" component="span" onClick={() => {
+                                this.props.enrollStudent(this.props.userStudent.id);
+                                toastr.success("Înscrierea a fost confirmată");
+                            }} >
+                                Confirmă înscrierea
+                            </Button>
+                        </div> : ""
+                }
             </div >
         )
     }
@@ -274,7 +285,7 @@ const mapStateToProps = ({ studentReducer, volunteerReducer }) => ({
 const mapDispatchToProps = {
     changePassword, updateData, logout, addCredits, changeTaxStatus,
     getFormattedOptions, addOption, deleteOption, updateStudentDataAsUser,
-    getFaculties, generateOrderNumber
+    getFaculties, generateOrderNumber, enrollStudent
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentProfile);
