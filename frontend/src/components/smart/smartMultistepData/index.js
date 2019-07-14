@@ -68,28 +68,6 @@ class SmartMultistepData extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            firstname: nextProps.firstname || this.state.firstname,
-            lastname: nextProps.lastname || this.state.lastname,
-            parentInitial: nextProps.parentInitial || this.state.parentInitial,
-            email: nextProps.email || this.state.email,
-            phone: nextProps.phone || this.state.phone,
-            cnp: nextProps.cnp || this.state.cnp,
-            series: nextProps.series || this.state.series,
-            number: nextProps.number || this.state.number,
-            idPublisher: nextProps.idPublisher || this.state.idPublisher,
-            address: nextProps.address || this.state.address,
-            city: nextProps.city || this.state.city,
-            bacAverage: nextProps.criterias[0].value || this.state.criterias[0].value,
-            bacRomanian: nextProps.criterias[1].value || this.state.criterias[1].value,
-            average9: nextProps.criterias[2].value || this.state.criterias[2].value,
-            average10: nextProps.criterias[3].value || this.state.criterias[3].value,
-            average11: nextProps.criterias[4].value || this.state.nextProps.criterias[4].value,
-            average12: nextProps.criterias[5].value || this.state.nextProps.criterias[5].value
-        })
-    }
-
     isReadOnly() {
         if (this.props.role === "ADMIN") {
             return false;
@@ -151,6 +129,7 @@ class SmartMultistepData extends Component {
     }
 
     render() {
+        console.log(this.props.student);
         return (
             <div>
                 <div className="student-profile-navigation-container">

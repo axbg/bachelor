@@ -61,7 +61,7 @@ export default (state = {}, action) => {
         case SUCCESS(ACTIONS.UPDATE_STUDENT_DATA):
             return {
                 ...state,
-                ...action.payload.data.message.student,
+                ...action.payload.data.message.student.student,
                 inAppLoading: false,
             }
         case FAILURE(ACTIONS.UPDATE_STUDENT_DATA):
