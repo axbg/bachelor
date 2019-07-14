@@ -63,8 +63,8 @@ const createCriteria = async (studentData, studentId) => {
 
 const sendRegistrationMail = (student) => {
     //add mail template here
-    const message = "Welcome to flow " + student.firstname + "\nCredentials\nusername: " + student.email + "\npassword: " + student.password + "\n";
-    sendMail("Flow - Welcome", message, student.email);
+    const message = "Ai facut primul pas spre a deveni student ASE, " + student.firstname + "\nDatele de conectare sunt\nusername: " + student.email + "\nparola: " + student.password + "\n";
+    sendMail("Inregistrare Admitere ASE", message, student.email);
 }
 
 const removeSensitiveData = (student) => {
