@@ -10,12 +10,11 @@ const withAttachment = async (data) => {
         return new mailgun.Attachment({ data: Buffer.from(data.file, 'base64'), filename: "ADMITERE_ASE.pdf" });
 
     } else if (data.multiple && data.userId) {
-        const faculties = await Faculty.findAll({});
-
         const documents = await Document.findAll({
-            where: { userId: data.userId },
-            attributes: ['title', 'file'], order: [['id', 'DESC']], limit: faculties.length
+            where: { userId: data.userId, iteration: data.iteration },
+            attributes: ['title', 'file']
         });
+
 
         let attachments = [];
         for (let index = 0; index < documents.length; index++) {
