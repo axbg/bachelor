@@ -6,7 +6,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Slide from '@material-ui/core/Slide';
 import Paper from '@material-ui/core/Paper';
-import { Dialog, DialogTitle, DialogContent, DialogContentText } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import CheckoutForm from '../checkoutForm';
 

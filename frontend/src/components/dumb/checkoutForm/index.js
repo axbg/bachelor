@@ -4,10 +4,6 @@ import StripeCheckout from '../stripeCheckout/index';
 
 class CheckoutForm extends Component {
 
-  constructor() {
-    super();
-  }
-
   render() {
     return (
       <StripeProvider apiKey="pk_test_dsuHAmED8s3fhu1YtpX6DTpV00A4z6UHTo">

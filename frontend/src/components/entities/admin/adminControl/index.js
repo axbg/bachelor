@@ -14,13 +14,6 @@ import { solvePositionRequest } from '../../../../reducers/volunteerReducer';
 
 const SECRET_ADMIN_TOKEN = "SECRET_ADMIN_TOKEN";
 
-const data = [
-    ["Ora", "Număr Participanți"],
-    ["8", 50],
-    ["9", 111],
-    ["10", 311],
-    ["11", 80]
-];
 const options = {
     chart: {
         title: "Participanți/Oră",

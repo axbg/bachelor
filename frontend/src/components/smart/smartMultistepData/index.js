@@ -148,8 +148,8 @@ class SmartMultistepData extends Component {
                             onChange={this.change}
                             name="firstname"
                             value={this.state.firstname || ''}
-                            validators={['required']}
-                            errorMessages={['Câmp obligatoriu']}
+                            validators={['required', 'isString', 'minStringLength: 2', 'maxStringLength: 50']}
+                            errorMessages={['Câmp obligatoriu', 'Text invalid', 'Lungime minimă: 2', 'Lungime maximă: 50']}
                             variant="outlined"
                             InputProps={{
                                 readOnly: this.state.readOnly,
@@ -163,8 +163,8 @@ class SmartMultistepData extends Component {
                             onChange={this.change}
                             name="lastname"
                             value={this.state.lastname || ''}
-                            validators={['required']}
-                            errorMessages={['Câmp obligatoriu']}
+                            validators={['required', 'isString', 'minStringLength: 2', 'maxStringLength: 50']}
+                            errorMessages={['Câmp obligatoriu', 'Text invalid', 'Lungime minimă: 2', 'Lungime maximă: 50']}
                             variant="outlined"
                             InputProps={{
                                 readOnly: this.state.readOnly,
@@ -179,8 +179,8 @@ class SmartMultistepData extends Component {
                             onChange={this.change}
                             name="parentInitial"
                             value={this.state.parentInitial || ''}
-                            validators={['required']}
-                            errorMessages={['Câmp obligatoriu']}
+                            validators={['required', 'minStringLength:1', 'maxStringLength:2']}
+                            errorMessages={['Câmp obligatoriu', 'Lungime minimă: 1', 'Lungime maximă: 2']}
                             variant="outlined"
                             InputProps={{
                                 readOnly: this.state.readOnly,
@@ -198,7 +198,7 @@ class SmartMultistepData extends Component {
                             name="email"
                             value={this.state.email || ''}
                             validators={['required', 'isEmail']}
-                            errorMessages={['Câmp obligatoriu', 'not a valid email address']}
+                            errorMessages={['Câmp obligatoriu', 'Adresă nevalidă']}
                             variant="outlined"
                             InputProps={{
                                 readOnly: this.state.readOnly,
@@ -212,8 +212,8 @@ class SmartMultistepData extends Component {
                             onChange={this.change}
                             name="phone"
                             value={this.state.phone || ''}
-                            validators={['required']}
-                            errorMessages={['Câmp obligatoriu']}
+                            validators={['required', 'isNumber', 'minStringLength:10', 'maxStringLength:10']}
+                            errorMessages={['Câmp obligatoriu', 'Număr invalid', 'Lungime minimă: 10', 'Lungime maximă: 10']}
                             variant="outlined"
                             InputProps={{
                                 readOnly: this.state.readOnly,
@@ -242,7 +242,7 @@ class SmartMultistepData extends Component {
                             onChange={this.change}
                             name="city"
                             value={this.state.city || ''}
-                            validators={['required']}
+                            validators={['required', 'isString']}
                             errorMessages={['Câmp obligatoriu']}
                             variant="outlined"
                             InputProps={{
@@ -260,8 +260,8 @@ class SmartMultistepData extends Component {
                             onChange={this.change}
                             name="cnp"
                             value={this.state.cnp || ''}
-                            validators={['required']}
-                            errorMessages={['Câmp obligatoriu']}
+                            validators={['required', 'isNumber', 'minStringLength:13', 'maxStringLength:13', 'matchRegexp:^([1-8]{1}[0-9]{12})$']}
+                            errorMessages={['Câmp obligatoriu', 'Număr invalid', 'Lungime minimă: 13', 'Lungime maximă: 13', 'CNP invalid']}
                             variant="outlined"
                             InputProps={{
                                 readOnly: this.state.readOnly,
@@ -275,8 +275,8 @@ class SmartMultistepData extends Component {
                             onChange={this.change}
                             name="series"
                             value={this.state.series || ''}
-                            validators={['required']}
-                            errorMessages={['Câmp obligatoriu']}
+                            validators={['required', 'isString', 'minStringLength:2', 'maxStringLength:2']}
+                            errorMessages={['Obligatoriu', 'Text invalid', 'Lungime minimă: 2', 'Lungime maximă: 2']}
                             variant="outlined"
                             InputProps={{
                                 readOnly: this.state.readOnly,
@@ -290,8 +290,8 @@ class SmartMultistepData extends Component {
                             onChange={this.change}
                             name="number"
                             value={this.state.number || ''}
-                            validators={['required']}
-                            errorMessages={['Câmp obligatoriu']}
+                            validators={['required', 'isNumber', 'minStringLength:6', 'maxStringLength:6']}
+                            errorMessages={['Obligatoriu', 'Număr invalid', 'Lungime minimă: 6', 'Lungime maximă: 6']}
                             variant="outlined"
                             InputProps={{
                                 readOnly: this.state.readOnly,
@@ -323,8 +323,8 @@ class SmartMultistepData extends Component {
                             onChange={this.change}
                             name="bacAverage"
                             value={this.state.bacAverage || ''}
-                            validators={['required']}
-                            errorMessages={['Câmp obligatoriu']}
+                            validators={['required', 'minFloat:6', 'maxFloat:10']}
+                            errorMessages={['Câmp obligatoriu', 'Notă minimă: 6.00', 'Notă maximă: 10']}
                             variant="outlined"
                             InputProps={{
                                 readOnly: this.state.readOnly,
@@ -338,8 +338,8 @@ class SmartMultistepData extends Component {
                             onChange={this.change}
                             name="bacRomanian"
                             value={this.state.bacRomanian || ''}
-                            validators={['required']}
-                            errorMessages={['Câmp obligatoriu']}
+                            validators={['required', 'minFloat:5', 'maxFloat:10']}
+                            errorMessages={['Câmp obligatoriu', 'Notă minimă: 5.00', 'Notă maximă: 10']}
                             variant="outlined"
                             InputProps={{
                                 readOnly: this.state.readOnly,
@@ -353,8 +353,8 @@ class SmartMultistepData extends Component {
                             onChange={this.change}
                             name="average9"
                             value={this.state.average9 || ''}
-                            validators={['required']}
-                            errorMessages={['Câmp obligatoriu']}
+                            validators={['required', 'minFloat:5', 'maxFloat:10']}
+                            errorMessages={['Câmp obligatoriu', 'Notă minimă: 5.00', 'Notă maximă: 10']}
                             variant="outlined"
                             InputProps={{
                                 readOnly: this.state.readOnly,
@@ -368,8 +368,8 @@ class SmartMultistepData extends Component {
                             onChange={this.change}
                             name="average10"
                             value={this.state.average10 || ''}
-                            validators={['required']}
-                            errorMessages={['Câmp obligatoriu']}
+                            validators={['required', 'minFloat:5', 'maxFloat:10']}
+                            errorMessages={['Câmp obligatoriu', 'Notă minimă: 5.00', 'Notă maximă: 10']}
                             variant="outlined"
                             InputProps={{
                                 readOnly: this.state.readOnly,
@@ -383,8 +383,8 @@ class SmartMultistepData extends Component {
                             onChange={this.change}
                             name="average11"
                             value={this.state.average11 || ''}
-                            validators={['required']}
-                            errorMessages={['Câmp obligatoriu']}
+                            validators={['required', 'minFloat:5', 'maxFloat:10']}
+                            errorMessages={['Câmp obligatoriu', 'Notă minimă: 5.00', 'Notă maximă: 10']}
                             variant="outlined"
                             InputProps={{
                                 readOnly: this.state.readOnly,
@@ -398,8 +398,8 @@ class SmartMultistepData extends Component {
                             onChange={this.change}
                             name="average12"
                             value={this.state.average12 || ''}
-                            validators={['required']}
-                            errorMessages={['Câmp obligatoriu']}
+                            validators={['required', 'minFloat:5', 'maxFloat:10']}
+                            errorMessages={['Câmp obligatoriu', 'Notă minimă: 5.00', 'Notă maximă: 10']}
                             variant="outlined"
                             InputProps={{
                                 readOnly: this.state.readOnly,
