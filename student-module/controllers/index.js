@@ -60,3 +60,8 @@ module.exports.withdrawPortoflio = async (ctx) => {
     await studentService.withdrawPortoflio(ctx.user.id);
     httpHelper.createHttpResponse(ctx, 200, "Portfolio withdrew");
 }
+
+module.exports.subscriptToPush = async (ctx) => {
+    await studentService.subscribeToPush(ctx.request.body.subscription, ctx.user.id);
+    httpHelper.createHttpResponse(ctx, 200, "Notification Token saved");
+}

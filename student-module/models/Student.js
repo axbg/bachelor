@@ -89,7 +89,7 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: 0
             },
             "notificationToken": {
-                type: DataTypes.STRING(100),
+                type: DataTypes.TEXT,
                 allowNull: true
             },
         },

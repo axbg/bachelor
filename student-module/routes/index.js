@@ -27,4 +27,6 @@ router.delete('/delete-option/:id/:studentId?', studentController.deleteOption);
 
 router.patch('/withdraw', studentController.withdrawPortoflio);
 
+router.post('/subscribe', studentController.subscriptToPush);
+
 module.exports = router;

@@ -289,6 +289,11 @@ const withdrawPortoflio = async (studentId) => {
     return await Student.update({ withdrawPortfolio: true }, { where: { id: studentId } });
 }
 
+const subscribeToPush = async (subscription, studentId) => {
+    const notificationToken = subscription.endpoint + "#" + subscription.keys.p256dh + "#" + subscription.keys.auth;
+    await Student.update({ notificationToken: notificationToken }, { where: { id: studentId } });
+}
+
 module.exports = {
     validateStudent,
     createStudent,
@@ -301,5 +306,6 @@ module.exports = {
     getOptions,
     createOption,
     deleteOption,
-    withdrawPortoflio
+    withdrawPortoflio,
+    subscribeToPush
 }
