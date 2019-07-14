@@ -10,7 +10,7 @@ const sendEnrollmentMail = async (authToken, document, studentId) => {
     //create mail template
     const student = await Student.findOne({ where: { id: studentId } });
 
-    sendMail(authToken, "Admitere ASE", "Bine ai venit la ase " + student.email, "bisagalexstefan@gmail.com", document);
+    sendMail(authToken, "Admitere ASE", "Bine ai venit la ase " + student.firstname + " " + student.lastname, "bisagalexstefan@gmail.com", document);
 }
 
 module.exports = {
