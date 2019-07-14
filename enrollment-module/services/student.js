@@ -9,11 +9,15 @@ const enrollStudent = async (studentId) => {
 const sendEnrollmentMail = async (authToken, document, studentId) => {
     //create mail template
     const student = await Student.findOne({ where: { id: studentId } });
-
     sendMail(authToken, "Admitere ASE", "Bine ai venit la ase " + student.firstname + " " + student.lastname, "bisagalexstefan@gmail.com", document);
+}
+
+const getWithdrawals = async () => {
+    return await Student.findAll({ where: { withdrawPortfolio: true }, attributes: ['id', 'firstname', 'lastname', 'cnp'], raw: true });
 }
 
 module.exports = {
     enrollStudent,
-    sendEnrollmentMail
+    sendEnrollmentMail,
+    getWithdrawals
 }

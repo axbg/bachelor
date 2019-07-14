@@ -7,3 +7,8 @@ module.exports.enrollStudent = async (ctx) => {
     await documentService.generateEnrollmentDocument(ctx.request.headers.authorization, ctx.request.body.studentId);
     httpHelper.createHttpResponse(ctx, 200, "Student was enrolled");
 }
+
+module.exports.getWithdrawals = async (ctx) => {
+    const withdrawals = await studentService.getWithdrawals();
+    httpHelper.createHttpResponse(ctx, 200, { withdrawals: withdrawals });
+}
