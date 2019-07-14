@@ -135,7 +135,7 @@ const sort = async (isDry, userId, authorization, email, iteration) => {
         where: {
             enrolled: true
         },
-        attributes: ['id', 'firstname', 'lastname', 'email'],
+        attributes: ['id', 'firstname', 'lastname', 'email', 'enrolled'],
         include: [{ model: Criteria, as: 'criterias' },
         { model: StudentOption, as: 'options' }]
     });
@@ -153,40 +153,42 @@ const sort = async (isDry, userId, authorization, email, iteration) => {
     let results = new Map();
     for (let index = 0; index < students.length; index++) {
         let admitted = false;
-        for (let optionsIndex = 0; optionsIndex < students[index].options.length; optionsIndex++) {
-            const profile = getFacultyProfileById(profiles, students[index].options[optionsIndex].facultyProfileId);
-            if (profile.busyPositions < profile.availablePositions) {
-                profile.busyPositions++;
-                students[index].options[optionsIndex].admitted = true;
+        if (students[index].enrolled) {
+            for (let optionsIndex = 0; optionsIndex < students[index].options.length; optionsIndex++) {
+                const profile = getFacultyProfileById(profiles, students[index].options[optionsIndex].facultyProfileId);
+                if (profile.busyPositions < profile.availablePositions) {
+                    profile.busyPositions++;
+                    students[index].options[optionsIndex].admitted = true;
 
-                let facultyArray = results.get(profile.faculty.name);
+                    let facultyArray = results.get(profile.faculty.name);
 
-                if (!facultyArray) {
-                    facultyArray = []
+                    if (!facultyArray) {
+                        facultyArray = []
+                    }
+
+                    const studentResult = {
+                        student: students[index].lastname + " " + students[index].firstname,
+                        profile: profile.name, type: profile.type,
+                        mainScore: students[index].dataValues.mainScore, secondScore: students[index].dataValues.secondScore
+                    };
+
+                    facultyArray.push(studentResult);
+
+                    results.set(profile.faculty.name, facultyArray);
+
+                    if (!isDry) {
+                        sendMailToStudent(studentResult, students[index].email, profile, authorization);
+                    }
+
+                    admitted = true;
+                    break;
                 }
-
-                const studentResult = {
-                    student: students[index].lastname + " " + students[index].firstname,
-                    profile: profile.name, type: profile.type,
-                    mainScore: students[index].dataValues.mainScore, secondScore: students[index].dataValues.secondScore
-                };
-
-                facultyArray.push(studentResult);
-
-                results.set(profile.faculty.name, facultyArray);
-
-                if (!isDry) {
-                    sendMailToStudent(studentResult, students[index].email, profile, authorization);
-                }
-
-                admitted = true;
-                break;
             }
-        }
 
-        if (!admitted && !isDry) {
-            //need to create lists with the ones that were not accepted
-            sendMailToStudent(studentResult, students[index].email, null, authorization);
+            if (!admitted && !isDry) {
+                //need to create lists with the ones that were not accepted
+                sendMailToStudent(studentResult, students[index].email, null, authorization);
+            }
         }
     }
 
@@ -216,13 +218,8 @@ const getIterations = async () => {
     return await Document.findAll({ attributes: ['iteration'], group: ['iteration'], raw: true })
 }
 
-const downloadDocumentsByIteration = async (iteration) => {
-
-}
-
 module.exports = {
     sort,
     getIterations,
-    checkSortDetails,
-    downloadDocumentsByIteration
+    checkSortDetails
 }
