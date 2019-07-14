@@ -10,6 +10,7 @@ const sendMail = require('../utils/moduleAdapter').sendMail;
 const sendMultipleAttachmentsMail = require('../utils/moduleAdapter').sendMultipleAttachmentsMail;
 const sortLib = require('fast-sort');
 const groupArray = require('group-array');
+const Op = require('sequelize').Op;
 const pdfMake = require('pdfmake/build/pdfmake');
 const vfsFonts = require('pdfmake/build/vfs_fonts');
 const fs = require('fs');
@@ -55,8 +56,8 @@ const sendMailToStudent = (details, email, profile, authorization) => {
     }
 }
 
-const sendMaillWithDocuments = async (authorization, userId, email) => {
-    sendMultipleAttachmentsMail(authorization, "Admitere - Rezultate", "Rezultate admitere", email, userId);
+const sendMaillWithDocuments = async (authorization, userId, email, iteration) => {
+    sendMultipleAttachmentsMail(authorization, "Admitere - Rezultate", "Rezultate admitere", email, userId, iteration);
 }
 
 const buildDocumentDefinition = (facultyName, isDry, results) => {
@@ -98,8 +99,8 @@ const buildDocumentDefinition = (facultyName, isDry, results) => {
     return documentDefintion;
 }
 
-const buildDocument = (facultyName, results, userId, isLastOne, isDry, authorization, email) => {
-    const namingConvention = isDry ? facultyName + "_DRY_RESULTS.pdf" : facultyName + "_RESULTS.pdf";
+const buildDocument = (facultyName, results, userId, isLastOne, isDry, authorization, email, iteration) => {
+    const namingConvention = isDry ? facultyName + "_DRY_" + iteration + ".pdf" : facultyName + iteration + ".pdf";
     const documentDefinition = buildDocumentDefinition(facultyName, isDry, results);
 
     pdfMake.createPdf(documentDefinition).getBase64(async (result) => {
@@ -107,18 +108,28 @@ const buildDocument = (facultyName, results, userId, isLastOne, isDry, authoriza
         await Document.create({
             title: namingConvention,
             file: result,
+            iteration: iteration,
             userId: userId
         });
 
         if (isLastOne) {
-            sendMaillWithDocuments(authorization, userId, email);
+            sendMaillWithDocuments(authorization, userId, email, iteration);
         }
     });
 }
 
-const sort = async (isDry, userId, authorization, email) => {
+const checkIterationUniqueness = async (iteration) => {
+    const checkIteration = await Document.findOne({ where: { iteration: iteration } });
+    !checkIteration || generateError("Iteration name is not unique", 400);
+}
 
+const checkSortDetails = async (email, iteration) => {
     email || generateError("Email is not present", 400);
+
+    await checkIterationUniqueness(iteration);
+}
+
+const sort = async (isDry, userId, authorization, email, iteration) => {
 
     const students = await Student.findAll({
         where: {
@@ -183,7 +194,7 @@ const sort = async (isDry, userId, authorization, email) => {
     for (let index = 0; index < mapKeys.length; index++) {
         const groupedByProfile = groupArray(results.get(mapKeys[index]), 'profile');
         const isLastOne = index === mapKeys.length - 1;
-        buildDocument(mapKeys[index], groupedByProfile, userId, isLastOne, isDry, authorization, email);
+        buildDocument(mapKeys[index], groupedByProfile, userId, isLastOne, isDry, authorization, email, iteration);
     }
 
     if (!isDry) {
@@ -201,6 +212,17 @@ const sort = async (isDry, userId, authorization, email) => {
     }
 }
 
+const getIterations = async () => {
+    return await Document.findAll({ attributes: ['iteration'], group: ['iteration'], raw: true })
+}
+
+const downloadDocumentsByIteration = async (iteration) => {
+
+}
+
 module.exports = {
-    sort
+    sort,
+    getIterations,
+    checkSortDetails,
+    downloadDocumentsByIteration
 }

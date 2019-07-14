@@ -13,4 +13,8 @@ router.post('/dry-sort', adminController.drySort);
 
 router.post('/sort', adminController.sort);
 
+router.get('/iterations', adminController.getIterations);
+
+router.get('/documents/:iteration', adminController)
+
 module.exports = router;

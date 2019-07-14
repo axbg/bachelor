@@ -11,7 +11,7 @@ const db = require('./models/index').database;
 
 const app = new Koa();
 
-db.sync();
+// db.sync();
 
 app.use(cors());
 app.use(json());
