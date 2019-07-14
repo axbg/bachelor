@@ -68,7 +68,7 @@ class StudentProfile extends Component {
             this.props.getFaculties();
         }
 
-        if ((this.props.studentData.admitted || this.props.userStudent.admitted) && this.props.userRole !== "ADMIN") {
+        if ((this.props.studentData.enrolled || this.props.userStudent.enrolled) && this.props.userRole !== "ADMIN") {
             this.setState({
                 readOnly: true
             })
@@ -194,7 +194,7 @@ class StudentProfile extends Component {
                         : ""
                 }
                 {
-                    this.props.userRole === "OPERATOR" ?
+                    this.props.userRole === "OPERATOR" && !this.state.readOnly ?
                         <div>
                             <Button color="primary" variant="contained" component="span" onClick={() => this.openCameraModal()} >
                                 Încarcă Fotografie

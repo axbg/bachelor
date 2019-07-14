@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 import socketIO from 'socket.io-client';
 import { BASE_URL } from '../../../../constants/index';
+import { withdrawPortfolio } from '../../../../reducers/studentReducer';
 import moment from 'moment';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -159,13 +160,20 @@ class StudentHome extends Component {
                                     : ""
                                 }
                                 {
-                                    !this.state.withdrawPortfolio ?
+                                    !this.props.student.withdrawPortfolio ?
                                         <div>
                                             <h5>Dacă vrei să îți retragi dosarul, poți apăsa pe butonul de mai jos pentru a fi
                                                 repartizat la o coadă specială în ziua retragerii</h5>
-                                            <Button type="submit" color="primary" variant="contained" label="Submit" >Retragere Dosar</Button>
+                                            <Button type="submit" color="primary" variant="contained" label="Submit"
+                                                onClick={() => this.props.withdrawPortfolio()}>Retragere Dosar</Button>
                                         </div>
-                                        : <h5>Prezintă-te la coada specială pentru retragerea dosarului</h5>
+                                        :
+                                        <div>
+                                            <h5>
+                                                Prezintă-te la coada specială pentru retragerea dosarului</h5>
+                                            <h5>Dacă te-ai răzgândit, nu este nicio problemă!</h5>
+                                            <h5>Nu vei fi exclus din repartizare decât din momentul în care îți retragi fizic dosarul</h5>
+                                        </div>
                                 }
                             </div>
                     }
@@ -185,6 +193,6 @@ const mapStateToProps = ({ studentReducer }) => ({
     student: studentReducer,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { withdrawPortfolio };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentHome);
