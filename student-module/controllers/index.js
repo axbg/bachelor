@@ -55,3 +55,8 @@ module.exports.deleteOption = async (ctx) => {
     const student = await studentService.loadStudentData(studentId);
     httpHelper.createHttpResponse(ctx, 200, { options: options, student: student });
 }
+
+module.exports.withdrawPortoflio = async (ctx) => {
+    await studentService.withdrawPortoflio(ctx.user.id);
+    httpHelper.createHttpResponse(ctx, 200, "Portfolio withdrew");
+}

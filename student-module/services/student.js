@@ -82,7 +82,7 @@ const isEnrolled = async (studentId) => {
         where: {
             id: studentId,
         },
-        attributes: ['enrolled', 'credits']
+        attributes: ['enrolled']
     });
     return student.enrolled;
 }
@@ -216,12 +216,12 @@ const loadStudent = async (studentId) => {
 }
 
 const updateStudent = async (student, studentId) => {
-    if (!(await isEnrolled(studentId))) {
-        student = removeSensitiveData(student);
-        await updateCriterias(student, studentId);
-        await Student.update({ ...student }, { where: { id: studentId } });
-        return await loadStudent(studentId);
-    }
+    // if (!(await isEnrolled(studentId))) {
+    student = removeSensitiveData(student);
+    await updateCriterias(student, studentId);
+    await Student.update({ ...student }, { where: { id: studentId } });
+    return await loadStudent(studentId);
+    // }
 }
 
 const generateOrderNumber = async (student, studentId) => {
@@ -263,12 +263,12 @@ const getOptions = async (studentId) => {
 const createOption = async (option, studentId) => {
     studentId || generateError("Student identifier is not present", 400);
 
-    if (!(await isEnrolled(studentId))) {
-        await validateOption(option, studentId);
-        await StudentOption.create({ admitted: false, facultyProfileId: option.facultyProfileId, studentId: studentId });
-    } else {
-        generateError("Student is already enrolled", 400);
-    }
+    // if (!(await isEnrolled(studentId))) {
+    await validateOption(option, studentId);
+    await StudentOption.create({ admitted: false, facultyProfileId: option.facultyProfileId, studentId: studentId });
+    // } else {
+    //     generateError("Student is already enrolled", 400);
+    // }
 }
 
 const deleteOption = async (option, studentId) => {
@@ -277,12 +277,16 @@ const deleteOption = async (option, studentId) => {
     if (!(await isEnrolled(studentId))) {
         option.id || generateError("Option identifier is not present");
         await StudentOption.destroy({ where: { id: option.id } });
-        const student = await Student.findOne({where: {id: studentId}, attributes: ['id', 'credits']});
+        const student = await Student.findOne({ where: { id: studentId }, attributes: ['id', 'credits'] });
         student.credits++;
         await student.save();
     } else {
         generateError("Student is already enrolled", 400);
     }
+}
+
+const withdrawPortoflio = async (studentId) => {
+    return await Student.update({ withdrawPortfolio: true }, { where: { id: studentId } });
 }
 
 module.exports = {
@@ -296,5 +300,6 @@ module.exports = {
     generateOrderNumber,
     getOptions,
     createOption,
-    deleteOption
+    deleteOption,
+    withdrawPortoflio
 }
