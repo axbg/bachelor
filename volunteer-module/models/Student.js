@@ -84,6 +84,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 defaultValue: 0
             },
+            "temporaryFacultyId": {
+                type: DataTypes.INTEGER,
+                defaultValue: 0
+            },
             "notificationToken": {
                 type: DataTypes.STRING(100),
                 allowNull: true

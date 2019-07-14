@@ -3,6 +3,7 @@ const User = require('../models/index').User;
 const Role = require('../models/index').Role;
 const Position = require('../models/index').Position;
 const PositionRequest = require('../models/index').PositionRequest;
+const Faculty = require('../models/index').Faculty;
 const Flow = require('../models/index').Flow;
 const redis = require('redis');
 const webpush = require('web-push');
@@ -10,6 +11,7 @@ const REDIS_ADDRESS = require('../config/index').REDIS_ADDRESS;
 const REDIS_PORT = require('../config/index').REDIS_PORT;
 const PUBLIC_VAPID_KEY = require('../config/index').PUBLIC_VAPID_KEY;
 const PRIVATE_VAPID_KEY = require('../config/index').PRIVATE_VAPID_KEY;
+const sequelize = require('sequelize');
 
 const redisClient = redis.createClient(REDIS_PORT, REDIS_ADDRESS);
 webpush.setVapidDetails('mailto:bisagalexstefan@gmail.com', PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY);
@@ -27,10 +29,14 @@ const notifyRedis = (channel, message) => {
     redisClient.publish(channel, message);
 }
 
+const getVolunteers = async (id) => {
+    return await User.findAll({ where: { id: { [sequelize.Op.not]: id } }, attributes: ['id', 'username'], include: [{ model: Role }, { model: Position }] })
+}
+
 const createUser = async (user) => {
     await validateUser(user);
-    await User.create(user);
-    return user;
+    await User.create({ ...user, positionId: 1, roleId: 1 });
+    return await getVolunteers(user.userId);
 }
 
 const subscribe = async (notificationToken, userId) => {
@@ -44,17 +50,13 @@ const loadUser = async (userId) => {
     return await User.findOne({
         where: { id: userId },
         attributes: {
-            exclude: ['id', 'password']
+            exclude: ['password']
         },
         include: [
             { model: Role },
             { model: Position }
         ]
     });
-}
-
-const getPositions = async () => {
-    return await Position.findAll({});
 }
 
 const createPositionRequest = async (request, userId) => {
@@ -89,6 +91,18 @@ const notifyUser = async (userId) => {
     }
 }
 
+const getFaculties = async () => {
+    return await Faculty.findAll({ attributes: ['id', 'name'] });
+}
+
+const getPositions = async (userId) => {
+    const user = await User.findOne({ where: { id: userId }, attributes: ['facultyId'] });
+    return await Position.findAll({ where: { facultyId: user.facultyId }, attributes: ['id', 'position'] });
+}
+
+const getRoles = async () => {
+    return await Role.findAll({ attributes: ['id', 'role'] });
+}
 
 module.exports = {
     createUser,
@@ -97,5 +111,7 @@ module.exports = {
     createPositionRequest,
     getPositions,
     createFlow,
-    notifyUser
+    notifyUser,
+    getFaculties,
+    getRoles
 }
