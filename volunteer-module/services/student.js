@@ -74,7 +74,7 @@ const produceOrderNumber = async (studentId, facultyId) => {
 
 const sendNotification = async (student) => {
     if (student && student.notificationToken) {
-        const payload = { title: "You're next!", content: "Come at the faculty entrance asap" };
+        const payload = JSON.stringify({ title: "Ești următorul!", content: "Te așteptăm la intrarea în facultate în cel mai scurt timp!" });
         //endpoint, p256dh, auth
         const subscriptionData = student.notificationToken.split("#");
         const keys = { p256dh: subscriptionData[1], auth: subscriptionData[2] };
@@ -120,14 +120,14 @@ const notifyStudents = async (numberOfStudents, userId) => {
     const user = await User.findOne({ where: { id: userId }, include: [{ model: Faculty }] });
 
     const students = await Student.findAll({
-        attributes: ['notificationToken'],
+        attributes: ['notificationToken', 'temporaryFacultyId'],
         where: { orderNumber: { [Op.between]: [user.faculty.currentOrderNumber, user.faculty.currentOrderNumber + numberOfStudents] } },
         include: [{ model: StudentOption, as: 'options', include: { model: FacultyProfile } }]
     });
 
     students.map(student => {
-        if ((student.options && student.options[0].faculty_profile.facultyId === user.facultyId)
-            || !student.options && student.temporaryFacultyId === user.facultyId) {
+        if ((student.options.length !== 0 && student.options[0].faculty_profile.facultyId === user.facultyId)
+            || student.options.length === 0 && student.temporaryFacultyId === user.facultyId) {
             sendNotification(student);
         }
     });

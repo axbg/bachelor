@@ -39,13 +39,6 @@ const createUser = async (user) => {
     return await getVolunteers(user.userId);
 }
 
-const subscribe = async (notificationToken, userId) => {
-    notificationToken || generateError("Notification token not present", 400);
-    userId || generateError("User identifier not present", 400);
-
-    await User.update({ notificationToken: notificationToken }, { where: { id: userId } });
-}
-
 const loadUser = async (userId) => {
     return await User.findOne({
         where: { id: userId },
@@ -78,10 +71,10 @@ const createFlow = async (flow, userId) => {
 const notifyUser = async (userId) => {
     userId || generateError("User identifier not present", 400);
 
-    const user = await user.findOne({ id: userId });
+    const user = await User.findOne({ where: { id: userId } });
 
     if (user && user.notificationToken) {
-        const payload = { title: "Position updated", content: "Check Flow App" };
+        const payload = JSON.stringify({ title: "Cererea a fost rezolvată", content: "Verifică aplicația Flow" });
         //endpoint, p256dh, auth
         const subscriptionData = user.notificationToken.split("#");
         const keys = { p256dh: subscriptionData[1], auth: subscriptionData[2] };
@@ -104,14 +97,19 @@ const getRoles = async () => {
     return await Role.findAll({ attributes: ['id', 'role'] });
 }
 
+const subscribeNotifications = async (subscription, userId) => {
+    const notificationToken = subscription.endpoint + "#" + subscription.keys.p256dh + "#" + subscription.keys.auth;
+    await User.update({ notificationToken: notificationToken }, { where: { id: userId } });
+}
+
 module.exports = {
     createUser,
-    subscribe,
     loadUser,
     createPositionRequest,
     getPositions,
     createFlow,
     notifyUser,
     getFaculties,
-    getRoles
+    getRoles,
+    subscribeNotifications
 }
