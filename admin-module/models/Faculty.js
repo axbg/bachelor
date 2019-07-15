@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         "coordinates": {
             type: DataTypes.STRING(80),
             allowNull: false,
-            defaultValue: "44.4557508#26.0643324"
+            defaultValue: "44.4471206#26.0968542"
         },
         "currentOrderNumber": {
             type: DataTypes.INTEGER,
