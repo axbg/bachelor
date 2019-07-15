@@ -20,6 +20,7 @@
   "dependencies": {
     "@koa/cors": "^2.2.3",
     "axios": "^0.18.0",
+    "bcrypt": "^3.0.6",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-combine-routers": "^4.0.2",
@@ -27,6 +28,7 @@
     "koa-jwt": "^3.5.1",
     "koa-router": "^7.4.0",
     "mysql2": "^1.6.5",
+    "redis": "^2.8.0",
     "sequelize": "^5.6.1"
   }
 }

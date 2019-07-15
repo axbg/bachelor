@@ -15,4 +15,6 @@ router.get('/volunteers', adminController.getVolunteers);
 
 router.patch('/volunteer', adminController.updateVolunteerRoleAndPosition);
 
+router.patch('/solve-position-request', adminController.solvePositionRequest)
+
 module.exports = router;
