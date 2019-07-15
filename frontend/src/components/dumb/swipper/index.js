@@ -24,6 +24,12 @@ class Swipper extends Component {
         <div>
           <img alt="img" src="/step3.png " />
         </div>
+        <div>
+          <img alt="img" src="/step4.png " />
+        </div>
+        <div>
+          <img alt="img" src="/step5.png " />
+        </div>
       </Carousel>
     );
   }
