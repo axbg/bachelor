@@ -216,12 +216,14 @@ const loadStudent = async (studentId) => {
 }
 
 const updateStudent = async (student, studentId) => {
-    // if (!(await isEnrolled(studentId))) {
-    student = removeSensitiveData(student);
-    await updateCriterias(student, studentId);
-    await Student.update({ ...student }, { where: { id: studentId } });
-    return await loadStudent(studentId);
-    // }
+    if (!(await isEnrolled(studentId))) {
+        student = removeSensitiveData(student);
+        await updateCriterias(student, studentId);
+        await Student.update({ ...student }, { where: { id: studentId } });
+        return await loadStudent(studentId);
+    }
+    
+    return null;
 }
 
 const generateOrderNumber = async (student, studentId) => {
