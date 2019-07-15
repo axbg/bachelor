@@ -32,6 +32,7 @@ export const ACTIONS = {
 export const VolunteerState = {
     role: null,
     loading: true,
+    initialLoadFailed: false,
     inAppLoading: false,
     volunteer: {},
     student: {},
@@ -63,7 +64,7 @@ export default (state = {}, action) => {
         case FAILURE(ACTIONS.LOAD_VOLUNTEER_DATA):
             return {
                 ...state,
-                loading: false
+                initialLoadFailed: true
             }
         case REQUEST(ACTIONS.SEARCH_STUDENT_DATA):
             return {

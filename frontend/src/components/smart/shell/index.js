@@ -10,6 +10,7 @@ import { mobileLayout } from '../../../reducers/shellReducer';
 import Spinner from '../../dumb/spinner/index';
 import BottomNavigationBar from '../../dumb/bottomNavigationBar';
 import ReactResizeDetector from 'react-resize-detector';
+import { toastr } from 'react-redux-toastr';
 
 class Shell extends Component {
 
@@ -18,6 +19,12 @@ class Shell extends Component {
             this.props.loadStudentData();
         } else {
             this.props.loadVolunteerData();
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.props.studentInitialLoadFailed || this.props.volunteerInitialLoadFailed) {
+            toastr.warning("A apărut o eroare", "Reîncearcă mai târziu");
         }
     }
 
@@ -80,6 +87,8 @@ const mapStateToProps = ({ shellReducer, volunteerReducer, studentReducer }) => 
     studentRole: studentReducer.role,
     studentLoading: studentReducer.loading,
     mobileDevice: shellReducer.mobileDevice,
+    studentInitialLoadFailed: studentReducer.initialLoadFailed,
+    volunteerInitialLoadFailed: volunteerReducer.initialLoadFailed
 });
 
 const mapDispatchToProps = { mobileLayout, loadStudentData, loadVolunteerData };
