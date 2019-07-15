@@ -41,6 +41,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(100),
                 allowNull: false
             },
+            "city": {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
             "cnp": {
                 type: DataTypes.STRING(13),
                 allowNull: false
@@ -81,6 +85,10 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: 0
             },
             "orderNumber": {
+                type: DataTypes.INTEGER,
+                defaultValue: 0
+            },
+            "temporaryFacultyId": {
                 type: DataTypes.INTEGER,
                 defaultValue: 0
             },

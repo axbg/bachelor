@@ -3,9 +3,16 @@ const Student = require('../models/index').Student;
 const Criteria = require('../models/index').Criteria;
 const Faculty = require('../models/index').Faculty;
 const User = require('../models/index').User;
+const Flow = require('../models/index').Flow;
 const StudentOption = require('../models/index').StudentOption;
 const FacultyProfile = require('../models/index').FacultyProfile;
 const sequelize = require('sequelize');
+const Op = sequelize.Op;
+const webpush = require('web-push');
+const PUBLIC_VAPID_KEY = require('../config/index').PUBLIC_VAPID_KEY;
+const PRIVATE_VAPID_KEY = require('../config/index').PRIVATE_VAPID_KEY;
+
+webpush.setVapidDetails('mailto:bisagalexstefan@gmail.com', PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY);
 
 const findStudentByCnp = async (cnp) => {
     return await Student.findOne({
@@ -13,7 +20,7 @@ const findStudentByCnp = async (cnp) => {
             cnp: cnp
         },
         attributes: {
-            exclude: ['id', 'password', 'notificationToken']
+            exclude: ['password', 'notificationToken']
         },
         include: [
             { model: Criteria, as: 'criterias', attributes: ['type', 'value'] }
@@ -27,7 +34,7 @@ const findStudentByOrderNumber = async (orderNumber, userId) => {
             orderNumber: orderNumber,
         },
         attributes: {
-            exclude: ['id', 'password', 'notificationToken']
+            exclude: ['password', 'notificationToken']
         },
         include: [
             { model: Criteria, as: 'criterias', attributes: ['type', 'value'] },
@@ -49,7 +56,11 @@ const findStudentByOrderNumber = async (orderNumber, userId) => {
         }
     });
 
-    return { ...student.toJSON(), options: undefined };
+    if (student) {
+        return { ...student.toJSON() };
+    }
+
+    return {};
 }
 
 const produceOrderNumber = async (studentId, facultyId) => {
@@ -62,7 +73,17 @@ const produceOrderNumber = async (studentId, facultyId) => {
     return faculty.currentOrderNumber;
 }
 
+const sendNotification = async (student) => {
+    if (student && student.notificationToken) {
+        const payload = JSON.stringify({ title: "Ești următorul!", content: "Te așteptăm la intrarea în facultate în cel mai scurt timp!" });
+        //endpoint, p256dh, auth
+        const subscriptionData = student.notificationToken.split("#");
+        const keys = { p256dh: subscriptionData[1], auth: subscriptionData[2] };
+        const subscription = { endpoint: subscriptionData[0], expirationTime: null, keys: keys };
 
+        webpush.sendNotification(subscription, payload);
+    }
+}
 
 const findStudent = async (search, userId) => {
     search || generateError("Search field is not present", 400);
@@ -87,19 +108,38 @@ const generateOrderNumber = async (student) => {
     return await produceOrderNumber(student.studentId, facultyId);
 }
 
-const getOptions = async (student) => {
-    student.studentId || generateError("Student identifier is not present", 400);
+const notifyStudent = async (studentId) => {
+    studentId || generateError("Student identifier not present", 400);
+    const student = await Student.findOne({ id: studentId });
+    sendNotification(student);
 
-    const options = await FacultyProfile.findAll({ raw: true });
-    const selectedOptions = await StudentOption.findAll({ where: { studentId: student.studentId }, include: { model: FacultyProfile }, raw: true });
+}
 
-    const selectedOptionsIds = selectedOptions.map(options => options.facultyProfileId);
-    const notSelectedOptions = options.filter(option => !selectedOptionsIds.includes(option.id));
+const notifyStudents = async (numberOfStudents, userId) => {
+    numberOfStudents || generateError("Number of students not present", 400);
 
-    return { selectedOptions, notSelectedOptions };
+    const user = await User.findOne({ where: { id: userId }, include: [{ model: Faculty }] });
+
+    const flows = await Flow.findAll({ where: { facultyId: user.facultyId }, raw: true });
+    const currentOrderNumber = flows.reduce((total, flow) => total + flow.flow, 0);
+
+    const students = await Student.findAll({
+        attributes: ['notificationToken', 'temporaryFacultyId'],
+        where: { orderNumber: { [Op.between]: [currentOrderNumber, currentOrderNumber + numberOfStudents] } },
+        include: [{ model: StudentOption, as: 'options', include: { model: FacultyProfile } }]
+    });
+
+    students.map(student => {
+        if ((student.options.length !== 0 && student.options[0].faculty_profile.facultyId === user.facultyId)
+            || student.options.length === 0 && student.temporaryFacultyId === user.facultyId) {
+            sendNotification(student);
+        }
+    });
 }
 
 module.exports = {
     findStudent,
     generateOrderNumber,
+    notifyStudent,
+    notifyStudents
 }

@@ -19,10 +19,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(255),
                 allowNull: false
             },
-            "notification_token": {
-                type: DataTypes.STRING(100),
+            "notificationToken": {
+                type: DataTypes.TEXT,
                 allowNull: true
-            }
+            },
         },
         {
             hooks: {

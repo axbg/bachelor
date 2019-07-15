@@ -17,7 +17,22 @@ router.get('/search-student/:search', userController.searchStudent);
 
 router.post('/generate-order-number', userController.generateOrderNumber);
 
-//TO DO
-router.get('/notify-students');
+router.get('/positions', userController.getPositions);
+
+router.post('/position-request', userController.createPositionRequest);
+
+router.post('/flow', userController.createFlow);
+
+router.post('/notify-student', userController.notifyStudent);
+
+router.post('/notify-students', userController.notifyStudents);
+
+router.post('/notify-volunteer', userController.notifyUser);
+
+router.get('/faculties', userController.getFaculties);
+
+router.get('/roles', userController.getRoles);
+
+router.post('/subscribe', userController.subscribeNotifications);
 
 module.exports = router;

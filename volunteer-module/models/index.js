@@ -9,6 +9,8 @@ const FacultyProfile = database.import("./FacultyProfile");
 const User = database.import('./User');
 const Role = database.import('./Role');
 const Position = database.import('./Position');
+const PositionRequest = database.import('./PositionRequest');
+const Flow = database.import('./Flow');
 
 Student.hasMany(StudentOption, { as: "options" });
 Student.hasMany(Document, { as: "documents" });
@@ -22,6 +24,13 @@ User.belongsTo(Faculty);
 User.belongsTo(Role);
 User.belongsTo(Position);
 
+Position.belongsTo(Faculty);
+
+PositionRequest.belongsTo(User);
+PositionRequest.belongsTo(Position);
+
+Flow.belongsTo(Faculty);
+
 module.exports = {
     database,
     Student,
@@ -33,5 +42,7 @@ module.exports = {
     FacultyProfile,
     User,
     Role,
-    Position
+    Position,
+    PositionRequest,
+    Flow
 }
