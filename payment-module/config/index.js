@@ -5,7 +5,7 @@ const DB_USERNAME = process.env.DB_USERNAME ? process.env.DB_USERNAME : "alex";
 const DB_PASSWORD = process.env.DB_PASSWORD ? process.env.DB_PASSWORD : "forever";
 const HOST_ADDRESS = process.env.HOST_ADDRESS ? process.env.HOST_ADDRESS : "localhost";
 const STRIPE_SECRET_KEY = "sk_test_xkCfVpyy84XfSjsdctIwbM5D00v0Jart3d";
-const CREDIT_PRICE = 50;
+const CREDIT_PRICE = 1000;
 const REDIS = process.argv[6];
 
 module.exports = {
