@@ -54,7 +54,7 @@ const createCriteria = async (studentData, studentId) => {
     Criteria.bulkCreate([
         { type: CRITERIA_TYPES.BAC_AVERAGE, value: studentData.bacAverage, studentId: studentId },
         { type: CRITERIA_TYPES.BAC_RO, value: studentData.bacRomanian, studentId: studentId },
-        { type: CRITERIA_TYPES.BAC_RO, value: studentData.bacRomanian, studentId: studentId },
+        { type: CRITERIA_TYPES.AVERAGE_9, value: studentData.average9, studentId: studentId },
         { type: CRITERIA_TYPES.AVERAGE_10, value: studentData.average10, studentId: studentId },
         { type: CRITERIA_TYPES.AVERAGE_11, value: studentData.average11, studentId: studentId },
         { type: CRITERIA_TYPES.AVERAGE_12, value: studentData.average12, studentId: studentId }
@@ -63,8 +63,8 @@ const createCriteria = async (studentData, studentId) => {
 
 const sendRegistrationMail = (student) => {
     //add mail template here
-    const message = "Welcome to flow " + student.firstname + "\nCredentials\nusername: " + student.email + "\npassword: " + student.password + "\n";
-    sendMail("Flow - Welcome", message, student.email);
+    const message = "Ai facut primul pas spre a deveni student ASE, " + student.firstname + "\nDatele de conectare sunt\nusername: " + student.email + "\nparola: " + student.password + "\n";
+    sendMail("Inregistrare Admitere ASE", message, student.email);
 }
 
 const removeSensitiveData = (student) => {
@@ -74,7 +74,6 @@ const removeSensitiveData = (student) => {
     student.withdrawPortoflio && delete student.withdrawPortoflio;
     student.credits && delete student.credits;
     student.orderNumber && delete student.orderNumber;
-    student.notificationToken && delete student.notificationToken;
     return student;
 }
 
@@ -85,7 +84,6 @@ const isEnrolled = async (studentId) => {
         },
         attributes: ['enrolled']
     });
-
     return student.enrolled;
 }
 
@@ -115,7 +113,12 @@ const updateCriterias = async (student, studentId) => {
     await Promise.all(criterias);
 }
 
+const addTemporaryFaculty = async (studentId, facultyId) => {
+    await Student.update({ temporaryFacultyId: facultyId }, { where: { id: studentId } });
+}
+
 const getFacultyCoordinates = async (facultyId) => {
+    await addTemporaryFaculty(facultyId);
     const faculty = await Faculty.findOne({
         where: {
             id: facultyId
@@ -133,7 +136,7 @@ const verifyLocation = (location, facultyCoordinates) => {
     return geolib.getDistance(
         { latitude: studentLat, longitude: studentLong }, {
             latitude: facultyLat, longitude: facultyLong
-        }) < 500;
+        }) < 20000;
 }
 
 const produceOrderNumber = async (studentId, facultyId) => {
@@ -149,9 +152,28 @@ const produceOrderNumber = async (studentId, facultyId) => {
 const validateOption = async (option, studentId) => {
     option.facultyProfileId || generateError("Faculty Profile identifier is not present", 400);
 
+    const student = await Student.findOne({ where: { id: studentId }, attributes: ['id', 'credits'] });
     const findOptions = await StudentOption.findAll({ where: { studentId: studentId, facultyProfileId: option.facultyProfileId } });
 
+    student.credits > 0 || generateError("Student doesn't have enough credits", 400);
     !findOptions.length || generateError("Faculty Profile already selected", 400);
+    student.credits = student.credits - 1;
+    await student.save();
+}
+
+const loadStudentData = async (studentId) => {
+    return await Student.findOne({
+        where: {
+            id: studentId,
+        },
+        attributes: {
+            exclude: ['password']
+        },
+        include: [
+            { model: StudentOption, as: 'options', include: { model: FacultyProfile } },
+            { model: Criteria, as: 'criterias', attributes: ['type', 'value'] }
+        ]
+    });
 }
 
 
@@ -173,7 +195,8 @@ const changePassword = async (newPassword, studentId) => {
     if (validatePassword(newPassword)) {
         return await Student.update(
             {
-                password: newPassword
+                password: newPassword,
+                active: true
             },
             {
                 where: {
@@ -186,28 +209,21 @@ const changePassword = async (newPassword, studentId) => {
 }
 
 const loadStudent = async (studentId) => {
-    return await Student.findOne({
-        where: {
-            id: studentId,
-        },
-        attributes: {
-            exclude: ['id', 'password']
-        },
-        include: [
-            { model: StudentOption, as: 'options', include: { model: FacultyProfile } },
-            { model: Document, as: 'documents', attributes: ['title'] },
-            { model: Criteria, as: 'criterias', attributes: ['type', 'value'] }
-        ]
-    });
+    const student = await loadStudentData(studentId);
+    const faculties = await Faculty.findAll({});
+
+    return { student: student, faculties: faculties };
 }
 
 const updateStudent = async (student, studentId) => {
-    if (await !isEnrolled(studentId)) {
+    if (!(await isEnrolled(studentId))) {
         student = removeSensitiveData(student);
         await updateCriterias(student, studentId);
         await Student.update({ ...student }, { where: { id: studentId } });
         return await loadStudent(studentId);
     }
+    
+    return null;
 }
 
 const generateOrderNumber = async (student, studentId) => {
@@ -222,6 +238,8 @@ const generateOrderNumber = async (student, studentId) => {
         ? [studentOption.faculty_profile.facultyId, studentOption.faculty_profile.faculty.coordinates]
         : [student.facultyId, await getFacultyCoordinates(facultyId)];
 
+    studentOption.faculty_profile.facultyId || addTemporaryFaculty(studentId, facultyId);
+
     facultyId || generateError("Options or FacultyId is required", 400);
 
     student.location && verifyLocation(student.location, facultyCoordinates) || generateError("Location is not valid", 400);
@@ -233,7 +251,10 @@ const getOptions = async (studentId) => {
     studentId || generateError("Student identifier is not present", 400);
 
     const options = await FacultyProfile.findAll({ raw: true });
-    const selectedOptions = await StudentOption.findAll({ where: { studentId: studentId }, include: { model: FacultyProfile }, raw: true });
+    const selectedOptions = await StudentOption.findAll({
+        where: { studentId: studentId }, include: { model: FacultyProfile },
+        order: [['id', 'asc']], raw: true
+    });
 
     const selectedOptionsIds = selectedOptions.map(options => options.facultyProfileId);
     const notSelectedOptions = options.filter(option => !selectedOptionsIds.includes(option.id));
@@ -244,12 +265,12 @@ const getOptions = async (studentId) => {
 const createOption = async (option, studentId) => {
     studentId || generateError("Student identifier is not present", 400);
 
-    if (!(await isEnrolled(studentId))) {
-        await validateOption(option, studentId);
-        await StudentOption.create({ admitted: false, facultyProfileId: option.facultyProfileId, studentId: studentId });
-    } else {
-        generateError("Student is already enrolled", 400);
-    }
+    // if (!(await isEnrolled(studentId))) {
+    await validateOption(option, studentId);
+    await StudentOption.create({ admitted: false, facultyProfileId: option.facultyProfileId, studentId: studentId });
+    // } else {
+    //     generateError("Student is already enrolled", 400);
+    // }
 }
 
 const deleteOption = async (option, studentId) => {
@@ -258,9 +279,21 @@ const deleteOption = async (option, studentId) => {
     if (!(await isEnrolled(studentId))) {
         option.id || generateError("Option identifier is not present");
         await StudentOption.destroy({ where: { id: option.id } });
+        const student = await Student.findOne({ where: { id: studentId }, attributes: ['id', 'credits'] });
+        student.credits++;
+        await student.save();
     } else {
         generateError("Student is already enrolled", 400);
     }
+}
+
+const withdrawPortoflio = async (studentId) => {
+    return await Student.update({ withdrawPortfolio: true }, { where: { id: studentId } });
+}
+
+const subscribeToPush = async (subscription, studentId) => {
+    const notificationToken = subscription.endpoint + "#" + subscription.keys.p256dh + "#" + subscription.keys.auth;
+    await Student.update({ notificationToken: notificationToken }, { where: { id: studentId } });
 }
 
 module.exports = {
@@ -269,9 +302,12 @@ module.exports = {
     sendRegistrationMail,
     changePassword,
     loadStudent,
+    loadStudentData,
     updateStudent,
     generateOrderNumber,
     getOptions,
     createOption,
-    deleteOption
+    deleteOption,
+    withdrawPortoflio,
+    subscribeToPush
 }

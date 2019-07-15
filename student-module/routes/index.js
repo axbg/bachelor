@@ -15,7 +15,7 @@ router.post('/change-password', studentController.changePassword);
 
 router.get('/load', studentController.loadStudent);
 
-router.patch('/update', studentController.updateStudent);
+router.patch('/update/:studentId?', studentController.updateStudent);
 
 router.post('/generate-order-number', studentController.generateOrderNumber);
 
@@ -24,5 +24,9 @@ router.get('/options/:studentId?', studentController.getOptions);
 router.post('/create-option/:studentId?', studentController.createOption);
 
 router.delete('/delete-option/:id/:studentId?', studentController.deleteOption);
+
+router.patch('/withdraw', studentController.withdrawPortoflio);
+
+router.post('/subscribe', studentController.subscriptToPush);
 
 module.exports = router;
