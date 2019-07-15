@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import { Dialog, DialogTitle, DialogContent, DialogContentText } from '@material-ui/core';
 import Slide from '@material-ui/core/Slide';
-import LanguageIcon from '../../../dumb/languageIcon';
 import { Switch } from '@material-ui/core';
 import SmartMultistepData from '../../../smart/smartMultistepData';
 import { STUDENT_DEFAULT_IMAGE, PUBLIC_VAPID_KEY, BASE_URL } from '../../../../constants/index';
@@ -140,7 +139,7 @@ class StudentProfile extends Component {
     urlBase64ToUint8Array(base64String) {
         const padding = "=".repeat((4 - base64String.length % 4) % 4);
         const base64 = (base64String + padding)
-            .replace(/\-/g, "+")
+            .replace(/-/g, "+")
             .replace(/_/g, "/");
         const rawData = window.atob(base64);
         const outputArray = new Uint8Array(rawData.length);
@@ -205,7 +204,6 @@ class StudentProfile extends Component {
                 {
                     this.props.studentRole === "STUDENT" ?
                         <div className="student-profile-icon-container">
-                            <LanguageIcon language={this.state.language} />
                             <img width="30" height="30" src="/password.png" style={{ cursor: "pointer" }} onClick={() => this.openModal()}
                                 alt="PASSWORD" />
                             <img width="30" height="30" src="/notifications.png" style={{ cursor: "pointer" }} onClick={() => this.activateNotifications()}
