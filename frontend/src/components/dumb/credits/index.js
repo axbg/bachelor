@@ -54,7 +54,7 @@ class Credits extends Component {
         if (this.props.role !== "STUDENT") {
             this.props.addOption({ studentId: this.props.student.id, optionId: this.state.addOptionId });
         } else {
-            this.props.addOption(this.state.addCredits);
+            this.props.addOption(this.state.addOptionId);
         }
     }
 
@@ -92,15 +92,14 @@ class Credits extends Component {
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
-                                            <option value="3">4</option>
-                                            <option value="3">5</option>
-                                            <option value="3">6</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
                                         </select>
                                         <span className="select-highlight"></span>
                                         <span className="select-bar"></span>
                                         <label className="select-label">Număr credite</label>
                                     </div>
-
                                     <Button variant="contained" color="primary" onClick={() => this.openModal()}>Cumpără credite</Button>
                                 </div>
                                 : <h4>Studentul are {this.props.student.credits} credite.</h4>

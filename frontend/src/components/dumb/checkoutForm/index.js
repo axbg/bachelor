@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import { Elements, StripeProvider } from 'react-stripe-elements';
 import StripeCheckout from '../stripeCheckout/index';
+import { STRIPE_SECRET } from '../../../constants/index';
 
 class CheckoutForm extends Component {
 
   render() {
     return (
-      <StripeProvider apiKey="pk_test_dsuHAmED8s3fhu1YtpX6DTpV00A4z6UHTo">
+      <StripeProvider apiKey={STRIPE_SECRET}>
         <div className="example">
-          <h1>Admitere ASE 2019</h1>
           <h3>Achizitionare: {this.props.numberOfCredits} credite</h3>
-          <h3>Total de plată: {50 * this.props.numberOfCredits}</h3>
-          <Elements>
-            <StripeCheckout email={this.props.email} id={this.props.id} amount={50 * this.props.numberOfCredits} buyCredits={this.props.buyCredits} />
-          </Elements>
+          <h3>Total de plată: {1000 * this.props.numberOfCredits}</h3>
+          <div>
+            <Elements>
+              <StripeCheckout email={this.props.email} id={this.props.id} amount={1000 * this.props.numberOfCredits} buyCredits={this.props.buyCredits} />
+            </Elements>
+          </div>
         </div>
       </StripeProvider>
     );

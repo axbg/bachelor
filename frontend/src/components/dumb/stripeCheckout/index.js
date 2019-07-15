@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
+import './index.css';
+import Button from '@material-ui/core/Button';
 
 class StripeCheckout extends Component {
     constructor(props) {
@@ -32,8 +34,10 @@ class StripeCheckout extends Component {
         return (
             <div className="checkout">
                 <p>Dorești să efectuezi tranzacția?</p>
-                <CardElement />
-                <button onClick={this.submit}>Cumpără</button>
+                <div className="checkout-container">
+                    <CardElement />
+                </div>
+                <Button variant="contained" color="primary" onClick={this.submit}>Cumpără</Button>
             </div>
         );
     }

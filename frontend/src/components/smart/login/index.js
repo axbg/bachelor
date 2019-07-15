@@ -17,7 +17,7 @@ class Login extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.failed) {
-            toastr.error("Credentials don't match");
+            toastr.error("Datele nu sunt valide");
         }
     }
 

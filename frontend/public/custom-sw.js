@@ -1,3 +1,8 @@
+const cacheVersion = 1;
+const currentCache = {
+    offline: 'offline-cache-' + cacheVersion
+};
+const offlineUrl = 'offline.html';
 
 self.addEventListener("push", e => {
     const title = e.data.json().title;
@@ -8,4 +13,35 @@ self.addEventListener("push", e => {
         tag: '1',
         data: 'Hello there'
     });
+});
+
+this.addEventListener('install', event => {
+    event.waitUntil(
+        caches.open(currentCache.offline).then(function (cache) {
+            return cache.addAll([
+                './logo_transparent.png',
+                './password.png',
+                './notifications.png',
+                './background.png',
+                offlineUrl
+            ]);
+        })
+    );
+});
+
+this.addEventListener('fetch', event => {
+    if (event.request.mode === 'navigate' || (event.request.method === 'GET' && event.request.headers.get('accept').includes('text/html'))) {
+        event.respondWith(
+            fetch(event.request.url).catch(error => {
+                return caches.match(offlineUrl);
+            })
+        );
+    }
+    else {
+        event.respondWith(caches.match(event.request)
+            .then(function (response) {
+                return response || fetch(event.request);
+            })
+        );
+    }
 });
