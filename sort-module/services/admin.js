@@ -100,15 +100,16 @@ const buildDocumentDefinition = (facultyName, isDry, results) => {
 }
 
 const buildDocument = (facultyName, results, userId, isLastOne, isDry, authorization, email, iteration) => {
-    const namingConvention = isDry ? facultyName + "_DRY_" + iteration + ".pdf" : facultyName + iteration + ".pdf";
+    const namingConvention = isDry ? facultyName + "_DRY_" + iteration + ".pdf" : facultyName + "_" + iteration + ".pdf";
     const documentDefinition = buildDocumentDefinition(facultyName, isDry, results);
 
     pdfMake.createPdf(documentDefinition).getBase64(async (result) => {
-        fs.writeFileSync(namingConvention, Buffer.from(result, 'base64'));
+        // fs.writeFileSync(namingConvention, Buffer.from(result, 'base64'));
         await Document.create({
             title: namingConvention,
             file: result,
             iteration: iteration,
+            state: true,
             userId: userId
         });
 
@@ -215,7 +216,7 @@ const sort = async (isDry, userId, authorization, email, iteration) => {
 }
 
 const getIterations = async () => {
-    return await Document.findAll({ attributes: ['iteration'], group: ['iteration'], raw: true })
+    return await Document.findAll({ where: { iteration: { [Op.not]: "" } }, attributes: ['iteration'], group: ['iteration'], raw: true })
 }
 
 module.exports = {
