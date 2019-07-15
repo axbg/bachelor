@@ -5,19 +5,22 @@ const vfsFonts = require('pdfmake/build/vfs_fonts');
 const sendEnrollmentMail = require('./student').sendEnrollmentMail;
 pdfMake.vfs = vfsFonts.pdfMake.vfs;
 
-const generateEnrollmentDocument = async (authToken, studentId, document) => {
+const generateEnrollmentDocument = async (authToken, studentId) => {
     const documentDefintion = {
         content: [
-            'First paragraph',
-            'Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines'
+            'Admitere ASE',
+            'Procesul de înscriere a luat final',
+            'Orice actualizare va fi disponibila in aplicatie'
         ]
     };
 
-    pdfMake.createPdf(documentDefintion).getBuffer(async (result) => {
+    pdfMake.createPdf(documentDefintion).getBase64(async (result) => {
         await Document.create({
-            title: document.title,
+            title: "Bun venit la ASE",
             file: result,
-            studentId: studentId
+            studentId: studentId,
+            iteration: "",
+            state: true
         });
         sendEnrollmentMail(authToken, result, studentId);
     });
