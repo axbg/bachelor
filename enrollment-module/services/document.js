@@ -9,7 +9,8 @@ const generateEnrollmentDocument = async (authToken, studentId) => {
     const documentDefintion = {
         content: [
             'Admitere ASE',
-            'Felicitari! ai fost inscris!'
+            'Procesul de înscriere a luat final',
+            'Orice actualizare va fi disponibila in aplicatie'
         ]
     };
 
