@@ -21,6 +21,10 @@ class VolunteerCheck extends Component {
     }
 
     incrementNotify = (value) => {
+        if(this.state.notify === 0 && value === -1) {
+            return;
+        }
+        
         this.setState({
             notify: this.state.notify + value
         })
@@ -51,7 +55,7 @@ class VolunteerCheck extends Component {
                 <div className="volunteer-check-panel">
                     <h3>Notificări</h3>
                     <div style={{ display: "inline-block" }}>
-                        <input className="volunteer-number-input" type="number" min="-100" max="100"
+                        <input className="volunteer-number-input" type="number" min="0" max="100"
                             value={this.state.notify} onChange={() => { }} />
                     </div>
                     <div className="volunteer-check-control">

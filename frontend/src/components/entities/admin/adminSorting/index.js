@@ -43,8 +43,10 @@ class AdminSorting extends Component {
             toastr.error("Adresa de email este invalida");
         } else if (isDry) {
             this.props.drySort({ iteration: this.state.iteration, email: this.state.email });
+            toastr.success("Procesul de sortare test a început");
         } else {
             this.props.sort({ iteration: this.state.iteration, email: this.state.email });
+            toastr.success("Procesul de sortare oficiala a început");
         }
     }
 
@@ -109,8 +111,8 @@ class AdminSorting extends Component {
                                         {
                                             this.props.iterations.map((iteration, key) => {
                                                 return (
-                                                    <TableRow key={key + 1}>
-                                                        <TableCell>{key}</TableCell>
+                                                    <TableRow key={key}>
+                                                        <TableCell>{key + 1}</TableCell>
                                                         <TableCell>{iteration.iteration}</TableCell>
                                                         <TableCell className="no-padding-table-cell">
                                                             <Button iteration={iteration.iteration} onClick={(e) => this.downloadFile(e)}>Descarcă</Button>

@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import { Dialog, DialogTitle, DialogContent } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import CheckoutForm from '../checkoutForm';
+import { toastr } from 'react-redux-toastr';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -51,11 +52,16 @@ class Credits extends Component {
     }
 
     addOption(e) {
-        if (this.props.role !== "STUDENT") {
-            this.props.addOption({ studentId: this.props.student.id, optionId: this.state.addOptionId });
+        if (this.props.student.credits !== 0) {
+            if (this.props.role !== "STUDENT") {
+                this.props.addOption({ studentId: this.props.student.id, optionId: this.state.addOptionId });
+            } else {
+                this.props.addOption(this.state.addOptionId);
+            }
         } else {
-            this.props.addOption(this.state.addOptionId);
+            toastr.warning("Nu ai suficiente credite disponibile");
         }
+
     }
 
     deleteOption(e) {
@@ -115,13 +121,13 @@ class Credits extends Component {
                         </div> : ""
                 }
                 <div className="student-credits-table-container">
-                    <Paper>
+                    <Paper style={{ overflow: "auto", maxHeight: "250px" }}>
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell className="no-padding-table-cell">#</TableCell>
-                                    <TableCell>Facultate</TableCell>
-                                    {!this.props.student.enrolled || this.props.role === "ADMIN" ? <TableCell className="no-padding-table-cell"></TableCell> : <td></td>}
+                                    <TableCell className="no-padding-table-cell sticky">#</TableCell>
+                                    <TableCell className="sticky">Facultate</TableCell>
+                                    {!this.props.student.enrolled || this.props.role === "ADMIN" ? <TableCell className="no-padding-table-cell sticky proeminent"></TableCell> : <td></td>}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -130,7 +136,7 @@ class Credits extends Component {
                                         <TableRow key={key}>
                                             <TableCell className="no-padding-table-cell">{key + 1}</TableCell>
                                             <TableCell>{option["faculty_profile.name"]} - {option["faculty_profile.type"] === "B" ? "BUGET" : "TAXA"}</TableCell>
-                                            {!this.props.student.enrolled || this.props.role === "ADMIN" ?
+                                            {!this.props.student.orderNumber || (!this.props.student.enrolled && this.props.role === "OPERATOR") || this.props.role === "ADMIN" ?
                                                 <TableCell className="no-padding-table-cell">
                                                     <Button value={option.id} onClick={(e) => this.deleteOption(e)}>Șterge</Button></TableCell> : <td></td>
                                             }
@@ -150,7 +156,9 @@ class Credits extends Component {
                                 <select className="select-text" onChange={(e) => this.onChange(e)} value={this.state.addOptionId} name="addOptionId">
                                     {
                                         this.props.options.notSelectedOptions.length !== 0 ?
-                                            this.props.options.notSelectedOptions.map((option, key) => <option key={key} value={option.id}>{option.name}</option>)
+                                            this.props.options.notSelectedOptions.map((option, key) => <option key={key} value={option.id}>
+                                                {option.name} - {option.type === "B" ? "BUGET" : "TAXĂ"}
+                                            </option>)
                                             : <option>Nicio opțiune disponibilă</option>
                                     }
                                 </select>

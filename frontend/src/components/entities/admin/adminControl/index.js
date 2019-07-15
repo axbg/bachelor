@@ -26,7 +26,7 @@ class AdminControl extends Component {
     constructor() {
         super();
         this.state = {
-            data: [["Ora", "Numar Participanți"], [8, 50]],
+            data: [["Ora", "Numar Participanți"], [8, 0]],
             requests: [],
             socket: null
         };
@@ -49,17 +49,19 @@ class AdminControl extends Component {
         })
 
         socket.on('flow-admin-data', message => {
-            let newData = [];
-            newData.push(["Ora", "Număr Participanți"])
-            message.map(data => {
-                Object.keys(data).map(key => {
-                    newData.push([key, data[key]]);
+            if (message.length !== 0) {
+                let newData = [];
+                newData.push(["Ora", "Număr Participanți"])
+                message.map(data => {
+                    Object.keys(data).map(key => {
+                        newData.push([key, data[key]]);
+                    })
                 })
-            })
 
-            this.setState({
-                data: newData
-            })
+                this.setState({
+                    data: newData
+                })
+            }
         })
 
         this.setState({

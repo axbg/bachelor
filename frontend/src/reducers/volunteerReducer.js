@@ -26,7 +26,8 @@ export const ACTIONS = {
     GET_ITERATIONS: "GET_ITERATIONS",
     SOLVE_POSITION_REQUEST: "SOLVE_POSITION_REQUEST",
     ENROLL_STUDENT: "ENROLL_STUDENT",
-    GET_WITHDRAWALS: "GET_WITHDRAWALS"
+    GET_WITHDRAWALS: "GET_WITHDRAWALS",
+    UPDATE_VOLUNTEER_POSITION: "UPDATE_VOLUNTEER_POSITION"
 }
 
 export const VolunteerState = {
@@ -44,7 +45,7 @@ export const VolunteerState = {
     roles: null,
     volunteers: null,
     iterations: null,
-    withdrawals: null
+    withdrawals: null,
 }
 
 export default (state = {}, action) => {
@@ -230,6 +231,11 @@ export default (state = {}, action) => {
                 ...state,
                 searchLoading: false
             }
+        case SUCCESS(ACTIONS.UPDATE_VOLUNTEER_POSITION):
+            return {
+                ...state,
+                volunteer: { ...action.payload.data.message.user },
+            }
         default:
             return state
     }
@@ -400,5 +406,12 @@ export const getWithdrawals = () => dispatch => {
     dispatch({
         type: ACTIONS.GET_WITHDRAWALS,
         payload: axios.get(BASE_URL + "/enrollment/withdrawals")
+    })
+}
+
+export const updateVolunteerPosition = () => dispatch => {
+    dispatch({
+        type: ACTIONS.UPDATE_VOLUNTEER_POSITION,
+        payload: axios.get(BASE_URL + "/volunteer/load")
     })
 }

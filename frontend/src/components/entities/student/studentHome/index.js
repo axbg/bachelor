@@ -64,13 +64,12 @@ class StudentHome extends Component {
     }
 
     calculateEntryTime() {
-        const [minutes, seconds] = this.state.averageTimePerStudent.split(":");
+        const [minutes, seconds] = this.state.averageTimePerStudent === 0 ? [0, 0] : this.state.averageTimePerStudent.split(":");
 
         if (this.props.student.orderNumber > this.state.currentOrderNumber) {
-            let travel = moment().format("HH:MM");
-
-            travel = moment().add(minutes * (this.props.student.orderNumber - this.state.currentOrderNumber), "minutes").format("HH:MM");
-            travel = moment().add(seconds * (this.props.student.orderNumber - this.state.currentOrderNumber), "seconds").format("HH:MM");
+            let travel = moment().format("HH:mm");
+            travel = moment().add(minutes * (this.props.student.orderNumber - this.state.currentOrderNumber), "minutes").format("HH:mm");
+            travel = moment().add(seconds * (this.props.student.orderNumber - this.state.currentOrderNumber), "seconds").format("HH:mm");
 
             return travel;
         }

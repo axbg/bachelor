@@ -240,7 +240,7 @@ class StudentProfile extends Component {
                                     }}>
                                     Adaugă credite
                                 </Button>
-                                <br />
+   
                                 <Switch
                                     checked={this.state.tax}
                                     onChange={() => {
@@ -285,7 +285,7 @@ class StudentProfile extends Component {
                     </Paper>
                 </div>
                 {
-                    this.props.userRole === "OPERATOR" ?
+                    this.props.userRole === "OPERATOR" && !this.props.userStudent.enrolled ?
                         <div>
                             <Button color="primary" variant="contained" component="span" onClick={() => {
                                 this.props.enrollStudent(this.props.userStudent.id);
