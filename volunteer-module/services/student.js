@@ -3,6 +3,7 @@ const Student = require('../models/index').Student;
 const Criteria = require('../models/index').Criteria;
 const Faculty = require('../models/index').Faculty;
 const User = require('../models/index').User;
+const Flow = require('../models/index').Flow;
 const StudentOption = require('../models/index').StudentOption;
 const FacultyProfile = require('../models/index').FacultyProfile;
 const sequelize = require('sequelize');
@@ -119,9 +120,12 @@ const notifyStudents = async (numberOfStudents, userId) => {
 
     const user = await User.findOne({ where: { id: userId }, include: [{ model: Faculty }] });
 
+    const flows = await Flow.findAll({ where: { facultyId: user.facultyId }, raw: true });
+    const currentOrderNumber = flows.reduce((total, flow) => total + flow.flow, 0);
+
     const students = await Student.findAll({
         attributes: ['notificationToken', 'temporaryFacultyId'],
-        where: { orderNumber: { [Op.between]: [user.faculty.currentOrderNumber, user.faculty.currentOrderNumber + numberOfStudents] } },
+        where: { orderNumber: { [Op.between]: [currentOrderNumber, currentOrderNumber + numberOfStudents] } },
         include: [{ model: StudentOption, as: 'options', include: { model: FacultyProfile } }]
     });
 
