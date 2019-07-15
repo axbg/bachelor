@@ -17,6 +17,7 @@ export const ACTIONS = {
 export const StudentState = {
     role: null,
     loading: true,
+    initialLoadFailed: false,
     inAppLoading: false,
     faculties: {},
     locationFailed: false,
@@ -41,7 +42,7 @@ export default (state = {}, action) => {
         case FAILURE(ACTIONS.LOAD_STUDENT_DATA):
             return {
                 ...state,
-                loading: false
+                initialLoadFailed: true
             }
         case REQUEST(ACTIONS.CHANGE_PASSWORD):
         case SUCCESS(ACTIONS.CHANGE_PASSWORD):
