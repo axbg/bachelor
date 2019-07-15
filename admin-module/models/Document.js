@@ -5,7 +5,15 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         "file": {
-            type: DataTypes.BLOB,
+            type: DataTypes.TEXT,
+            allowNull: false
+        },
+        "iteration": {
+            type: DataTypes.STRING(50),
+            allowNull: false
+        },
+        "state": {
+            type: DataTypes.BOOLEAN,
             allowNull: false
         }
     })

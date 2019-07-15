@@ -1,12 +1,14 @@
 const axios = require('axios');
-const MAIL_MODULE_PATH = require('../config/index').MAIL_ADDRESS;
+const VOLUNTEER_NOTIFICATION_ADDRESS = require('../config/index').VOLUNTEER_NOTIFICATION_ADDRESS;
 
-module.exports.sendMail = (subject, message, destination) => {
-    const mailData = {
-        message: message,
-        title: subject,
-        destination: destination
+module.exports.sendNotification = (authorization, userId) => {
+    const payload = {
+        userId: userId
     };
 
-    axios.post(MAIL_MODULE_PATH, { ...mailData });
+    const headers = {
+        'Authorization': authorization
+    };
+
+    axios.post(VOLUNTEER_NOTIFICATION_ADDRESS, { ...payload }, { headers: headers });
 }
