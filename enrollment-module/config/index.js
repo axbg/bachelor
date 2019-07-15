@@ -1,4 +1,4 @@
-const PORT = 8003;
+const PORT = process.env.PORT ? process.env.PORT : 8003;
 const DB_HOST = process.env.DB_HOST ? process.env.DB_HOST : "";
 const DB_NAME = process.env.DB_NAME ? process.env.DB_NAME : "flow";
 const DB_USERNAME = process.env.DB_USERNAME ? process.env.DB_USERNAME : "alex";

@@ -36,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(13),
                 allowNull: false
             },
+            "city": {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
             "series": {
                 type: DataTypes.STRING(2),
                 allowNull: false
@@ -49,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false
             },
             "photo": {
-                type: DataTypes.BLOB
+                type: DataTypes.TEXT
             },
             "active": {
                 type: DataTypes.BOOLEAN,
@@ -75,8 +79,12 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 defaultValue: 0
             },
+            "temporaryFacultyId": {
+                type: DataTypes.INTEGER,
+                defaultValue: 0
+            },
             "notificationToken": {
-                type: DataTypes.STRING(100),
+                type: DataTypes.TEXT,
                 allowNull: true
             },
         }

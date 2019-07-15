@@ -17,7 +17,9 @@ const generateEnrollmentDocument = async (authToken, studentId) => {
         await Document.create({
             title: "Bun venit la ASE",
             file: result,
-            studentId: studentId
+            studentId: studentId,
+            iteration: "",
+            state: true
         });
         sendEnrollmentMail(authToken, result, studentId);
     });
