@@ -3,7 +3,7 @@ import './index.css'
 import Button from "@material-ui/core/Button";
 import { connect } from 'react-redux';
 import { logout } from '../../../../reducers/authReducer';
-import { getPositions, createPositionRequest } from '../../../../reducers/volunteerReducer';
+import { getPositions, createPositionRequest, updateVolunteerPosition } from '../../../../reducers/volunteerReducer';
 import { toastr } from 'react-redux-toastr';
 import axios from 'axios';
 import { PUBLIC_VAPID_KEY, BASE_URL } from '../../../../constants/index';
@@ -19,13 +19,14 @@ class VolunteerPosition extends Component {
     }
 
     componentDidMount() {
+        this.props.updateVolunteerPosition();
         if (!this.props.positions) {
             this.props.getPositions();
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.positions[0]) {
+        if (nextProps.positions) {
             this.setState({
                 positionId: nextProps.positions[0].id
             })
@@ -52,7 +53,7 @@ class VolunteerPosition extends Component {
     }
 
     activateNotifications = async () => {
-        if (Notification.permission !== 'default') {
+        if (Notification.permission !== 'granted') {
             const sw = await navigator.serviceWorker.getRegistration("/");
             const subscription = await sw.pushManager.subscribe({
                 userVisibleOnly: true,
@@ -115,6 +116,6 @@ const mapStateToProps = ({ volunteerReducer }) => ({
     positions: volunteerReducer.positions
 });
 
-const mapDispatchToProps = { getPositions, createPositionRequest, logout };
+const mapDispatchToProps = { updateVolunteerPosition, getPositions, createPositionRequest, logout };
 
 export default connect(mapStateToProps, mapDispatchToProps)(VolunteerPosition);

@@ -22,7 +22,8 @@ class OperatorEnrollment extends Component {
         this.state = {
             showWithdrawals: false,
             withdrawals: null,
-            searchText: ""
+            searchText: "",
+            searchBarText: "Caută după număr de ordine sau CNP"
         }
     }
 
@@ -55,7 +56,7 @@ class OperatorEnrollment extends Component {
                         item.cnp.toLowerCase().includes(searchable)) {
                         return true;
                     }
-                    
+
                     return false;
                 });
 
@@ -79,12 +80,14 @@ class OperatorEnrollment extends Component {
             this.props.getWithdrawals();
             this.setState({
                 showWithdrawals: true,
-                searchText: ""
+                searchText: "",
+                searchBarText: "Caută după nume, prenume sau CNP"
             });
         } else {
             this.setState({
                 showWithdrawals: false,
-                searchText: ""
+                searchText: "",
+                searchBarText: "Caută după număr de ordine sau CNP"
             });
         }
     }
@@ -96,7 +99,7 @@ class OperatorEnrollment extends Component {
                     <div style={{ padding: '10px' }}>
                         <div className="inline-container">
                             <SearchBar
-                                placeholder="Caută după număr de ordine sau CNP"
+                                placeholder={this.state.searchBarText}
                                 value={this.state.searchText}
                                 onChange={(e) => this.updateSearchText(e)}
                                 onRequestSearch={() => this.searchStudent()}
@@ -106,10 +109,10 @@ class OperatorEnrollment extends Component {
                                 }}
                             />
                         </div>
-                        <Button color="primary" variant="contained" label="Submit" onClick={() => this.props.logout()}>Logout</Button>
                         <Button color="primary" variant="contained" label="Submit" onClick={() => this.toggleWithdrawals()}>
                             {!this.state.withdrawals ? "Retrageri" : "Căutare"}
                         </Button>
+                        <Button color="primary" variant="contained" label="Submit" onClick={() => this.props.logout()}>Logout</Button>
                     </div>
                 </div>
                 <br />
