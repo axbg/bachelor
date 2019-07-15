@@ -46,7 +46,6 @@ const findUserByCredentials = async (email, password) => {
 }
 
 const generateJWT = (entity, type) => {
-    console.log(entity);
     return type === "STUDENT" ? jwt.sign({ id: entity.id, email: entity.email, type: type }, JWT_SECRET)
         : jwt.sign({ id: entity.id, username: entity.username, type: type }, JWT_SECRET);
 }
