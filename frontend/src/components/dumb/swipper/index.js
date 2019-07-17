@@ -10,7 +10,6 @@ class Swipper extends Component {
 
   itemChanged(e) {
     //save current position inside redux
-    console.log(e);
   }
 
   render() {
@@ -24,6 +23,12 @@ class Swipper extends Component {
         </div>
         <div>
           <img alt="img" src="/step3.png " />
+        </div>
+        <div>
+          <img alt="img" src="/step4.png " />
+        </div>
+        <div>
+          <img alt="img" src="/step5.png " />
         </div>
       </Carousel>
     );

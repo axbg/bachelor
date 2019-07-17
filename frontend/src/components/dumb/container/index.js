@@ -8,6 +8,8 @@ import AdminRouter from '../../entities/admin/adminRouter';
 import OperatorRouter from '../../entities/operator/operatorRouter';
 import CashierRouter from '../../entities/cashier/cashierRouter';
 import { USER_ROLES } from '../../../constants/index';
+import Spinner from '../../dumb/spinner/index';
+import { connect } from 'react-redux';
 
 class Container extends Component {
     redirectToHome() {
@@ -52,16 +54,28 @@ class Container extends Component {
     render() {
         return (
             <div className="grid-container">
-                <div className="app-container">
-                    <Switch>
-                        <Redirect exact from="/" to={this.redirectToHome()} />
-                        {this.mountRoutes()}
-                        <Redirect to="/" />
-                    </Switch>
-                </div>
+                {this.props.volunteerLoading || this.props.studentLoading ?
+                    <Spinner />
+                    :
+                    <div className="app-container">
+                        <Switch>
+                            <Redirect exact from="/" to={this.redirectToHome()} />
+                            {this.mountRoutes()}
+                            <Redirect to="/" />
+                        </Switch>
+                    </div>
+                }
             </div>
         );
     }
 }
 
-export default Container;
+
+const mapStateToProps = ({ volunteerReducer, studentReducer }) => ({
+    volunteerLoading: volunteerReducer.inAppLoading,
+    studentLoading: studentReducer.inAppLoading,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Container)

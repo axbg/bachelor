@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { REQUEST, SUCCESS, FAILURE } from '../config/actions-async-types';
+import { REQUEST, SUCCESS } from '../config/actions-async-types';
 
 export const ACTIONS = {
     GET_ID: "GET_ID",

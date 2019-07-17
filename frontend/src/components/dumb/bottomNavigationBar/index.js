@@ -2,7 +2,7 @@
 import React from 'react';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import { Home, Restore, LocationOn, AccountCircle, Assignment, CheckCircle,  Place } from '@material-ui/icons';
+import { Home, Restore, LocationOn, AccountCircle, Assignment, CheckCircle, Place } from '@material-ui/icons';
 import { Link, withRouter } from 'react-router-dom';
 import "./index.css";
 
@@ -28,7 +28,7 @@ class BottomNavigationBar extends React.Component {
       case "check":
         return <CheckCircle />
       case "position":
-        return <Place />  
+        return <Place />
       default:
         return <Restore />
     }

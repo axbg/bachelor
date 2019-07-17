@@ -7,7 +7,7 @@ const UnprotecterRouter = () => (
     <Switch>
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={StudentRegister} />
-        <Redirect to="/register" />
+        <Redirect to="/login" />
     </Switch>
 );
 

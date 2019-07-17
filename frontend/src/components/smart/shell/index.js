@@ -4,20 +4,28 @@ import NavigationBar from '../../dumb/navigationBar';
 import Container from '../../dumb/container';
 import { USER_ROLES, STUDENT_NAVIGATION_OPTIONS, VOLUNTEER_NAVIGATION_OPTIONS, ADMIN_NAVIGATION_OPTIONS, CASHIER_NAVIGATION_OPTIONS, OPERATOR_NAVIGATION_OPTIONS } from '../../../constants/index';
 import { connect } from 'react-redux';
-import { authenticate } from '../../../reducers/authReducer';
+import { loadStudentData } from '../../../reducers/studentReducer';
+import { loadVolunteerData } from '../../../reducers/volunteerReducer';
 import { mobileLayout } from '../../../reducers/shellReducer';
 import Spinner from '../../dumb/spinner/index';
 import BottomNavigationBar from '../../dumb/bottomNavigationBar';
 import ReactResizeDetector from 'react-resize-detector';
+import { toastr } from 'react-redux-toastr';
 
-
-//will be changed based on user role
-//this will retrieve from back-end what navigation tabs should be displayed
-//this also will retrieve user data such as role
 class Shell extends Component {
 
     componentDidMount() {
-        this.props.authenticate();
+        if (window.localStorage.getItem("email").includes("@")) {
+            this.props.loadStudentData();
+        } else {
+            this.props.loadVolunteerData();
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.props.studentInitialLoadFailed || this.props.volunteerInitialLoadFailed) {
+            toastr.warning("A apărut o eroare", "Reîncearcă mai târziu");
+        }
     }
 
     onResize = (width, height) => {
@@ -28,10 +36,9 @@ class Shell extends Component {
         }
     }
 
-
-    //add the rest of nav options for each role
     getNavigationOptions() {
-        switch (this.props.role) {
+        const role = this.props.volunteerRole || this.props.studentRole;
+        switch (role) {
             case USER_ROLES.STUDENT:
                 return STUDENT_NAVIGATION_OPTIONS;
             case USER_ROLES.ADMIN:
@@ -51,18 +58,18 @@ class Shell extends Component {
         return (
             <div className="max-height">
                 {
-                    this.props.loaded ?
+                    !this.props.volunteerLoading || !this.props.studentLoading ?
                         (<div className="max-height">
                             <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} />
                             {
                                 this.props.mobileDevice ? ""
                                     : <NavigationBar position="fixed" options={this.getNavigationOptions()} />
                             }
-                            <Container role={this.props.role} />
+                            <Container role={this.props.volunteerRole ? this.props.volunteerRole : this.props.studentRole} />
                             {
                                 !this.props.mobileDevice ? ""
-                                    : 
-                                    <div className="fix-bottom"><BottomNavigationBar options={this.getNavigationOptions()} /> </div> 
+                                    :
+                                    <div className="fix-bottom"><BottomNavigationBar options={this.getNavigationOptions()} /> </div>
                             }
                         </div>
                         )
@@ -74,12 +81,16 @@ class Shell extends Component {
     }
 }
 
-const mapStateToProps = ({ shellReducer, authReducer }) => ({
-    role: authReducer.role,
-    loaded: authReducer.loaded,
-    mobileDevice: shellReducer.mobileDevice
+const mapStateToProps = ({ shellReducer, volunteerReducer, studentReducer }) => ({
+    volunteerRole: volunteerReducer.role,
+    volunteerLoading: volunteerReducer.loading,
+    studentRole: studentReducer.role,
+    studentLoading: studentReducer.loading,
+    mobileDevice: shellReducer.mobileDevice,
+    studentInitialLoadFailed: studentReducer.initialLoadFailed,
+    volunteerInitialLoadFailed: volunteerReducer.initialLoadFailed
 });
 
-const mapDispatchToProps = { authenticate, mobileLayout };
+const mapDispatchToProps = { mobileLayout, loadStudentData, loadVolunteerData };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shell);

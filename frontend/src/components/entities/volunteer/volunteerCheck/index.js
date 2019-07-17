@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './index.css'
 import Button from "@material-ui/core/Button";
+import { connect } from 'react-redux';
+import { createFlow, sendStudentNotifications } from '../../../../reducers/volunteerReducer';
 
 class VolunteerCheck extends Component {
 
@@ -19,6 +21,10 @@ class VolunteerCheck extends Component {
     }
 
     incrementNotify = (value) => {
+        if(this.state.notify === 0 && value === -1) {
+            return;
+        }
+        
         this.setState({
             notify: this.state.notify + value
         })
@@ -38,7 +44,8 @@ class VolunteerCheck extends Component {
                         <div className="circled" onClick={() => this.incrementFlux(-1)}>-</div>
                     </div>
                     <div className="volunteer-button">
-                        <Button style={{ width: '250px' }} type="submit" color="primary" variant="contained" label="Submit">
+                        <Button style={{ width: '250px' }} type="submit" color="primary" variant="contained"
+                            onClick={() => this.props.createFlow(this.state.flux)} label="Submit">
                             Adaugă Flux
                         </Button>
                     </div>
@@ -48,7 +55,7 @@ class VolunteerCheck extends Component {
                 <div className="volunteer-check-panel">
                     <h3>Notificări</h3>
                     <div style={{ display: "inline-block" }}>
-                        <input className="volunteer-number-input" type="number" min="-100" max="100"
+                        <input className="volunteer-number-input" type="number" min="0" max="100"
                             value={this.state.notify} onChange={() => { }} />
                     </div>
                     <div className="volunteer-check-control">
@@ -56,7 +63,8 @@ class VolunteerCheck extends Component {
                         <div className="circled" onClick={() => this.incrementNotify(-1)}>-</div>
                     </div>
                     <div className="volunteer-button">
-                        <Button style={{ width: '250px' }} type="submit" color="primary" variant="contained" label="Submit">
+                        <Button style={{ width: '250px' }} type="submit" color="primary" variant="contained"
+                            onClick={() => this.props.sendStudentNotifications(this.state.notify)} label="Submit">
                             Trimite Notificări
                         </Button>
                     </div>
@@ -66,4 +74,9 @@ class VolunteerCheck extends Component {
     }
 }
 
-export default VolunteerCheck;
+const mapStateToProps = ({ studentReducer }) => ({
+});
+
+const mapDispatchToProps = { createFlow, sendStudentNotifications };
+
+export default connect(mapStateToProps, mapDispatchToProps)(VolunteerCheck);
