@@ -1,13 +1,15 @@
 const Router = require('koa-router');
-const router = new Router();
-const paymentController = require('../controllers/index');
+
+const paymentController = require('../controllers');
 const withSecurityHeaders = require('../services/middleware').withSecurityHeaders;
 
-router.get("/", async (ctx) => {
-    ctx.body = { message: "flow - payment module" };
+const router = new Router();
+
+router.get('/', async (ctx) => {
+  ctx.body = { message: 'flow - payment module' };
 });
 
-router.use(withSecurityHeaders);    
+router.use(withSecurityHeaders);
 
 router.post('/update-credits', paymentController.updateCredits);
 

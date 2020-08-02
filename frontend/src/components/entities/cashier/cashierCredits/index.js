@@ -4,7 +4,7 @@ import StudentProfile from '../../student/studentProfile';
 import SearchBar from 'material-ui-search-bar';
 import { connect } from 'react-redux';
 import { loadStudentData } from '../../../../reducers/volunteerReducer';
-import Spinner from '../../../dumb/spinner/index';
+import Spinner from '../../../dumb/spinner';
 import { toastr } from 'react-redux-toastr';
 import Button from '@material-ui/core/Button';
 import { logout } from '../../../../reducers/authReducer'

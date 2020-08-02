@@ -1,0 +1,15 @@
+DB_HOST=localhost
+DB_NAME=database
+DB_USERNAME=user
+DB_PASSWORD=password
+JWT_SECRET=jwt_secret
+GATEWAY_ADDRESS=gateway_address
+REDIS_ADDRESS=redis_address
+REDIS_QUEUE=redis_queue
+MAILGUN_API_KEY=mailgun_api_key
+MAILGUN_DOMAIN=mailgun_domain
+STRIPE_SECRET_KEY=stripe_secret_key
+SECRET_ADMIN_TOKEN=secret_admin_token
+PUBLIC_VAPID_KEY=public_vapid_key
+PRIVATE_VAPID_KEY=private_vapid_key
+VAPID_EMAIL=user@example.com

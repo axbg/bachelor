@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 import { getIterations, sort, drySort } from '../../../../reducers/volunteerReducer';
-import { SORT_URL } from '../../../../constants/index';
+import { SORT_URL } from '../../../../constants';
 import Axios from 'axios';
 
 class AdminSorting extends Component {

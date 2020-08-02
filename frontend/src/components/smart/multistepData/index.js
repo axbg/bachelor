@@ -3,7 +3,7 @@ import './index.css';
 import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import axios from 'axios';
-import { BASE_URL } from '../../../constants/index'
+import { BASE_URL } from '../../../constants'
 
 class MultistepData extends Component {
 

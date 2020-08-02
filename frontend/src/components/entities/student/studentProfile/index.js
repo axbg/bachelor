@@ -6,7 +6,7 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText } from '@material
 import Slide from '@material-ui/core/Slide';
 import { Switch } from '@material-ui/core';
 import SmartMultistepData from '../../../smart/smartMultistepData';
-import { STUDENT_DEFAULT_IMAGE, PUBLIC_VAPID_KEY, BASE_URL } from '../../../../constants/index';
+import { STUDENT_DEFAULT_IMAGE, PUBLIC_VAPID_KEY, BASE_URL } from '../../../../constants';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 import { changePassword, updateData } from '../../../../reducers/studentReducer';

@@ -6,7 +6,7 @@ import { logout } from '../../../../reducers/authReducer';
 import { getPositions, createPositionRequest, updateVolunteerPosition } from '../../../../reducers/volunteerReducer';
 import { toastr } from 'react-redux-toastr';
 import axios from 'axios';
-import { PUBLIC_VAPID_KEY, BASE_URL } from '../../../../constants/index';
+import { PUBLIC_VAPID_KEY, BASE_URL } from '../../../../constants';
 
 
 class VolunteerPosition extends Component {

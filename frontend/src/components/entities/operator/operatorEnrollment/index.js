@@ -5,7 +5,7 @@ import SearchBar from 'material-ui-search-bar'
 import { connect } from 'react-redux';
 import { loadStudentData, getWithdrawals } from '../../../../reducers/volunteerReducer';
 import { logout } from '../../../../reducers/authReducer'
-import Spinner from '../../../dumb/spinner/index';
+import Spinner from '../../../dumb/spinner';
 import { toastr } from 'react-redux-toastr';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';

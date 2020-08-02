@@ -3,7 +3,7 @@ import "./index.css";
 import StudentProfile from '../../student/studentProfile';
 import SearchBar from 'material-ui-search-bar'
 import { connect } from 'react-redux';
-import Spinner from '../../../dumb/spinner/index';
+import Spinner from '../../../dumb/spinner';
 import { toastr } from 'react-redux-toastr';
 import { loadStudentData } from '../../../../reducers/volunteerReducer';
 import { logout } from '../../../../reducers/authReducer'

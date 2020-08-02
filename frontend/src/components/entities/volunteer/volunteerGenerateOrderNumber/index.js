@@ -4,7 +4,7 @@ import SearchBar from 'material-ui-search-bar'
 import { toastr } from 'react-redux-toastr';
 import { connect } from 'react-redux';
 import { loadStudentData } from '../../../../reducers/volunteerReducer';
-import Spinner from '../../../dumb/spinner/index';
+import Spinner from '../../../dumb/spinner';
 
 class VolunteerGenerateOrderNumber extends Component {
 

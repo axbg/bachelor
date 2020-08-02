@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Elements, StripeProvider } from 'react-stripe-elements';
-import StripeCheckout from '../stripeCheckout/index';
-import { STRIPE_SECRET } from '../../../constants/index';
+import StripeCheckout from '../stripeCheckout';
+import { STRIPE_SECRET } from '../../../constants';
 
 class CheckoutForm extends Component {
 

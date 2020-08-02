@@ -1,13 +1,15 @@
 const Router = require('koa-router');
-const router = new Router();
-const studentController = require("../controllers/index");
+
+const studentController = require('../controllers');
 const withSecurityHeaders = require('../services/middleware').withSecurityHeaders;
 
-router.get("/", async (ctx) => {
-    ctx.body = { message: "flow - student module" };
-})
+const router = new Router();
 
-router.post("/create", studentController.createStudent);
+router.get('/', async (ctx) => {
+  ctx.body = { message: 'flow - student module' };
+});
+
+router.post('/create', studentController.createStudent);
 
 router.use(withSecurityHeaders);
 

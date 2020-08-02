@@ -7,8 +7,8 @@ import VolunteerRouter from '../../entities/volunteer/volunteerRouter';
 import AdminRouter from '../../entities/admin/adminRouter';
 import OperatorRouter from '../../entities/operator/operatorRouter';
 import CashierRouter from '../../entities/cashier/cashierRouter';
-import { USER_ROLES } from '../../../constants/index';
-import Spinner from '../../dumb/spinner/index';
+import { USER_ROLES } from '../../../constants';
+import Spinner from '../../dumb/spinner';
 import { connect } from 'react-redux';
 
 class Container extends Component {

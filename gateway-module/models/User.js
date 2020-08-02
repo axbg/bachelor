@@ -1,33 +1,33 @@
 const bcrypt = require('bcrypt');
 
 const hashUserPassword = (user, options) => {
-    if (user.changed('password')) {
-        const hashedPassword = bcrypt.hashSync(user.password, 10);
-        user.setDataValue('password', hashedPassword);
-    }
-}
+  if (user.changed('password')) {
+    const hashedPassword = bcrypt.hashSync(user.password, 10);
+    user.setDataValue('password', hashedPassword);
+  }
+};
 
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("user",
-        {
-            "username": {
-                type: DataTypes.STRING(50),
-                allowNull: false,
-                unique: true
-            },
-            "password": {
-                type: DataTypes.STRING(255),
-                allowNull: false
-            },
-            "notification_token": {
-                type: DataTypes.STRING(100),
-                allowNull: true
-            }
+  return sequelize.define('user',
+      {
+        'username': {
+          type: DataTypes.STRING(50),
+          allowNull: false,
+          unique: true,
         },
-        {
-            hooks: {
-                beforeCreate: hashUserPassword,
-                beforeUpdate: hashUserPassword
-            }
-        });
-}
+        'password': {
+          type: DataTypes.STRING(255),
+          allowNull: false,
+        },
+        'notification_token': {
+          type: DataTypes.STRING(100),
+          allowNull: true,
+        },
+      },
+      {
+        hooks: {
+          beforeCreate: hashUserPassword,
+          beforeUpdate: hashUserPassword,
+        },
+      });
+};

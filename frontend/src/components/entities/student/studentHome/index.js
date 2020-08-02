@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 import socketIO from 'socket.io-client';
-import { BASE_URL } from '../../../../constants/index';
+import { BASE_URL } from '../../../../constants';
 import { withdrawPortfolio } from '../../../../reducers/studentReducer';
 import moment from 'moment';
 

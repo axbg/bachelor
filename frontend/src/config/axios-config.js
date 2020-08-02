@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import { BASE_URL } from '../constants/index';
+// import { BASE_URL } from '../constants';
 
 const TIMEOUT = 1 * 60 * 1000;
 axios.defaults.timeout = TIMEOUT;

@@ -1,11 +1,13 @@
 const Router = require('koa-router');
-const router = new Router();
-const adminController = require("../controllers/index");
-const withAdminValidation = require('../services/middleware').withAdminValidation
 
-router.get("/", async (ctx) => {
-    ctx.body = { message: "flow - admin module" };
-})
+const adminController = require('../controllers');
+const withAdminValidation = require('../services/middleware').withAdminValidation;
+
+const router = new Router();
+
+router.get('/', async (ctx) => {
+  ctx.body = { message: 'flow - admin module' };
+});
 
 router.use(withAdminValidation);
 
@@ -15,6 +17,6 @@ router.post('/sort', adminController.sort);
 
 router.get('/iterations', adminController.getIterations);
 
-router.get('/documents/:iteration', adminController.downloadDocuments)
+router.get('/documents/:iteration', adminController.downloadDocuments);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { REQUEST, SUCCESS, FAILURE } from '../config/actions-async-types';
-import { BASE_URL } from '../constants/index';
+import { BASE_URL } from '../constants';
 
 export const ACTIONS = {
     LOAD_STUDENT_DATA: "LOAD_STUDENT_DATA",
