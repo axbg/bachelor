@@ -1,9 +1,9 @@
 import React from 'react';
-import { Switch, Route } from "react-router-dom";
-import StudentHome from "../studentHome/index";
-import StudentProfile from "../studentProfile/index";
-import StudentRegistrationDay from "../studentRegistrationDay/index";
-import StudentCredits from "../studentCredits/index";
+import { Switch, Route } from 'react-router-dom';
+import StudentHome from '../studentHome/index';
+import StudentProfile from '../studentProfile/index';
+import StudentRegistrationDay from '../studentRegistrationDay/index';
+import StudentCredits from '../studentCredits/index';
 
 const StudentRouter = () => (
   <Switch>

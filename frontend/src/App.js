@@ -1,22 +1,22 @@
 import React from 'react';
 import './App.css';
-import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
+import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 import Shell from './components/smart/shell';
 import UnprotectedRouter from './components/dumb/unprotectedRouter';
 import { BrowserRouter } from 'react-router-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import ReduxToastr from 'react-redux-toastr'
+import ReduxToastr from 'react-redux-toastr';
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#5598CC'
-    }
-  }
+      main: '#5598CC',
+    },
+  },
 });
 
 function shouldAutoLogin() {
-  return window.localStorage.getItem("auth-token") ? true : false;
+  return window.localStorage.getItem('auth-token') ? true : false;
 }
 
 function App() {

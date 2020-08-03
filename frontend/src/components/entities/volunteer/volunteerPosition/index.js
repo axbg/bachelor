@@ -10,7 +10,6 @@ import { PUBLIC_VAPID_KEY, BASE_URL } from '../../../../constants';
 
 
 class VolunteerPosition extends Component {
-
     constructor() {
         super();
         this.state = {
@@ -25,7 +24,7 @@ class VolunteerPosition extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.positions) {
             this.setState({
                 positionId: nextProps.positions[0].id
@@ -78,7 +77,7 @@ class VolunteerPosition extends Component {
                 </Button>
                 <div className="volunteer-position-request">
                     <h4>Dorești schimbarea poziției?</h4>
-                    <br/>
+                    <br />
                     <img width="50" height="50" src="/notifications.png" style={{ cursor: "pointer" }} onClick={() => this.activateNotifications()}
                         alt="NOTIFICATIONS" />
                     <br />

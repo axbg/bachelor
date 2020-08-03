@@ -6,7 +6,6 @@ import { TextField } from '@material-ui/core';
 import { toastr } from 'react-redux-toastr'
 
 class Login extends Component {
-
     constructor() {
         super();
         this.state = {
@@ -15,7 +14,7 @@ class Login extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.failed) {
             toastr.error("Datele nu sunt valide");
         }

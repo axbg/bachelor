@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { createFlow, sendStudentNotifications } from '../../../../reducers/volunteerReducer';
 
 class VolunteerCheck extends Component {
-
     constructor() {
         super();
         this.state = {
@@ -21,10 +20,10 @@ class VolunteerCheck extends Component {
     }
 
     incrementNotify = (value) => {
-        if(this.state.notify === 0 && value === -1) {
+        if (this.state.notify === 0 && value === -1) {
             return;
         }
-        
+
         this.setState({
             notify: this.state.notify + value
         })

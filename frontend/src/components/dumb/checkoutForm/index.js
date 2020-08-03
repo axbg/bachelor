@@ -4,7 +4,6 @@ import StripeCheckout from '../stripeCheckout';
 import { STRIPE_SECRET } from '../../../constants';
 
 class CheckoutForm extends Component {
-
   render() {
     return (
       <StripeProvider apiKey={STRIPE_SECRET}>
@@ -13,7 +12,8 @@ class CheckoutForm extends Component {
           <h3>Total de plată: {1000 * this.props.numberOfCredits}</h3>
           <div>
             <Elements>
-              <StripeCheckout email={this.props.email} id={this.props.id} amount={1000 * this.props.numberOfCredits} buyCredits={this.props.buyCredits} />
+              <StripeCheckout email={this.props.email} id={this.props.id}
+                amount={1000 * this.props.numberOfCredits} buyCredits={this.props.buyCredits} />
             </Elements>
           </div>
         </div>

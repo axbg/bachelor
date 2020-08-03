@@ -13,7 +13,6 @@ import ReactResizeDetector from 'react-resize-detector';
 import { toastr } from 'react-redux-toastr';
 
 class Shell extends Component {
-
     componentDidMount() {
         if (window.localStorage.getItem("email").includes("@")) {
             this.props.loadStudentData();
@@ -28,7 +27,7 @@ class Shell extends Component {
         }
     }
 
-    onResize = (width, height) => {
+    onResize(width, height) {
         if (width < 620 && !this.props.mobileDevice) {
             this.props.mobileLayout(true);
         } else if (width >= 640 && this.props.mobileDevice) {

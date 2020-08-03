@@ -5,6 +5,7 @@ const DB_NAME = process.env.DB_NAME || 'database';
 const DB_USERNAME = process.env.DB_USERNAME || 'user';
 const DB_PASSWORD = process.env.DB_PASSWORD || 'password';
 const DB_HOST = process.env.DB_HOST || 'localhost';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "user@example.com";
 
 module.exports = {
   PORT,
@@ -14,4 +15,5 @@ module.exports = {
   DB_NAME,
   DB_USERNAME,
   DB_PASSWORD,
+  ADMIN_EMAIL
 };

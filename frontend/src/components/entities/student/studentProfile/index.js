@@ -23,7 +23,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 class StudentProfile extends Component {
-
     setRef = webcam => {
         this.webcam = webcam;
     };
@@ -156,7 +155,7 @@ class StudentProfile extends Component {
                 userVisibleOnly: true,
                 applicationServerKey: this.urlBase64ToUint8Array(PUBLIC_VAPID_KEY)
             });
-            axios.post(BASE_URL + "/student/subscribe", {subscription: subscription});
+            axios.post(BASE_URL + "/student/subscribe", { subscription: subscription });
         } else {
             toastr.info("Notificările sunt active");
         }
@@ -174,7 +173,7 @@ class StudentProfile extends Component {
                             <DialogContent className="password-modal-container">
                                 <DialogContentText id="alert-dialog-slide-description">
                                     Parola trebuie să aibă dimensiunea minimă de 8 caractere și
-                                        să conțină minim o literă mare, o literă mică, o cifră și un simbol
+                                    să conțină minim o literă mare, o literă mică, o cifră și un simbol
                                 </DialogContentText>
                                 <input type="password" name="newPassword" placeholder="Inserează noua parolă" value={this.state.newPassword} onChange={this.onChange} />
                                 <input type="password" name="newPasswordCheck" placeholder="Repetă parola" value={this.state.newPasswordCheck} onChange={this.onChange} />
@@ -240,7 +239,7 @@ class StudentProfile extends Component {
                                     }}>
                                     Adaugă credite
                                 </Button>
-   
+
                                 <Switch
                                     checked={this.state.tax}
                                     onChange={() => {

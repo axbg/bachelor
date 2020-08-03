@@ -4,9 +4,9 @@ import promiseMiddleware from 'redux-promise-middleware';
 import rootReducer, { initialState } from './reducers/rootReducer';
 
 export default function configureStore() {
-    return createStore(
-        rootReducer,
-        initialState,
-        applyMiddleware(thunkMiddleware, promiseMiddleware)
-    )
+  return createStore(
+    rootReducer,
+    initialState,
+    applyMiddleware(thunkMiddleware, promiseMiddleware),
+  );
 }

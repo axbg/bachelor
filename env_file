@@ -13,3 +13,4 @@ SECRET_ADMIN_TOKEN=secret_admin_token
 PUBLIC_VAPID_KEY=public_vapid_key
 PRIVATE_VAPID_KEY=private_vapid_key
 VAPID_EMAIL=user@example.com
+ADMIN_EMAIL=user@example.com

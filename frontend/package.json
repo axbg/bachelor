@@ -5,7 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "material-ui-search-bar": "^1.0.0-beta.13",
     "moment": "^2.24.0",
     "notistack": "^0.8.2",
@@ -20,7 +20,7 @@
     "react-responsive-carousel": "^3.1.49",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "3.0.1",
+    "react-scripts": "^3.4.1",
     "react-spinners": "^0.5.4",
     "react-stripe-elements": "^4.0.0",
     "react-swipeable-views": "^0.13.3",
@@ -28,10 +28,12 @@
     "redux": "^4.0.1",
     "redux-promise-middleware": "^6.1.0",
     "redux-thunk": "^2.3.0",
-    "socket.io-client": "^2.2.0"
+    "socket.io-client": "^2.2.0",
+    "yargs-parser": "^18.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
+    "lint": "eslint . --fix",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

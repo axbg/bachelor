@@ -4,7 +4,6 @@ import IconButton from "@material-ui/icons/Close";
 import CloseIcon from '@material-ui/icons/Close';
 
 class CustomSnackbar extends Component {
-
     state = {
         open: false,
     };

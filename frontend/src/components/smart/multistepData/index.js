@@ -6,7 +6,6 @@ import axios from 'axios';
 import { BASE_URL } from '../../../constants'
 
 class MultistepData extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -58,11 +57,11 @@ class MultistepData extends Component {
     onSubmit = e => {
         e.preventDefault();
         axios.post(BASE_URL + "/student/create", { ...this.state })
-        .then(result => {
-            this.setState({
-                registered: true
+            .then(result => {
+                this.setState({
+                    registered: true
+                })
             })
-        })
     };
 
     decreaseCurrentPage = () => {

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -11,11 +10,11 @@ class BottomNavigationBar extends React.Component {
     value: 0,
   };
 
-  handleChange = (event, value) => {
+  handleChange(event, value) {
     this.setState({ value });
   };
 
-  renderIcon = (icon) => {
+  renderIcon(icon) {
     switch (icon) {
       case "home":
         return <Home />
